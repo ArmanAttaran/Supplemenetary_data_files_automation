@@ -10,6 +10,8 @@ editor_options:
 ## Introduction
 
 ```{r}
-
+library(cansim)
+cansim::get_cansim(cansimTableNumber = "36-10-0222"
+                   )
 ```
 
