@@ -9,3 +9,5 @@ analysis/*png
 analysis/*html
 analysis/*_cache
 analysis/site_libs
+supp_files_ssh
+supp_files_ssh.pub
