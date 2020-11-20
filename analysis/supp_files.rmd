@@ -23,21 +23,24 @@ library(janitor)
 library(tidyverse)
 
 provinces <-c("Alberta", "British Columbia", "Canada", "Manitoba", 
-"New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", 
-"Quebec")
+"New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island","Quebec")
 
 ```
 
 ## CPI
+### CPI loading and set up
 
 ```{r loading CPI}
 
 tablenumber = 18100005
 CPI = cansim::get_cansim(tablenumber)
 CPI = janitor::clean_names(CPI)
+products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
 ```
+### CPI Data
 
-```{r}
+#### CPI Rds object
+```{r CPI RDS object}
 products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
 CPI %>% 
   select(ref_date,geo,products_and_product_groups,value,vector) %>% 
@@ -56,9 +59,8 @@ CPItemp %>%
   data.table::fwrite(here("output","CPI.csv")) %>%
   DT::datatable()
 
-  print(params$year)
-  
 ```
+#### CPI CSV 
 
 ```{r Graphing CPI, echo=FALSE, message=FALSE, warning=FALSE}
 asd %>%
