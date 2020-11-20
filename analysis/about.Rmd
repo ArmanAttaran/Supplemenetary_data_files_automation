@@ -90,7 +90,7 @@ Describe your project. hell oworld
 
 Notes on R
 
-# \#\# R libraries 
+# \#\# R libraries
 
 R libraries are similar to SAS procs for example proc SQL roughly translates to the library dplyr in R
 
