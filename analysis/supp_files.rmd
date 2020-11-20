@@ -7,19 +7,147 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Introduction
+```{r loading CPI}
+tablenumber = 18100005
+CPI = NDMGetCubeData(credentials, productid = 18100005, count = 5, version = 0, French = FALSE)
+CPI = janitor::clean_names(CPI)
+```
 
-this project started as a way to replicate and automate supplementary data files created by the section. this example expands this by providing clean, computer friendly versions of each table as well as the excel replica
+this takes about 10 minutes as it is downloading the whole CPI table for the last 5 years. later on we will go over how to speed this up using only the vector IDs for the data we need. if this takes too long simply port the code to a personal computer of yours, it should only take 30 seconds using the cansim library 
+Janitor::clean_names(CPI) simply means from the library janitor bring in the function clean_names and apply it to our data set.
+this will make the names all lower case and replaces spaces with dashes which makes it easier to work with.
 
-cleaned r data is saved in the directory `output/rds_tables`
-
-cleaned csv files is saved in the directory `output/csv_tables`
-
-## Data
-
-dd
-
+```{r exploring CPI}
+group_by(CPI,geography) %>%
+head()
+```
 ```{r}
-cansim::get_cansim()
+products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
+CPI %>% 
+  select(refper,geography,products_and_product_groups,value,vector_id) %>% 
+  filter(products_and_product_groups %in% c(products_required)) %>%
+  arrange(products_and_product_groups,geography,refper) %>%
+  group_by(products_and_product_groups,geography) %>%
+
+  head(n=12)
+```
+
+
+
+```{r Graphing CPI, echo=FALSE, message=FALSE, warning=FALSE}
+asd %>%
+ filter(geography %in% c("Alberta", "British Columbia", "Canada", "Manitoba", 
+"New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", 
+"Quebec")) %>%
+ filter(!(products_and_product_groups %in% c("Alcoholic beverages, tobacco products and recreational cannabis", 
+"Clothing and footwear", "Health and personal care", "Household operations, furnishings and equipment", 
+"Recreation, education and reading"))) %>%
+ ggplot() +
+ aes(x = refper, y = value, colour = products_and_product_groups) +
+ geom_line(size = 0.74) +
+ scale_color_hue() +
+ ggthemes::theme_igray() +
+ facet_wrap(vars(geography))
+```
+
+
+```{r FinalCPI}
+products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
+CPI %>% 
+  select(refper,geography,products_and_product_groups,value,vector_id) %>% 
+  filter(products_and_product_groups %in% c(products_required)) %>%
+  arrange(products_and_product_groups,geography,refper) %>%
+  group_by(products_and_product_groups,geography) %>%
+  mutate(pct_change =((value/lag(value,order_by = refper))*100)-100) %>% 
+  mutate(first_dif =(value-lag(value,order_by = refper))) %>%
+  pivot_wider(names_from = refper, values_from = c(value,pct_change,first_dif)) %>% 
+  arrange(geography) %>% 
+  head(n=12) 
+  #write_excel_csv(path ="Output///Table 18-10-0005-01 CPI by province product groups.csv")
+
 
 ```
+
+
+### how to handle big tables  
+
+We may need to collect 60 or more periods of data which is fairly large and incredibly slow on net A Api, I tried it and it took over one hour. luckily there is a solution of using the vector_Ids.
+
+## Automating Seph tables
+```{r Table 14-10-0203-01 SEPH average weekly earnings by all industry all prov and canada}
+
+tablenumber = 14100203
+
+seph = NDMGetCubeData(credentials, productid = tablenumber, count = 1, version = 0, French = FALSE)
+seph = janitor::clean_names(seph)
+```
+
+as we can see above even one table is massive. only downloading it for one period took more than 15 minutes. we need to simply filter it down to the series that we want
+in our supplementary file we only need the overtime included files; this should reduce the data we download by 1/2 and our type of employee should be all employees and that should reduce the vectors by 2/3rds. so over all by using vector ids we can reduce the required data by 5/6ths 
+
+```{r}
+seph %>% 
+  group_by(geography) %>% 
+  distinct()
+    
+  
+```
+
+
+
+
+```{r}
+seph %>%
+  select(refper,geography,type_of_employees,overtime,north_american_industry_classification_system_naics,vector_id,value) %>% 
+  filter(type_of_employees == "All employees" , overtime == "Including overtime") %>%
+  group_by(geography) %>% 
+  distinct() 
+```
+
+
+```{r}
+seph %>%
+  select(refper,geography,type_of_employees,overtime,north_american_industry_classification_system_naics,vector_id,value) %>% 
+  filter(type_of_employees == "All employees" , overtime == "Including overtime") %>%
+  pull(vector_id) %>% 
+  glimpse() %>% 
+  write_lines(path ="inputs///INPUTS_FOR_Table 14-10-0203-01 SEPH average weekly earnings by all industry all prov and canada.csv") %>%
+  {. ->> vectors}
+
+  
+```
+so now we need to download these vectors for the past 60 months 
+
+```{r}
+table_number = 14100201
+dimensions <- NDMGetDimensions(credentials, productid = table_number)
+coordinates <- NDMGetCubeVectorCoordInfo(credentials, productid = table_number)
+vector_data <- NDMGetBulkVectorData(credentials, vectorids = vectors, count = 6)
+seph_clean <- merge(coordinates, , by="vectorId") %>%
+  #mutate(value = value/(10**num_decimals)) %>%
+  select(cube_id.x, refper, Title_EN, UOMLabel_EN, coordinateId, vectorId, 
+         value, reldate) %>%
+  rename(cube_id = cube_id.x) %>%
+  separate(Title_EN, into = as.character(dimensions$en), sep = ";") %>%
+  mutate(refper = ymd(refper)) %>%
+  group_by(month = floor_date(refper,"monthly"),Geography) %>%
+  summarize(amount=mean(value)) %>%
+  view
+  
+  
+```
+
+
+
+```{r}
+library(tsibble)
+data_tsbl <- as_tsibble(Seph_data ,key = c(`North American Industry Classification System (NAICS)`,Geography))
+data_tsbl %>%
+  group_by_key() %>%
+  index_by(year_month = ~ year(.)) %>%
+  summarise(
+    avg_value = mean(value,na.rm = TRUE)
+  )%>%
+  view()
+```
+
