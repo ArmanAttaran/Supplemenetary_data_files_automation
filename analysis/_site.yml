@@ -1,0 +1,17 @@
+name: "Supplementary_data_files_automation"
+output_dir: ../docs
+navbar:
+  title: "Supplementary_data_files_automation"
+  left:
+  - text: Home
+    href: index.html
+  - text: About
+    href: about.html
+  - text: License
+    href: license.html
+output:
+  workflowr::wflow_html:
+    toc: yes
+    toc_float: yes
+    theme: cosmo
+    highlight: textmate
