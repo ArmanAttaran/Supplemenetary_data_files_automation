@@ -7,20 +7,35 @@ editor_options:
   chunk_output_type: console
 ---
 
+# set up 
+
+cansim for downloading the data from public statcan api
+tidyverse for manipulating and graphing the data
+janitor for cleaning the names of columns to make them programming language friendly
+ggthemes for making the graphs look pretty
+tsibble for handling time series and turning monthly/quarterly data into yearly
+
+
+```{r}
+library(tsibble,ggthemes,tidyverse,cansim,janitor)
+
+```
+
+
+
 ```{r loading CPI}
 tablenumber = 18100005
 CPI = NDMGetCubeData(credentials, productid = 18100005, count = 5, version = 0, French = FALSE)
 CPI = janitor::clean_names(CPI)
 ```
 
-this takes about 10 minutes as it is downloading the whole CPI table for the last 5 years. later on we will go over how to speed this up using only the vector IDs for the data we need. if this takes too long simply port the code to a personal computer of yours, it should only take 30 seconds using the cansim library 
-Janitor::clean_names(CPI) simply means from the library janitor bring in the function clean_names and apply it to our data set.
-this will make the names all lower case and replaces spaces with dashes which makes it easier to work with.
+this takes about 10 minutes as it is downloading the whole CPI table for the last 5 years. later on we will go over how to speed this up using only the vector IDs for the data we need. if this takes too long simply port the code to a personal computer of yours, it should only take 30 seconds using the cansim library Janitor::clean\_names(CPI) simply means from the library janitor bring in the function clean\_names and apply it to our data set. this will make the names all lower case and replaces spaces with dashes which makes it easier to work with.
 
 ```{r exploring CPI}
 group_by(CPI,geography) %>%
 head()
 ```
+
 ```{r}
 products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
 CPI %>% 
@@ -31,8 +46,6 @@ CPI %>%
 
   head(n=12)
 ```
-
-
 
 ```{r Graphing CPI, echo=FALSE, message=FALSE, warning=FALSE}
 asd %>%
@@ -49,7 +62,6 @@ asd %>%
  ggthemes::theme_igray() +
  facet_wrap(vars(geography))
 ```
-
 
 ```{r FinalCPI}
 products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
@@ -68,12 +80,12 @@ CPI %>%
 
 ```
 
+### how to handle big tables
 
-### how to handle big tables  
-
-We may need to collect 60 or more periods of data which is fairly large and incredibly slow on net A Api, I tried it and it took over one hour. luckily there is a solution of using the vector_Ids.
+We may need to collect 60 or more periods of data which is fairly large and incredibly slow on net A Api, I tried it and it took over one hour. luckily there is a solution of using the vector\_Ids.
 
 ## Automating Seph tables
+
 ```{r Table 14-10-0203-01 SEPH average weekly earnings by all industry all prov and canada}
 
 tablenumber = 14100203
@@ -82,8 +94,7 @@ seph = NDMGetCubeData(credentials, productid = tablenumber, count = 1, version =
 seph = janitor::clean_names(seph)
 ```
 
-as we can see above even one table is massive. only downloading it for one period took more than 15 minutes. we need to simply filter it down to the series that we want
-in our supplementary file we only need the overtime included files; this should reduce the data we download by 1/2 and our type of employee should be all employees and that should reduce the vectors by 2/3rds. so over all by using vector ids we can reduce the required data by 5/6ths 
+as we can see above even one table is massive. only downloading it for one period took more than 15 minutes. we need to simply filter it down to the series that we want in our supplementary file we only need the overtime included files; this should reduce the data we download by 1/2 and our type of employee should be all employees and that should reduce the vectors by 2/3rds. so over all by using vector ids we can reduce the required data by 5/6ths
 
 ```{r}
 seph %>% 
@@ -93,9 +104,6 @@ seph %>%
   
 ```
 
-
-
-
 ```{r}
 seph %>%
   select(refper,geography,type_of_employees,overtime,north_american_industry_classification_system_naics,vector_id,value) %>% 
@@ -103,7 +111,6 @@ seph %>%
   group_by(geography) %>% 
   distinct() 
 ```
-
 
 ```{r}
 seph %>%
@@ -116,7 +123,8 @@ seph %>%
 
   
 ```
-so now we need to download these vectors for the past 60 months 
+
+so now we need to download these vectors for the past 60 months
 
 ```{r}
 table_number = 14100201
@@ -137,8 +145,6 @@ seph_clean <- merge(coordinates, , by="vectorId") %>%
   
 ```
 
-
-
 ```{r}
 library(tsibble)
 data_tsbl <- as_tsibble(Seph_data ,key = c(`North American Industry Classification System (NAICS)`,Geography))
@@ -150,4 +156,3 @@ data_tsbl %>%
   )%>%
   view()
 ```
-
