@@ -10,6 +10,9 @@ editor_options:
 ## Introduction
 
 ```{r}
+test
+DT::datatable(iris
+              )
 
 ```
 
