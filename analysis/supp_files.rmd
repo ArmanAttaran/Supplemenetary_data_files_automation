@@ -16,12 +16,18 @@ tidyverse for manipulating and graphing the data
 janitor for cleaning the names of columns to make them programming language friendly
 ggthemes for making the graphs look pretty
 tsibble for handling time series and turning monthly/quarterly data into yearly
+here package is used for managing directories and to make sure files are saved in the output
 
 
 ```{r}
-library(tsibble,ggthemes,tidyverse,cansim,janitor)
+library(tsibble,ggthemes,tidyverse,cansim,janitor,here)
+
+provinces <-c("Alberta", "British Columbia", "Canada", "Manitoba", 
+"New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", 
+"Quebec")
 
 ```
+
 
 
 

@@ -9,6 +9,8 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  - text: Supplemenetary_data_files_automation
+    href: Supplemenetary_data_files_automation.html
   right:
   - icon: fa-github
     text: Source code
