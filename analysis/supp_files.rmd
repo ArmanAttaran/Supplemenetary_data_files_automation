@@ -1,7 +1,7 @@
 ---
-title: "supp_files"
-author: "ArmanAttaran"
-date: "2020-11-19"
+title: "suppfiles"
+author: "Arman"
+date: "2020-11-17"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
@@ -9,10 +9,17 @@ editor_options:
 
 ## Introduction
 
+this project started as a way to replicate and automate supplementary data files created by the section. this example expands this by providing clean, computer friendly versions of each table as well as the excel replica
+
+cleaned r data is saved in the directory `output/rds_tables`
+
+cleaned csv files is saved in the directory `output/csv_tables`
+
+## Data
+
+dd
+
 ```{r}
-test
-DT::datatable(iris
-              )
+cansim::get_cansim()
 
 ```
-
