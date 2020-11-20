@@ -87,3 +87,13 @@ this project uses `workflowr`, `git`and `rmarkdown` to ensure reproducibility; d
 ## 
 
 Describe your project. hell oworld
+
+Notes on R
+
+# \#\# R libraries 
+
+R libraries are similar to SAS procs for example proc SQL roughly translates to the library dplyr in R
+
+before we start working in R we need to install necessary R libraries and call them and set our working directory.
+
+package installation is commented out since we do only need to install the libraries once
