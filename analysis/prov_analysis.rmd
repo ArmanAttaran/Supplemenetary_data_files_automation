@@ -40,10 +40,6 @@ params:
     value: Services
     input: select
     choices: [Services, Manufacturing, Government, Telecom]
-  
-  
-  
-    
 
   
 ---
