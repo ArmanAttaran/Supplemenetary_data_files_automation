@@ -9,10 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
-  - text: Supplemenetary_data_files_automation
-    href: Supplemenetary_data_files_automation.html
+  - text: supp_files
+    href: supp_files.html
   - text: prov_analysis
-  - href: prov_analysis.rmd
+  - href: prov_analysis.html
   right:
   - icon: fa-github
     text: Source code
