@@ -9,13 +9,14 @@ editor_options:
   chunk_output_type: console
 params: 
  from_this_year: 2015
+ Developer_mode: TRUE
 ---
 
 # set up
 
 cansim for downloading the data from public statcan api tidyverse for manipulating and graphing the data janitor for cleaning the names of columns to make them programming language friendly ggthemes for making the graphs look pretty tsibble for handling time series and turning monthly/quarterly data into yearly here package is used for managing directories and to make sure files are saved in the output
 
-```{r echo=TRUE}
+```{r include=params$Developer_mode}
 library(here)
 library(tsibble)
 library(cansim)
@@ -30,7 +31,7 @@ provinces <-c("Alberta", "British Columbia", "Canada", "Manitoba",
 ## CPI
 ### CPI loading and set up
 
-```{r loading CPI}
+```{r loading CPI, include=params$Developer_mode}
 
 tablenumber = 18100005
 CPI = cansim::get_cansim(tablenumber)
@@ -40,134 +41,65 @@ products_required <- c("All-items","Food","Shelter","Household operations, furni
 ### CPI Data
 
 #### CPI Rds object
-```{r CPI RDS object}
-products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
+```{r CPI RDS object,include=params$Developer_mode }
 CPI %>% 
   select(ref_date,geo,products_and_product_groups,value,vector) %>% 
   filter(products_and_product_groups %in% c(products_required)) %>% 
   arrange(products_and_product_groups,geo,ref_date) %>% 
   group_by(products_and_product_groups,geo) %>%
   mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
-  mutate(first_dif =(value-lag(value,order_by = ref_date))) ->
-  CPItemp
-
-CPItemp %>%saveRDS(file = here("output","RDSobjects","CPI.rds")) 
-CPItemp %>%
-  filter(ref_date > params$from_this_year) %>%
-  pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
-  arrange(geo) %>% 
-  data.table::fwrite(here("output","CPI.csv")) %>%
-  DT::datatable()
+  mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
+  saveRDS(file = here("output","RDSobjects","CPI.rds")) 
 
 ```
 #### CPI CSV 
+ 
+ 
+```{r CSV_FILE, echo=FALSE}
 
-```{r Graphing CPI, echo=FALSE, message=FALSE, warning=FALSE}
-asd %>%
- filter(geo %in% c("Alberta", "British Columbia", "Canada", "Manitoba", 
-"New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", 
-"Quebec")) %>%
- filter(!(products_and_product_groups %in% c("Alcoholic beverages, tobacco products and recreational cannabis", 
-"Clothing and footwear", "Health and personal care", "Household operations, furnishings and equipment", 
-"Recreation, education and reading"))) %>%
- ggplot() +
- aes(x = ref_date, y = value, colour = products_and_product_groups) +
- geom_line(size = 0.74) +
- scale_color_hue() +
- ggthemes::theme_igray() +
- facet_wrap(vars(geo))
-```
-
-```{r FinalCPI}
-products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
 CPI %>% 
-  select(ref_date,geo,products_and_product_groups,value,vector_id) %>% 
-  filter(products_and_product_groups %in% c(products_required)) %>%
-  arrange(products_and_product_groups,geo,ref_date) %>%
-  group_by(products_and_product_groups,geo) %>%
+  select(ref_date,geo,products_and_product_groups,value,vector) %>% 
+  filter(products_and_product_groups %in% c(products_required)) %>% 
+  arrange(products_and_product_groups,geo,ref_date) %>% 
+  group_by(products_and_product_groups,geo) %>% 
   mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
   mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
-  pivot_wider(names_from = ref_date, values_from = c(value,pct_change,first_dif)) %>% 
-  arrange(geo) %>% 
-  head(n=12) 
-  #write_excel_csv(path ="Output///Table 18-10-0005-01 CPI by province product groups.csv")
-
-
-```
-
-### how to handle big tables
-
-We may need to collect 60 or more periods of data which is fairly large and incredibly slow on net A Api, I tried it and it took over one hour. luckily there is a solution of using the vector\_Ids.
-
-## Automating Seph tables
-
-```{r Table 14-10-0203-01 SEPH average weekly earnings by all industry all prov and canada}
-
-tablenumber = 14100203
-
-seph = NDMGetCubeData(credentials, productid = tablenumber, count = 1, version = 0, French = FALSE)
-seph = janitor::clean_names(seph)
-```
-
-as we can see above even one table is massive. only downloading it for one period took more than 15 minutes. we need to simply filter it down to the series that we want in our supplementary file we only need the overtime included files; this should reduce the data we download by 1/2 and our type of employee should be all employees and that should reduce the vectors by 2/3rds. so over all by using vector ids we can reduce the required data by 5/6ths
-
-```{r}
-seph %>% 
-  group_by(geo) %>% 
-  distinct()
-    
+  filter(ref_date > params$from_this_year) %>%
+  pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
+  arrange(geo) %>%
+  data.table::fwrite(here("output","CPI_DEV.csv")) 
   
+
 ```
-
-```{r}
-seph %>%
-  select(ref_date,geo,type_of_employees,overtime,north_american_industry_classification_system_naics,vector_id,value) %>% 
-  filter(type_of_employees == "All employees" , overtime == "Including overtime") %>%
-  group_by(geo) %>% 
-  distinct() 
-```
-
-```{r}
-seph %>%
-  select(ref_date,geo,type_of_employees,overtime,north_american_industry_classification_system_naics,vector_id,value) %>% 
-  filter(type_of_employees == "All employees" , overtime == "Including overtime") %>%
-  pull(vector_id) %>% 
-  glimpse() %>% 
-  write_lines(path ="inputs///INPUTS_FOR_Table 14-10-0203-01 SEPH average weekly earnings by all industry all prov and canada.csv") %>%
-  {. ->> vectors}
-
   
+
+```{r echo=FALSE}
+
+  CPI %>% 
+  select(ref_date,geo,products_and_product_groups,value,vector) %>% 
+  filter(products_and_product_groups %in% c(products_required)) %>%
+  filter(geo %in% c(provinces)) %>%
+  arrange(products_and_product_groups,geo,ref_date) %>% 
+  group_by(products_and_product_groups,geo) %>% 
+  mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
+  mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
+  filter(ref_date > params$from_this_year) %>%
+  pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
+  arrange(geo) %>%
+  DT::datatable(  CPI %>% 
+  select(ref_date,geo,products_and_product_groups,value,vector) %>% 
+  filter(products_and_product_groups %in% c(products_required)) %>% 
+  arrange(products_and_product_groups,geo,ref_date) %>% 
+  group_by(products_and_product_groups,geo) %>% 
+  mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
+  mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
+  filter(ref_date > params$from_this_year) %>%
+  pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
+  arrange(geo) %>%
+  DT::datatable(filter = 'top'))
 ```
 
-so now we need to download these vectors for the past 60 months
 
-```{r}
-table_number = 14100201
-dimensions <- NDMGetDimensions(credentials, productid = table_number)
-coordinates <- NDMGetCubeVectorCoordInfo(credentials, productid = table_number)
-vector_data <- NDMGetBulkVectorData(credentials, vectorids = vectors, count = 6)
-seph_clean <- merge(coordinates, , by="vectorId") %>%
-  #mutate(value = value/(10**num_decimals)) %>%
-  select(cube_id.x, ref_date, Title_EN, UOMLabel_EN, coordinateId, vectorId, 
-         value, reldate) %>%
-  rename(cube_id = cube_id.x) %>%
-  separate(Title_EN, into = as.character(dimensions$en), sep = ";") %>%
-  mutate(ref_date = ymd(ref_date)) %>%
-  group_by(month = floor_date(ref_date,"monthly"),geo) %>%
-  summarize(amount=mean(value)) %>%
-  view
-  
-  
-```
+#### CPI graph
 
-```{r}
-library(tsibble)
-data_tsbl <- as_tsibble(Seph_data ,key = c(`North American Industry Classification System (NAICS)`,geo))
-data_tsbl %>%
-  group_by_key() %>%
-  index_by(year_month = ~ year(.)) %>%
-  summarise(
-    avg_value = mean(value,na.rm = TRUE)
-  )%>%
-  view()
-```
+
