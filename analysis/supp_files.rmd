@@ -4,7 +4,11 @@ author: "Arman"
 date: "2020-11-17"
 output:
   workflowr::wflow_html:
-    toc: TRUE
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
 editor_options:
   chunk_output_type: console
 params: 

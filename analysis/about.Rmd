@@ -2,12 +2,17 @@
 title: "About"
 output:
   workflowr::wflow_html:
-    toc: TRUE
+    toc: true
+    toc_float:
+      collapsed: false
+    number_sections: true
+    smooth_scroll: false
+      
 editor_options:
   chunk_output_type: console
-
 ---
-``
+
+\`\`
 
 # introduction
 
@@ -98,4 +103,6 @@ R libraries are similar to SAS procs for example proc SQL roughly translates to 
 
 before we start working in R we need to install necessary R libraries and call them and set our working directory.
 
-package installation is commented out since we do only need to install the libraries once
+package installation is commented out since we do only need to install the libraries once\
+
+#  {.tabset}
