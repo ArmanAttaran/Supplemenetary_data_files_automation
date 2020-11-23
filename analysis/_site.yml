@@ -11,6 +11,8 @@ navbar:
     href: license.html
   - text: Supplemenetary_data_files_automation
     href: Supplemenetary_data_files_automation.html
+  - text: prov_analysis
+  - href: prov_analysis.rmd
   right:
   - icon: fa-github
     text: Source code

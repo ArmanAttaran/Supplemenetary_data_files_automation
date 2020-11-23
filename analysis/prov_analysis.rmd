@@ -1,0 +1,58 @@
+---
+title: "prov_analysis"
+author: "Arman Attaran"
+date: "2020-11-23"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+params:
+  printcode:
+    label: "Display Code:"
+    value: TRUE
+  year:
+    label: "Year"
+    value: 2017
+    input: slider
+    min: 2010
+    max: 2018
+    step: 1
+    sep: ""
+  province:
+    label: "Province:"
+    value: Ontario
+    input: select
+    choices: [Ontario, Quebec, Manitoba, Alberta]
+  
+  province2:
+    label: "Province comparison:"
+    value: Ontario
+    input: select
+    choices: [Ontario, Quebec, Manitoba, Alberta]
+  
+  
+  naics_group:
+    label: "Naics group by major indicator groups"
+    value: Services
+    input: select
+    choices: [Services, Manufacturing, Government, Telecom]
+  naics_group2:
+    label: "Naics group by major indicator groups comparison"
+    value: Services
+    input: select
+    choices: [Services, Manufacturing, Government, Telecom]
+  
+  
+  
+    
+
+  
+---
+
+piece of text about ``r params$Province ``     
+
+## GT tables for table analysis 
+
+```{r}
+province <- c("asd","sadasda","asdsdad","asdsdad","adsdad")
+```
+
