@@ -10,7 +10,7 @@ output:
       smooth_scroll: false
       number_sections: true
 editor_options:
-  chunk_output_type: console
+  chunk_output_type: inline
 params: 
  from_this_year: 2015
  Developer_mode: TRUE
@@ -28,23 +28,24 @@ library(janitor)
 library(tidyverse)
 
 provinces <-c("Alberta", "British Columbia", "Canada", "Manitoba", 
-"New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island","Quebec")
+"New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island","Quebec","Saskatchewan", "Northwest Territories", "Nunavut", "Yukon","Yellowknife, Northwest Territories","Whitehorse, Yukon","Iqaluit, Nunavut")
 
 ```
 
-## CPI
-### CPI loading and set up
+# CPI
+In this section i will be creating the 2 files derieved from the /
+##CPI loading and set up
 
 ```{r loading CPI, include=params$Developer_mode}
-
+"//data/inputs/  "
 tablenumber = 18100005
 CPI = cansim::get_cansim(tablenumber)
 CPI = janitor::clean_names(CPI)
 products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
 ```
-### CPI Data
+## CPI Data
 
-#### CPI Rds object
+### CPI Rds object
 ```{r CPI RDS object,include=params$Developer_mode }
 CPI %>% 
   select(ref_date,geo,products_and_product_groups,value,vector) %>% 
@@ -63,15 +64,15 @@ CPI %>%
 
 CPI %>% 
   select(ref_date,geo,products_and_product_groups,value,vector) %>% 
-  filter(products_and_product_groups %in% c(products_required)) %>% 
+  filter(products_and_product_groups %in% c(products_required)) %>%
+  filter(geo %in% c(provinces)) %>%
   arrange(products_and_product_groups,geo,ref_date) %>% 
   group_by(products_and_product_groups,geo) %>% 
   mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
   mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
   filter(ref_date > params$from_this_year) %>%
   pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
-  arrange(geo) %>%
-  data.table::fwrite(here("output","CPI_DEV.csv")) 
+  arrange(geo) %>%  data.table::fwrite(here("output","Table 18-10-0005-01 CPI by province product groups 2012 - 2018")) 
   
 
 ```
