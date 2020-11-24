@@ -21,11 +21,8 @@ params:
 cansim for downloading the data from public statcan api tidyverse for manipulating and graphing the data janitor for cleaning the names of columns to make them programming language friendly ggthemes for making the graphs look pretty tsibble for handling time series and turning monthly/quarterly data into yearly here package is used for managing directories and to make sure files are saved in the output
 
 ```{r include=params$Developer_mode}
-library(here)
-library(tsibble)
-library(cansim)
-library(janitor)
-library(tidyverse)
+
+xfun::pkg_attach2(c('here','tsibble','cansim','janitor',"tidyverse"))
 
 provinces <-c("Alberta", "British Columbia", "Canada", "Manitoba", 
 "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island","Quebec","Saskatchewan", "Northwest Territories", "Nunavut", "Yukon","Yellowknife, Northwest Territories","Whitehorse, Yukon","Iqaluit, Nunavut")
@@ -33,17 +30,20 @@ provinces <-c("Alberta", "British Columbia", "Canada", "Manitoba",
 ```
 
 # CPI
-In this section i will be creating the 2 files derieved from the /
+In this section i will be creating the 2 files derieved from the 
+
 ##CPI loading and set up
 
+just loading the file; here I define the table number and download it from CANSIM 
+
 ```{r loading CPI, include=params$Developer_mode}
-"//data/inputs/  "
 tablenumber = 18100005
 CPI = cansim::get_cansim(tablenumber)
 CPI = janitor::clean_names(CPI)
 products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
 ```
 ## CPI Data
+here we go about prepping and save an RDS and a csv that has been made human readable; do note the RDS file should be used by other software 
 
 ### CPI Rds object
 ```{r CPI RDS object,include=params$Developer_mode }
@@ -57,7 +57,7 @@ CPI %>%
   saveRDS(file = here("output","RDSobjects","CPI.rds")) 
 
 ```
-#### CPI CSV 
+### CPI CSV 
  
  
 ```{r CSV_FILE, echo=FALSE}
@@ -72,9 +72,7 @@ CPI %>%
   mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
   filter(ref_date > params$from_this_year) %>%
   pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
-  arrange(geo) %>%  data.table::fwrite(here("output","Table 18-10-0005-01 CPI by province product groups 2012 - 2018")) 
-  
-
+  arrange(geo) %>%  data.table::fwrite(here("output", str_glue("Table_18-10-0005-01_CPI_by_province_product_groups_updated_at_{Sys.Date()}")))
 ```
   
 
