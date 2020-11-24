@@ -13,6 +13,7 @@ editor_options:
   chunk_output_type: inline
 params: 
  from_this_year: 2015
+ to_this_year: 2020 
  Developer_mode: TRUE
 ---
 
@@ -47,6 +48,7 @@ here we go about prepping and save an RDS and a csv that has been made human rea
 
 ### CPI Rds object
 ```{r CPI RDS object,include=params$Developer_mode }
+#
 CPI %>% 
   select(ref_date,geo,products_and_product_groups,value,vector) %>% 
   filter(products_and_product_groups %in% c(products_required)) %>% 
@@ -57,7 +59,7 @@ CPI %>%
   saveRDS(file = here("output","RDSobjects","CPI.rds")) 
 
 ```
-### CPI CSV 
+### CPI CSV z
  
  
 ```{r CSV_FILE, echo=FALSE}
@@ -72,7 +74,9 @@ CPI %>%
   mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
   filter(ref_date > params$from_this_year) %>%
   pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
-  arrange(geo) %>%  data.table::fwrite(here("output", str_glue("Table_18-10-0005-01_CPI_by_province_product_groups_updated_at_{Sys.Date()}")))
+  arrange(geo) %>%  data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
+
+
 ```
   
 
@@ -102,7 +106,6 @@ CPI %>%
   DT::datatable(filter = 'top'))
 ```
 
-
-#### CPI graph
+#Seph
 
 
