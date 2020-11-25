@@ -108,4 +108,14 @@ CPI %>%
 
 #Seph
 
+```{r}
+data_tsbl <- as_tsibble(Seph_data ,key = c(`North American Industry Classification System (NAICS)`,Geography))
+data_tsbl %>%
+  group_by_key() %>%
+  index_by(year_month = ~ year(.)) %>%
+  summarise(
+    avg_value = mean(value,na.rm = TRUE)
+  )%>%
+  view()
+```
 
