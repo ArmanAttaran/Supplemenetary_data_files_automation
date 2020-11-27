@@ -9,6 +9,16 @@ editor_options:
 
 ## Introduction
 
+European union paper on using hierarchical bayesian vector autoregression to nowcast gdp 
+
+```{r}
+library(tidyverse)
+fred <- BVAR::fred_md
+as_tibble(fred)
+
+```
+
+
 ```{r}
 
 ```

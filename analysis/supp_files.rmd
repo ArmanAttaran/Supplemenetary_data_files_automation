@@ -12,7 +12,7 @@ output:
 editor_options:
   chunk_output_type: inline
 params: 
- from_this_year: 2015
+ from_this_year: 2010
  to_this_year: 2020 
  Developer_mode: TRUE
 ---
@@ -27,6 +27,33 @@ xfun::pkg_attach2(c('here','tsibble','cansim','janitor',"tidyverse"))
 
 provinces <-c("Alberta", "British Columbia", "Canada", "Manitoba", 
 "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island","Quebec","Saskatchewan", "Northwest Territories", "Nunavut", "Yukon","Yellowknife, Northwest Territories","Whitehorse, Yukon","Iqaluit, Nunavut")
+
+twodigitnaics <- c("Accommodation and food services",
+  "Administrative and support, waste management and remediation services",
+  "Arts, entertainment and recreation",
+  "Construction",
+  "Educational services",
+  "Finance and insurance",
+  "Forestry, logging and support",
+  "Goods producing industries",
+  "Health care and social assistance",
+  "Industrial aggregate excluding unclassified businesses",
+  "Industrial aggregate including unclassified businesses",
+  "Information and cultural industries",
+  "Management of companies and enterprises",
+  "Manufacturing",
+  "Mining, quarrying, and oil and gas extraction",
+  "Other services (except public administration)",
+  "Professional, scientific and technical services",
+  "Public administration",
+  "Real estate and rental and leasing",
+  "Service producing industries",
+  "Trade",
+  "Transportation and warehousing",
+  "Unclassified businesses",
+  "Utilities")
+
+
 
 ```
 
@@ -106,7 +133,32 @@ CPI %>%
   DT::datatable(filter = 'top'))
 ```
 
-#Seph
+```{r}
+
+```
+
+
+#Seph Annual (by NAICS)
+
+```{r}
+tablenumber = "1410020201"
+SEPH = cansim::get_cansim(tablenumber)
+SEPH = janitor::clean_names(SEPH)
+SEPH %>%
+  select(ref_date,geo,type_of_employee,north_american_industry_classification_system_naics,value,vector)%>% 
+  filter(type_of_employee == "All employees") %>%
+  arrange(north_american_industry_classification_system_naics,geo,ref_date) %>% 
+  group_by(north_american_industry_classification_system_naics,geo) %>%
+
+  mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
+  mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
+  filter(ref_date > params$from_this_year) %>% 
+  saveRDS(file = here("output","RDSobjects","SEPH.rds")) 
+
+  stringr::str_glue("Table_{tablenumber}_SEPH_by_all_NAICS_{params$from_this_year}-{params$to_this_year}")
+
+```
+
 
 ```{r}
 data_tsbl <- as_tsibble(Seph_data ,key = c(`North American Industry Classification System (NAICS)`,Geography))

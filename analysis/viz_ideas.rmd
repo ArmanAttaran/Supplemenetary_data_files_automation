@@ -62,7 +62,7 @@ bscols(filter, select)
 
 second example has even more filtering options
 
- 
+
 
 ```{r}
 library(crosstalk)
