@@ -1,0 +1,61 @@
+---
+title: "SUT_presentation_RY2018"
+author: "ArmanAttaran"
+date: "2020-11-30"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+this is a short script for creating the graphs used in this presentation.
+
+macro indicators for this are LFS,population, trade,price
+
+## improvements
+
+make sure to update the data to use supplies after it is completed to speed up the process and make it easier to maintain. all data products should be derived from supplies files. more specifically the master copy that has been left joined by NAICS
+
+# Ideas for the presentations to SUT,
+
+I am thinking two types; one to graph naics and map other variables to it to compare them across.
+
+the other graph is by province.
+
+### aggregated data by NAICS
+
+-   wages [14-10-0064-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410006401 "Table 14-10-0064-01").
+
+-   Employment, by industry [14-10-0023-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410002301 "Table 14-10-0023-01").
+
+    -   **trade data by napc Source:** Statistics Canada, table [12-10-0121-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1210012101 "Table 12-10-0121-01").
+
+```{r}
+PGDPtablenumber =  "36-10-0402"
+LFStablenumber = "14-10-0023-01"
+
+PGDP <- cansim::get_cansim_ndm(PGDPtablenumber)
+LFS <- cansim::get_cansim_ndm(LFStablenumber)
+# naics level left joined tables for analysis, for comparing naics level analysis 
+joinedata <- dplyr::left_join(PGDP,LFS)
+
+```
+
+### aggregated data by province
+
+here I will aggregate data at provincial level possible idea:
+
+-   contribution to total economy
+
+-   population [17-10-0009-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000901 "Table 17-10-0009-01").
+
+-   immigration [17-10-0008-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000801 "Table 17-10-0008-01").
+
+-   labor force Statistics Canada, table [14-10-0327-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410032701 "Table 14-10-0327-01").
+
+-   Farms, by operation type [32-10-0403-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3210040301 "Table 32-10-0403-01").
+
+-   Aquaculture in Canada [32-10-0107-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3210010701 "Table 32-10-0107-01").
+
+-   Manufacturing industries [16-10-0117-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1610011701 "Table 16-10-0117-01").
