@@ -1,0 +1,29 @@
+---
+title: "technical_R_tips"
+author: "ArmanAttaran"
+date: "2020-12-01"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+
+## Tidyeval/functions in tidyverse
+
+example below is from a [blog](https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/) it is useful for creating functions for automating things in IAD
+
+```{r}
+
+library(tidyverse)
+
+mean_by <- function(data, by, var) {
+  data %>%
+    group_by({{ by }}) %>%
+    summarise(avg = mean({{ var }}, na.rm = TRUE))
+}
+
+
+iris %>% mean_by(Species, Sepal.Width)
+
+
+
+```
