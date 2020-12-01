@@ -8,5 +8,5 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to supplementary data website
+Welcome to supplementary data website, in this repository there are lots of rmarkdown files each showcasing some of the work I do
   

@@ -23,12 +23,15 @@ cansim for downloading the data from public statcan api tidyverse for manipulati
 
 ```{r include=params$Developer_mode}
 
-xfun::pkg_attach2(c('here','tsibble','cansim','janitor',"tidyverse"))
+xfun::pkg_attach2(c("here", "tsibble", "cansim", "janitor", "tidyverse"))
 
-provinces <-c("Alberta", "British Columbia", "Canada", "Manitoba", 
-"New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island","Quebec","Saskatchewan", "Northwest Territories", "Nunavut", "Yukon","Yellowknife, Northwest Territories","Whitehorse, Yukon","Iqaluit, Nunavut")
+provinces <- c(
+  "Alberta", "British Columbia", "Canada", "Manitoba",
+  "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Northwest Territories", "Nunavut", "Yukon", "Yellowknife, Northwest Territories", "Whitehorse, Yukon", "Iqaluit, Nunavut"
+)
 
-twodigitnaics <- c("Accommodation and food services",
+twodigitnaics <- c(
+  "Accommodation and food services",
   "Administrative and support, waste management and remediation services",
   "Arts, entertainment and recreation",
   "Construction",
@@ -51,9 +54,8 @@ twodigitnaics <- c("Accommodation and food services",
   "Trade",
   "Transportation and warehousing",
   "Unclassified businesses",
-  "Utilities")
-
-
+  "Utilities"
+)
 
 ```
 
@@ -65,10 +67,10 @@ In this section i will be creating the 2 files derieved from the
 just loading the file; here I define the table number and download it from CANSIM 
 
 ```{r loading CPI, include=params$Developer_mode}
-tablenumber = 18100005
-CPI = cansim::get_cansim(tablenumber)
-CPI = janitor::clean_names(CPI)
-products_required <- c("All-items","Food","Shelter","Household operations, furnishings and equipment", "Clothing and footwear","Transportation","Health and personal care","Recreation, education and reading","Alcoholic beverages, tobacco products and recreational cannabis","Goods","Services")
+tablenumber <- 18100005
+CPI <- cansim::get_cansim(tablenumber)
+CPI <- janitor::clean_names(CPI)
+products_required <- c("All-items", "Food", "Shelter", "Household operations, furnishings and equipment", "Clothing and footwear", "Transportation", "Health and personal care", "Recreation, education and reading", "Alcoholic beverages, tobacco products and recreational cannabis", "Goods", "Services")
 ```
 ## CPI Data
 here we go about prepping and save an RDS and a csv that has been made human readable; do note the RDS file should be used by other software 
@@ -76,14 +78,14 @@ here we go about prepping and save an RDS and a csv that has been made human rea
 ### CPI Rds object
 ```{r CPI RDS object,include=params$Developer_mode }
 #
-CPI %>% 
-  select(ref_date,geo,products_and_product_groups,value,vector) %>% 
-  filter(products_and_product_groups %in% c(products_required)) %>% 
-  arrange(products_and_product_groups,geo,ref_date) %>% 
-  group_by(products_and_product_groups,geo) %>%
-  mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
-  mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
-  saveRDS(file = here("output","RDSobjects","CPI.rds")) 
+CPI %>%
+  select(ref_date, geo, products_and_product_groups, value, vector) %>%
+  filter(products_and_product_groups %in% c(products_required)) %>%
+  arrange(products_and_product_groups, geo, ref_date) %>%
+  group_by(products_and_product_groups, geo) %>%
+  mutate(pct_change = ((value / lag(value, order_by = ref_date)) * 100) - 100) %>%
+  mutate(first_dif = (value - lag(value, order_by = ref_date))) %>%
+  saveRDS(file = here("output", "RDSobjects", "CPI.rds"))
 
 ```
 ### CPI CSV z
@@ -91,17 +93,18 @@ CPI %>%
  
 ```{r CSV_FILE, echo=FALSE}
 
-CPI %>% 
-  select(ref_date,geo,products_and_product_groups,value,vector) %>% 
+CPI %>%
+  select(ref_date, geo, products_and_product_groups, value, vector) %>%
   filter(products_and_product_groups %in% c(products_required)) %>%
   filter(geo %in% c(provinces)) %>%
-  arrange(products_and_product_groups,geo,ref_date) %>% 
-  group_by(products_and_product_groups,geo) %>% 
-  mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
-  mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
+  arrange(products_and_product_groups, geo, ref_date) %>%
+  group_by(products_and_product_groups, geo) %>%
+  mutate(pct_change = ((value / lag(value, order_by = ref_date)) * 100) - 100) %>%
+  mutate(first_dif = (value - lag(value, order_by = ref_date))) %>%
   filter(ref_date > params$from_this_year) %>%
-  pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
-  arrange(geo) %>%  data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
+  pivot_wider(names_from = ref_date, values_from = c(value, pct_change, first_dif)) %>%
+  arrange(geo) %>%
+  data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
 
 
 ```
@@ -109,28 +112,28 @@ CPI %>%
 
 ```{r echo=FALSE}
 
-  CPI %>% 
-  select(ref_date,geo,products_and_product_groups,value,vector) %>% 
+CPI %>%
+  select(ref_date, geo, products_and_product_groups, value, vector) %>%
   filter(products_and_product_groups %in% c(products_required)) %>%
   filter(geo %in% c(provinces)) %>%
-  arrange(products_and_product_groups,geo,ref_date) %>% 
-  group_by(products_and_product_groups,geo) %>% 
-  mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
-  mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
+  arrange(products_and_product_groups, geo, ref_date) %>%
+  group_by(products_and_product_groups, geo) %>%
+  mutate(pct_change = ((value / lag(value, order_by = ref_date)) * 100) - 100) %>%
+  mutate(first_dif = (value - lag(value, order_by = ref_date))) %>%
   filter(ref_date > params$from_this_year) %>%
-  pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
+  pivot_wider(names_from = ref_date, values_from = c(value, pct_change, first_dif)) %>%
   arrange(geo) %>%
-  DT::datatable(  CPI %>% 
-  select(ref_date,geo,products_and_product_groups,value,vector) %>% 
-  filter(products_and_product_groups %in% c(products_required)) %>% 
-  arrange(products_and_product_groups,geo,ref_date) %>% 
-  group_by(products_and_product_groups,geo) %>% 
-  mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
-  mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
-  filter(ref_date > params$from_this_year) %>%
-  pivot_wider(names_from = ref_date, values_from =c(value,pct_change,first_dif))%>%
-  arrange(geo) %>%
-  DT::datatable(filter = 'top'))
+  DT::datatable(CPI %>%
+    select(ref_date, geo, products_and_product_groups, value, vector) %>%
+    filter(products_and_product_groups %in% c(products_required)) %>%
+    arrange(products_and_product_groups, geo, ref_date) %>%
+    group_by(products_and_product_groups, geo) %>%
+    mutate(pct_change = ((value / lag(value, order_by = ref_date)) * 100) - 100) %>%
+    mutate(first_dif = (value - lag(value, order_by = ref_date))) %>%
+    filter(ref_date > params$from_this_year) %>%
+    pivot_wider(names_from = ref_date, values_from = c(value, pct_change, first_dif)) %>%
+    arrange(geo) %>%
+    DT::datatable(filter = "top"))
 ```
 
 ```{r}
@@ -138,8 +141,9 @@ CPI %>%
 ```
 
 
-#Seph Annual (by NAICS)
+#Seph 
 
+## SEPH RDS master 
 ```{r}
 tablenumber = "1410020201"
 SEPH = cansim::get_cansim(tablenumber)
@@ -149,7 +153,6 @@ SEPH %>%
   filter(type_of_employee == "All employees") %>%
   arrange(north_american_industry_classification_system_naics,geo,ref_date) %>% 
   group_by(north_american_industry_classification_system_naics,geo) %>%
-
   mutate(pct_change =((value/lag(value,order_by = ref_date))*100)-100) %>% 
   mutate(first_dif =(value-lag(value,order_by = ref_date))) %>%
   filter(ref_date > params$from_this_year) %>% 
@@ -158,6 +161,8 @@ SEPH %>%
   stringr::str_glue("Table_{tablenumber}_SEPH_by_all_NAICS_{params$from_this_year}-{params$to_this_year}")
 
 ```
+
+##Table 14-10-0201-01 SEPH for selected industries by province
 
 
 ```{r}
@@ -169,5 +174,14 @@ data_tsbl %>%
     avg_value = mean(value,na.rm = TRUE)
   )%>%
   view()
+```
+
+#LFS
+
+##  dhoc LFS for presentation (please delete)
+```{r}
+  tablenum <- 14-10-0023-01 
+
+
 ```
 

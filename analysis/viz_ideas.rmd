@@ -11,6 +11,8 @@ editor_options:
 
 these are ideas I have for my own visual analytic template I am not sure how they all fit together But I will store them here as my notes; **please ignore this file**
 
+ggplot2 and plotly will be used throughout; here is the [youtube](https://www.youtube.com/watch?v=h29g21z0a68&t=7867s) video explaining this
+
 # big viz ideas for all data
 
 this little neat idea could be used to build a huge analytic template
@@ -62,7 +64,7 @@ bscols(filter, select)
 
 second example has even more filtering options
 
-
+sales could be CPC, cities = naics ; year option could be removed to show case the last 5 years
 
 ```{r}
 library(crosstalk)
@@ -79,3 +81,15 @@ bscols(
     add_lines(color = ~city, colors = "black")
 )
 ```
+
+## Bar chart!!! for comparing growth
+
+nice graphing idea for [bar charts](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/)
+
+# Table ideas
+
+## GT with Html, good for static reports, does not work with interactive stuff
+
+[here](https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables/)is a blog describing the GT package with HTML
+
+[guidelines](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/) for tables

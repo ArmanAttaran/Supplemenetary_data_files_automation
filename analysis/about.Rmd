@@ -28,6 +28,8 @@ to understand this document browse it as if you would any website; exploring is 
 
 we write software/code to manage complexities; without these tools it would be impossible to do much of all we do; but at the end of the day it is just a tool and picking the right tool for the job is important. when the only tool you have is a hammer everything looks like a nail below I will outline some tools that will help us manage the complexities of working in PGDP; especially remotely.
 
+\\
+
 ### Tool \#1 Rmarkdown
 
 this document you are reading is a rmarkdown; it is magic as far as I am concerned it combines some powerful yet simple ideas but it ultimately allows you to communicate your purpose; documentation , logic , and code, work report, management tool, training document, research paper, data product, visualization tool, presentation material, panflet and hand out generator, report tool and many other uses in one manageable place; seriously just watch [this](https://www.youtube.com/watch?v=qLEkUjxk7e8). it is truly a marvel. more on literate programming [here](https://en.wikipedia.org/wiki/Literate_programming){#literateprogramming .documentation style="color:red"} for more info but the jist is this
@@ -75,6 +77,8 @@ use string matching to only 2 digit naics and manufacturing and bring in MSM dat
 
 [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
 
+[here](https://archive.org/details/adventures-in-advanced-symbolic-programming "Lisp")is a good set of videos on how computer programming should be used to solve problems
+
 ## Tool \#2 git
 
 git allows us to effectively track what we have worked on and go back if we need to; it also helps us keep track of versions and also enables to work collaboratively in a tractable and manageable way. scroll to the and click on the black box workflowr past versions; there you can see track all that I have done to this page.
@@ -106,3 +110,5 @@ before we start working in R we need to install necessary R libraries and call t
 package installation is commented out since we do only need to install the libraries once\
 
 #  {.tabset}
+
+# R learning resources
