@@ -22,7 +22,7 @@ mean_by <- function(data, by, var) {
 }
 
 
-iris %>% mean_by(Species, Sepal.Width)
+iris %>% mean_by(Species, )
 
 
 

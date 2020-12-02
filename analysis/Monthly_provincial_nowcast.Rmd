@@ -9,7 +9,7 @@ editor_options:
 
 ## Introduction
 
-European union paper on using hierarchical bayesian vector autoregression to nowcast gdp 
+$$\sum_{n=1}^{10} n^2$$ [European union paper](https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2453~465cb8b18a.en.pdf)on using hierarchical bayesian vector autoregression to nowcast gdp
 
 ```{r}
 library(tidyverse)
@@ -18,8 +18,36 @@ as_tibble(fred)
 
 ```
 
-
 ```{r}
 
 ```
 
+
+
+$$
+\begin{aligned}
+&\text { Table 1: Data and timing of releases }\\
+&\begin{array}{lccccc}
+\hline \text { Variable } & \text { Frequency } & \text { Publication timing } & \text { Delay (days) } & \text { Transformation } & \text { FRED id } \\
+\text { Economic Policy Uncertainty Index } & \mathrm{m} & 1^{\text {st}} \text {bus. day of the month } & 3 & \text { level } & \text { USEPUINDXM } \\
+\text { Purchasing Managers' Index } & \mathrm{m} & 1^{\text {st}} \text {bus. day of the month } & 3 & \text { level } & \text { NAPM }^{a} \\
+\text { Employment } & \mathrm{m} & 1^{\text {st}} \text {Friday of the month } & 7 & \text { log-level } & \text { PAYEMS } \\
+\text { Unemployment rate } & \mathrm{m} & 1^{\text {st}} \text {Friday of the month } & 7 & \text { level } & \text { UNRATE } \\
+\text { Avg. weekly hours } & \mathrm{m} & 1^{\text {st}} \text {Friday of the month } & 7 & \text { log-level } & \text { AWHNONAG } \\
+\text { Industrial production } & \mathrm{m} & \text { middle of the month } & 17 & \text { log-level } & \text { INDPRO } \\
+\text { CPI inflation } & \mathrm{m} & \text { middle of the month } & 18 & \text { log-level } & \text { CPIAUSL } \\
+\text { Loans } & \mathrm{m} & 3^{r d} \text { week of the month } & 26 & \text { log-level } & \text { BUSLOANS } \\
+\text { Housing starts } & \mathrm{m} & 3^{r d} \text { week of the month } & 27 & \text { log-level } & \text { HOUST } \\
+\text { Real GDP } & \mathrm{q} & \text { last week of the month } & 28 & \text { log-level } & \text { GDPC1 } \\
+\text { Business investment } & \mathrm{q} & \text { last week of the month } & 28 & \text { log-level } & \text { FPI } \\
+\text { GDP deflator } & \mathrm{q} & \text { last week of the month } & 28 & \text { log-level } & \text { GDPDEF } \\
+\text { Compensation per hour } & \mathrm{q} & \text { last week of the month } & 28 & \text { log-level } & \text { COMPNFB } \\
+\text { Private consumption } & \mathrm{m} & \text { last week of the month } & 30 & \text { log-level } & \text { PCE } \\
+\text { PCE price index } & \mathrm{m} & \text { last week of the month } & 30 & \text { log-level } & \text { PCEPI } \\
+\text { Real Disp.Personal Income } & \mathrm{m} & \text { last week of the month } & 30 & \text { log-level } & \text { DSPIC96 } \\
+\text { Fed funds rate } & \mathrm{m} & \text { last week of the month } & 0 & \text { level } & \text { FEDFUNDS } \\
+\text { Credit spread } & \mathrm{m} & \text { last week of the month } & 0 & \text { level } & \text { BAA10YM } \\
+\hline
+\end{array}
+\end{aligned}
+$$

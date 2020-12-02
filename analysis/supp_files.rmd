@@ -22,6 +22,7 @@ params:
 cansim for downloading the data from public statcan api tidyverse for manipulating and graphing the data janitor for cleaning the names of columns to make them programming language friendly ggthemes for making the graphs look pretty tsibble for handling time series and turning monthly/quarterly data into yearly here package is used for managing directories and to make sure files are saved in the output
 
 ```{r include=params$Developer_mode}
+here::here()
 
 xfun::pkg_attach2(c("here", "tsibble", "cansim", "janitor", "tidyverse"))
 
@@ -158,11 +159,13 @@ SEPH %>%
   filter(ref_date > params$from_this_year) %>% 
   saveRDS(file = here("output","RDSobjects","SEPH.rds")) 
 
+
+
   stringr::str_glue("Table_{tablenumber}_SEPH_by_all_NAICS_{params$from_this_year}-{params$to_this_year}")
 
 ```
 
-##Table 14-10-0201-01 SEPH for selected industries by province
+##SEPH for selected industries by province
 
 
 ```{r}
@@ -182,6 +185,9 @@ data_tsbl %>%
 ```{r}
   tablenum <- 14-10-0023-01 
 
-
+library(tidyverse)
+{{faithful$eruptions}}
+all_of(faithful)
+all_of()
 ```
 
