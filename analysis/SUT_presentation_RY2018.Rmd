@@ -4,7 +4,7 @@ author: "ArmanAttaran"
 date: "2020-11-30"
 output: workflowr::wflow_html
 editor_options:
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ## Introduction
@@ -25,21 +25,92 @@ the other graph is by province.
 
 ### aggregated data by NAICS
 
--   wages [14-10-0064-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410006401 "Table 14-10-0064-01").
+-   wages [14-10-0064-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410006401 "Table 14-10-0064-01").\\
+
+-   Average weekly hours for employees paid by the hour, by industry, monthly, unadjusted for seasonality^1^ 14-10-0255
 
 -   Employment, by industry [14-10-0023-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410002301 "Table 14-10-0023-01").
 
     -   **trade data by napc Source:** Statistics Canada, table [12-10-0121-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1210012101 "Table 12-10-0121-01").
 
 ```{r}
+
+twodigitcoords <- c(
+"1.1.1",
+"1.1.2",
+"1.1.3",
+"1.1.4",
+"1.1.5",
+"1.1.6",
+"1.1.7",
+"1.1.8",
+"1.1.9",
+"1.1.10",
+"1.1.11",
+"1.1.12",
+"1.1.13",
+"1.1.14",
+"1.1.15",
+"1.1.16",
+"1.1.17",
+"1.1.18",
+"1.1.19",
+"1.1.20",
+"1.1.21"
+)
+twodigitcoords <- c("1.1.1","1.1.2","1.1.3","1.1.4","1.1.5",)
+twodigitnaics <- c(
+  "Accommodation and food services",
+  "Administrative and support, waste management and remediation services",
+  "Arts, entertainment and recreation",
+  "Construction",
+  "Educational services",
+  "Finance and insurance",
+  "Forestry, logging and support",
+  "Goods producing industries",
+  "Health care and social assistance",
+  "Industrial aggregate excluding unclassified businesses",
+  "Industrial aggregate including unclassified businesses",
+  "Information and cultural industries",
+  "Management of companies and enterprises",
+  "Manufacturing",
+  "Mining, quarrying, and oil and gas extraction",
+  "Other services (except public administration)",
+  "Professional, scientific and technical services",
+  "Public administration",
+  "Real estate and rental and leasing",
+  "Service producing industries",
+  "Trade",
+  "Transportation and warehousing",
+  "Unclassified businesses",
+  "Utilities"
+)
+```
+
+```{r}
+library(tidyverse)
 PGDPtablenumber =  "36-10-0402"
 LFStablenumber = "14-10-0023-01"
-
+LFS2tablenumber = "14-10-0039"
+SEPHtablenumber = " 14-10-0201"
 PGDP <- cansim::get_cansim_ndm(PGDPtablenumber)
+SEPH <- cansim::get_cansim_table_survey(LFStablenumber)
 LFS <- cansim::get_cansim_ndm(LFStablenumber)
-# naics level left joined tables for analysis, for comparing naics level analysis 
-joinedata <- dplyr::left_join(PGDP,LFS)
+LFS2 <- cansim::get_cansim_ndm(LFS2tablenumber)
+LFS <- janitor::clean_names(LFS)
+LFS %>%
+  select(ref_date,labour_force_characteristics,geo,north_american_industry_classification_system_naics,sex,age_group,value) %>%
+  filter(labour_force_characteristics == )
+  ->
+  LFS_clean
 
+library(summarytools)
+view(dfSummary(LFS2))
+# naics level left joined tables for analysis, for comparing naics level analysis 
+#joinedata <- dplyr::left_join(PGDP,LFS)
+
+
+SEPH
 ```
 
 ### aggregated data by province
@@ -59,3 +130,42 @@ here I will aggregate data at provincial level possible idea:
 -   Aquaculture in Canada [32-10-0107-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3210010701 "Table 32-10-0107-01").
 
 -   Manufacturing industries [16-10-0117-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1610011701 "Table 16-10-0117-01").
+
+```{r}
+population_table_number ="17-10-0009-01"
+
+SEPH <- readRDS("~/Statcan/Production_R_Project/Supplemenetary_data_files_automation/output/RDSobjects/SEPH.rds")
+CPI <- readRDS("~/Statcan/Production_R_Project/Supplemenetary_data_files_automation/output/RDSobjects/CPI.rds")
+
+CPI
+```
+
+```{r}
+tablenumber_SEPH <- "14100202"
+SEPH <- cansim::get_cansim(tablenumber_SEPH)
+SEPH <- janitor::clean_names(SEPH)
+SEPH %>%
+  select(ref_date,geo,type_of_employee,north_american_industry_classification_system_naics,value,hierarchy_for_north_american_industry_classification_system_naics,coordinate) %>% 
+  filter(type_of_employee == "All employees") %>%
+  select(!type_of_employee) %>%
+  filter(coordinate %in% c(twodigitcoords) ) -> clean_seph
+  #filter(hierarchy_for_north_american_industry_classification_system_naics %in% c( "1.2.3","1.2","1","1.2.3.4"))
+ 
+
+#PGDP <- cansim::get_cansim_ndm(PGDPtablenumber)
+SEPH %>%
+ggplot() +
+ aes(x = ref_date, y = value, colour = north_american_industry_classification_system_naics) +
+ geom_line(size = 0.74) +
+ scale_color_hue() +
+ ggthemes::theme_igray() +
+ facet_wrap(vars(geo))
+
+```
+
+
+```{r}
+library(datapasta)
+
+```
+
