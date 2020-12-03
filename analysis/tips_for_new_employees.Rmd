@@ -1,0 +1,18 @@
+---
+title: "tips_for_new_employees"
+author: "ArmanAttaran"
+date: "2020-12-02"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## USE THE DAILY
+ignore everything else look up the survey you are interested in and browse the daily for it; especially the tables tab
+
+
+
+```{r}
+
+```
+
