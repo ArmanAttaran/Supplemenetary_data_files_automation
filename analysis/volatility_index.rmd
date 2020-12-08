@@ -1,0 +1,74 @@
+---
+title: "volatility_index"
+author: "Arman Attaran"
+date: "2020-12-07"
+output: workflowr::wflow_html
+editor_options:
+  toc: TRUE
+  chunk_output_type: console
+---
+
+# Executive summarry 
+This is a simple document outlining a proposed method to track volatility of each provinces economy by simply using each 2 digit naics's 
+## problem 
+
+## proposed solution
+
+## results 
+
+
+#intro 
+
+## data cleaning/ prep
+im gonna take CPC add one to it and then square it. then just aggregate it over a province 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = TRUE)
+library(tidyverse)
+two_digit_naics_code <- c("[11]", "[21]", "[22]", "[23]", "[31-33]", "[41]", "[44-45]", "[48-49]", "[51]", "[52]", "[53]", "[54]", "[55]", "[56]", "[61]", "[62]", "[71]", "[72]", "[81]", "[91]")
+```
+
+
+```{r include=FALSE}
+PGDPtablenumber =  "36-10-0402"
+PGDP <- cansim::get_cansim_ndm(PGDPtablenumber)
+PGDP <- janitor::clean_names(PGDP)
+PGDP %>%
+  select(ref_date,geo,north_american_industry_classification_system_naics,value,hierarchy_for_north_american_industry_classification_system_naics,coordinate,classification_code_for_north_american_industry_classification_system_naics,value_2) %>%  
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  rename(CPC = value_2) %>%
+  filter(ref_date > "2005-01-01") %>%
+  filter(value == "Contributions to percent change") %>%
+  select(!value) %>%
+  filter(classification_code_for_north_american_industry_classification_system_naics %in% c(two_digit_naics_code) ) %>%
+  group_by(ref_date,north_american_industry_classification_system_naics,geo) -> clean_PGDP
+  
+
+clean_PGDP %>%
+mutate(absoulteCPCsquared = (abs(CPC)+1)**2) %>%
+  group_by(geo,ref_date) %>%
+  summarise(yearly_average_absoulte_CPC_squared = mean(absoulteCPCsquared), sd = n()) -> yearly_average_absoulte_CPC_squared
+```
+## creating the metric 
+
+## Graphing the free scale version 
+
+```{r echo=FALSE, fig.height=12, fig.width=12}
+ggplot(yearly_average_absoulte_CPC_squared) +
+ aes(x = ref_date, y = yearly_average_absoulte_CPC_squared) +
+ geom_line(size = 1L, colour = "#0c4c8a") +
+ theme_minimal() +
+ facet_wrap(vars(geo), scales = "free")
+
+```
+
+## Graphing the fixed scale version
+
+```{r fig.height=12, fig.width=12}
+ggplot(yearly_average_absoulte_CPC_squared) +
+ aes(x = ref_date, y = yearly_average_absoulte_CPC_squared) +
+ geom_line(size = 1L, colour = "#0c4c8a") +
+ theme_minimal() +
+ facet_wrap(vars(geo))
+
+```
+
