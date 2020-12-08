@@ -5,28 +5,41 @@ date: "2020-12-07"
 output: workflowr::wflow_html
 editor_options:
   toc: TRUE
+  toc_depth: 4
   chunk_output_type: console
 ---
 
-# Executive summarry 
-This is a simple document outlining a proposed method to track volatility of each provinces economy by simply using each 2 digit naics's 
-## problem 
+# Executive summary
+
+This is a simple document outlining a proposed method to track volatility of each provincial economy, see [Results] for the actual graphs.
+
+## problem
+
+I needed a metric to show how stable Manitoba's economy really is for the presentation to SUT.
 
 ## proposed solution
 
-## results 
+-   version \#1
 
+    -   simply create a metric that squares the values of CPC and average it by province , by doing so if a there are large contributions either negative or positive by a 2 digit naics it would be exasperated
 
-#intro 
+-   version \#2
+
+    -   take the absolute value of CPC add one to it and then square it and average it by province.
+
+        -   this is because in version \#1 if a CPC is below 1 (which it usually is) it would decrease the metric after squaring it; I think this is against the spirit of the metric.
+
+        -   I take the absolute value because taking a negative CPC and adding one to it would result in a value below one which makes no sense.
 
 ## data cleaning/ prep
-im gonna take CPC add one to it and then square it. then just aggregate it over a province 
+
+im gonna take CPC add one to it and then square it. then just aggregate it over a province
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(include = TRUE)
 library(tidyverse)
 two_digit_naics_code <- c("[11]", "[21]", "[22]", "[23]", "[31-33]", "[41]", "[44-45]", "[48-49]", "[51]", "[52]", "[53]", "[54]", "[55]", "[56]", "[61]", "[62]", "[71]", "[72]", "[81]", "[91]")
 ```
-
 
 ```{r include=FALSE}
 PGDPtablenumber =  "36-10-0402"
@@ -44,31 +57,93 @@ PGDP %>%
   
 
 clean_PGDP %>%
-mutate(absoulteCPCsquared = (abs(CPC)+1)**2) %>%
+mutate(absoluteCPCsquared = (abs(CPC)+1)**2) %>%
   group_by(geo,ref_date) %>%
-  summarise(yearly_average_absoulte_CPC_squared = mean(absoulteCPCsquared), sd = n()) -> yearly_average_absoulte_CPC_squared
+  summarise(yearly_average_absolute_CPC_squared = mean(absoluteCPCsquared), sd = n()) -> yearly_average_absolute_CPC_squared
 ```
-## creating the metric 
 
-## Graphing the free scale version 
+## creating the metric
+
+```{r echo=TRUE}
+clean_PGDP %>%
+mutate(CPCsquared = (CPC)**2)%>%
+  group_by(geo,ref_date) %>%
+  summarise(yearly_average_CPC_squared = mean(CPCsquared), sd = n()) -> yearly_average_CPC_squared
+```
+
+## Results
+
+### All provinces
+
+#### the free scale version
+
+##### absolute value and squared version
 
 ```{r echo=FALSE, fig.height=12, fig.width=12}
-ggplot(yearly_average_absoulte_CPC_squared) +
- aes(x = ref_date, y = yearly_average_absoulte_CPC_squared) +
+ggplot(yearly_average_absolute_CPC_squared) +
+ aes(x = ref_date, y = yearly_average_absolute_CPC_squared) +
  geom_line(size = 1L, colour = "#0c4c8a") +
  theme_minimal() +
  facet_wrap(vars(geo), scales = "free")
 
 ```
 
-## Graphing the fixed scale version
+##### only squared version 
 
-```{r fig.height=12, fig.width=12}
-ggplot(yearly_average_absoulte_CPC_squared) +
- aes(x = ref_date, y = yearly_average_absoulte_CPC_squared) +
+```{r echo=FALSE, fig.height=12, fig.width=12}
+ggplot(yearly_average_CPC_squared) +
+ aes(x = ref_date, y = yearly_average_CPC_squared) +
+ geom_line(size = 1L, colour = "#0c4c8a") +
+ theme_minimal() +
+ facet_wrap(vars(geo), scales = "free")
+
+```
+
+#### fixed scale version
+
+##### Absolute value and squared version
+
+```{r echo=FALSE, fig.height=12, fig.width=12}
+ggplot(yearly_average_absolute_CPC_squared) +
+ aes(x = ref_date, y = yearly_average_absolute_CPC_squared) +
  geom_line(size = 1L, colour = "#0c4c8a") +
  theme_minimal() +
  facet_wrap(vars(geo))
 
 ```
 
+##### squared version 
+
+```{r fig.height=12, fig.width=12}
+
+ggplot(yearly_average_CPC_squared) +
+ aes(x = ref_date, y = yearly_average_CPC_squared) +
+ geom_line(size = 1L, colour = "#0c4c8a") +
+ theme_minimal() +
+ facet_wrap(vars(geo))
+
+```
+
+### Western Canada 
+
+```{r}
+yearly_average_absolute_CPC_squared %>%
+ filter(geo %in% c("Alberta", "Manitoba", 
+"Saskatchewan")) %>%
+ ggplot() +
+ aes(x = ref_date, y = yearly_average_absolute_CPC_squared) +
+ geom_line(size = 1L, colour = "#0c4c8a") +
+ theme_minimal() +
+ facet_wrap(vars(geo))
+```
+
+```{r}
+yearly_average_CPC_squared %>%
+ filter(geo %in% c("Alberta", "Manitoba", 
+"Saskatchewan")) %>%
+ ggplot() +
+ aes(x = ref_date, y = yearly_average_CPC_squared) +
+ geom_line(size = 1L, colour = "#0c4c8a") +
+ theme_minimal() +
+ facet_wrap(vars(geo))
+```
