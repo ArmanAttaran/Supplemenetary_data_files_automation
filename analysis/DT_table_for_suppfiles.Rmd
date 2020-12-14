@@ -7,9 +7,21 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Introduction
+## here I will build a stock table; wrap it in a function or create a standard way to show tables 
+
 
 ```{r}
+
+library(DT)
+options(DT.options = list(pageLength = 10, language = list(search = 'Filter:')))
+
+CPI2 <- readRDS("~/Statcan/R_projects/Supplemenetary_data_files_automation_v2/output/RDSobjects/CPI2.rds")
+
+  datatable(
+  CPI2,
+  filter = list(position = 'top', clear = FALSE)
+  
+  )
 
 ```
 
