@@ -27,3 +27,10 @@ iris %>% mean_by(Species, )
 
 
 ```
+
+
+## use DT for showing tables
+
+
+## use plotly for showing graphs 
+

@@ -191,3 +191,10 @@ all_of(faithful)
 all_of()
 ```
 
+
+
+
+# Raw materials price index
+
+
+
