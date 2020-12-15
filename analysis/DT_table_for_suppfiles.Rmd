@@ -13,15 +13,31 @@ editor_options:
 ```{r}
 
 library(DT)
-options(DT.options = list(pageLength = 10, language = list(search = 'Filter:')))
 
 CPI2 <- readRDS("~/Statcan/R_projects/Supplemenetary_data_files_automation_v2/output/RDSobjects/CPI2.rds")
 
   datatable(
   CPI2,
-  filter = list(position = 'top', clear = FALSE)
+  extensions = c('ColReorder','Buttons'),
+  options = list((colReorder = TRUE),
+                 dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')))
   
-  )
+```
 
+
+```{r}
+
+library(DT)
+
+CPI2 <- readRDS("~/Statcan/R_projects/Supplemenetary_data_files_automation_v2/output/RDSobjects/CPI2.rds")
+
+  datatable(
+  CPI2,
+  extensions = c('ColReorder','Buttons'), options = list(colReorder = TRUE,
+                                                         dom = 'Bfrtip',
+                                                         buttons = c('copy', 'csv', 'excel', 'pdf', 'print')))
+  
+  
 ```
 
