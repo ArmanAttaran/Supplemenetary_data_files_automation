@@ -41,6 +41,26 @@ two_digit_naics_code <- c("[11]", "[21]", "[22]", "[23]", "[31-33]", "[41]", "[4
 
 ```
 
+
+## functions
+
+```{r}
+interactive_table <- function(data) {
+DT::datatable(
+  {{data}},
+  extensions = c("ColReorder", "Buttons"), options = list(
+    colReorder = TRUE,
+    dom = "Bfrtip",
+    buttons = c("copy", "csv", "excel"),
+    searchHighlight = TRUE
+  ),
+  filter = "top"
+)
+  }
+```
+
+
+
 ```{r}
 library(tidyverse)
 PGDPtablenumber =  "36-10-0402"
@@ -52,19 +72,10 @@ SEPH <- cansim::get_cansim_table_survey(LFStablenumber)
 LFS <- cansim::get_cansim_ndm(LFStablenumber)
 LFS2 <- cansim::get_cansim_ndm(LFS2tablenumber)
 LFS <- janitor::clean_names(LFS)
-LFS %>%
-  select(ref_date,labour_force_characteristics,geo,north_american_industry_classification_system_naics,sex,age_group,value) %>%
-  filter(labour_force_characteristics == )
-  ->
-  LFS_clean
-
-library(summarytools)
-view(dfSummary(LFS2))
 # naics level left joined tables for analysis, for comparing naics level analysis 
 #joinedata <- dplyr::left_join(PGDP,LFS)
 
 
-SEPH
 ```
 
 ### aggregated data by province
@@ -95,7 +106,6 @@ population_table_number ="17-10-0009-01"
 SEPH <- readRDS("~/Statcan/Production_R_Project/Supplemenetary_data_files_automation/output/RDSobjects/SEPH.rds")
 CPI <- readRDS("~/Statcan/Production_R_Project/Supplemenetary_data_files_automation/output/RDSobjects/CPI.rds")
 
-CPI
 ```
 
 ```{r}
@@ -114,7 +124,7 @@ SEPH %>%
     mutate(ref_date = make_date(ref_date)) %>%
    group_by(ref_date,north_american_industry_classification_system_naics,geo)->
  clean_seph
-
+interactive_table(clean_seph)
 PGDP <- cansim::get_cansim_ndm(PGDPtablenumber)
 clean_seph %>%
 ggplot() +
@@ -141,7 +151,9 @@ library(nycflights13)
 
 PGDP %>% 
   select(REF_DATE) %>% 
-  mutate(departure = make_date(REF_DATE))
+  mutate(ref_date = make_date(REF_DATE)) %>%
+  view()
+  
 
 clean_seph %>%
   select(ref_date) %>%
