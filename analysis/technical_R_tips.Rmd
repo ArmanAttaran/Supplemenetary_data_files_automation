@@ -1,5 +1,5 @@
 ---
-title: "technical_R_tips"
+title: "technical_R_tips" 
 author: "ArmanAttaran"
 date: "2020-12-01"
 output: workflowr::wflow_html
@@ -28,9 +28,10 @@ iris %>% mean_by(Species, )
 
 ```
 
-
 ## use DT for showing tables
 
+## use plotly for showing graphs
 
-## use plotly for showing graphs 
+every r scripts needs to follow tidyverse style guide.
 
+use `styler` package to do it.
