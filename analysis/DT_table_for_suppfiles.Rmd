@@ -18,7 +18,7 @@ library(tidyverse)
 CPI2 <- readRDS("~/Statcan/R_projects/Supplemenetary_data_files_automation_v2/output/RDSobjects/CPI2.rds")
 
 datatable(
-  CPI2,
+  iris,
   extensions = c("ColReorder", "Buttons"), options = list(
     colReorder = TRUE,
     dom = "Bfrtip",
@@ -34,19 +34,55 @@ datatable(
  
 ```{r}
 interactive_table <- function(data) {
-DT::datatable(
-  {{data}},
-  extensions = c("ColReorder", "Buttons"), options = list(
-    colReorder = TRUE,
-    dom = "Bfrtip",
-    buttons = c("copy", "csv", "excel"),
-    searchHighlight = TRUE
-  ),
-  filter = "top"
-)
-  }
+  DT::datatable(
+    {{ data }},
+    extensions = c("ColReorder", "Buttons"), options = list(
+      colReorder = TRUE,
+      dom = "Bfrtip",
+      buttons = c("copy", "csv", "excel"),
+      searchHighlight = TRUE
+    ),
+    filter = "top"
+  )
+}
 
 interactive_table(CPI2)
 ```
  
  
+Using searh panes 
+
+
+```{r}
+library(DT)
+datatable(
+  iris,
+  options = list(dom = "Pfrtip", columnDefs = list(list(
+    searchPanes = list(show = FALSE), targets = 0:3
+  ))),
+  extensions = c("Select", "SearchPanes"),
+  selection = "none"
+)
+
+datatable(
+  CPI2,
+  extensions = c("ColReorder", "Buttons", "Select", "SearchPanes"), options = list(
+    colReorder = TRUE,
+    dom = "Pfrtip", dom = "Bfrtip",
+    columnDefs = list(list(
+    searchPanes = list(cascadePanes = TRUE), targets = 1:6
+  )),
+    buttons = c("copy", "csv", "excel"),
+  dom = 'Bfrtip',
+    searchHighlight = TRUE
+  ),
+  filter = "top",
+  selection = "none"
+)
+```
+
+
+```{r}
+DT::d
+```
+
