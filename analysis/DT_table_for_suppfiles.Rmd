@@ -34,19 +34,20 @@ datatable(
  
 ```{r}
 interactive_table <- function(data) {
-  DT::datatable(
-    {{ data }},
-    extensions = c("ColReorder", "Buttons"), options = list(
-      colReorder = TRUE,
-      dom = "Bfrtip",
-      buttons = c("copy", "csv", "excel"),
-      searchHighlight = TRUE
-    ),
-    filter = "top"
-  )
-}
+DT::datatable(
+  {{data}},
+  extensions = c("ColReorder", "Buttons"), options = list(
+    colReorder = TRUE,
+    dom = "Bfrtip",
+    buttons = c("copy", "csv",I("colvis")),
+    searchHighlight = TRUE,
+    search = list(regex = TRUE)
+  ),
+  filter = "top"
+)
+  }
 
-interactive_table(CPI2)
+interactive_table(gapminder::gapminder)
 ```
  
  
@@ -70,10 +71,10 @@ datatable(
     colReorder = TRUE,
     dom = "Pfrtip", dom = "Bfrtip",
     columnDefs = list(list(
-    searchPanes = list(cascadePanes = TRUE), targets = 1:6
-  )),
+      searchPanes = list(cascadePanes = TRUE), targets = 1:6
+    )),
     buttons = c("copy", "csv", "excel"),
-  dom = 'Bfrtip',
+    dom = "Bfrtip",
     searchHighlight = TRUE
   ),
   filter = "top",
@@ -82,7 +83,52 @@ datatable(
 ```
 
 
+
+## using cross talk 
+
 ```{r}
-DT::d
+library(crosstalk)
+library(plotly)
+sd <- SharedData$new(iris)
+interactive_table <- function(data) {
+  DT::datatable(
+    {{ data }},
+    extensions = c("ColReorder", "Buttons"), options = list(
+      colReorder = TRUE,
+      dom = "Bfrtip",
+      buttons = c("copy", "csv", "excel"),
+      searchHighlight = TRUE
+    ),
+    filter = "top"
+  )
+}
+
+interactive_table(sd)
+
+```
+
+
+```{r}
+library(crosstalk)
+library(plotly)
+
+# generally speaking, use a "unique" key for filter, 
+# especially when you have multiple filters!
+tx <- highlight_key(txhousing)
+gg <- ggplot(tx) + geom_line(aes(date, median, group = city))
+filter <- bscols(
+  filter_select("id", "Select a city", tx, ~city),
+  ggplotly(gg, dynamicTicks = TRUE),
+  widths = c(12, 12)
+)
+
+tx2 <- highlight_key(txhousing, ~city, "Select a city")
+gg <- ggplot(tx2) + geom_line(aes(date, median, group = city))
+select <- highlight(
+  ggplotly(gg, tooltip = "city"), 
+  selectize = TRUE, persistent = TRUE)
+
+table <- interactive_table(tx2)
+bscols(filter, select, table)
 ```
 
