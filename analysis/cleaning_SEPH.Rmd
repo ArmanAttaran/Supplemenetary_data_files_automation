@@ -1,0 +1,31 @@
+---
+title: "cleaning_SEPH"
+author: "arman"
+date: "2020-12-23"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+here I will clean/convert and coerce Seph at the end this will be included in the master R file but will be collapsed. this is only for devolpment.
+
+```{r}
+library(tidyverse)
+library(lubridate)
+tablenumber_SEPH <- "14100202"
+ SEPH <- cansim::get_cansim(tablenumber_SEPH)
+SEPH <- janitor::clean_names(SEPH)
+SEPH %>%
+  mutate(
+    ref_date = make_date(ref_date),
+    geo = as_factor(geo),
+    type_of_employee = as_factor(type_of_employee),
+    north_american_industry_classification_system_naics = as_factor(north_american_industry_classification_system_naics),
+    value = as.integer(value),
+    classification_code_for_type_of_employee = as_factor(classification_code_for_north_american_industry_classification_system_naics)
+  ) -> SEPH
+
+SEPH %>% 
+interactive_table()
+```
