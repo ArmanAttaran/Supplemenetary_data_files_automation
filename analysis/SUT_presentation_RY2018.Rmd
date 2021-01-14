@@ -67,6 +67,7 @@ DT::datatable(
   filter = "top"
 )
   }
+interactive_table(CPI)
 ```
 
 
