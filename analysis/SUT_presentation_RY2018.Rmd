@@ -62,12 +62,13 @@ DT::datatable(
     dom = "Bfrtip",
     buttons = c("copy", "csv",I("colvis")),
     searchHighlight = TRUE,
-    search = list(regex = TRUE,)
+    search = list(regex = TRUE)
   ),
   filter = "top"
 )
+  
   }
-interactive_table(CPI)
+#summarytools::view(dfSummary(LFS))  for exploring tables 
 ```
 
 
@@ -113,10 +114,7 @@ here I will aggregate data at provincial level possible idea:
 
 ```{r}
 population_table_number ="17-10-0009-01"
-
-SEPH <- readRDS("~/Statcan/Production_R_Project/Supplemenetary_data_files_automation/output/RDSobjects/SEPH.rds")
-CPI <- readRDS("~/Statcan/Production_R_Project/Supplemenetary_data_files_automation/output/RDSobjects/CPI.rds")
-
+immiga
 ```
 
 ```{r}
