@@ -13,7 +13,7 @@
 
 <title>Home</title>
 
-<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -23,8 +23,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -91,6 +89,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 
 
@@ -302,7 +301,7 @@ $(document).ready(function () {
   <a href="about.html">About</a>
 </li>
 <li>
-  <a href="license.html">License</a>
+  <a href="Provincial_view.html">Provincial_view</a>
 </li>
 <li>
   <a href="supp_files.html">supp_files</a>
@@ -311,15 +310,11 @@ $(document).ready(function () {
 <li>
   <a href="prov_analysis.html"></a>
 </li>
-<li class="dropdown-header">volatility_index</li>
-<li>
-  <a href="volatility_index.html"></a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Armanattaran/Supplemenetary_data_files_automation">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
     Source code
   </a>
@@ -358,13 +353,13 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-12-08
+<strong>Last updated:</strong> 2021-01-19
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
-<strong>Knit directory:</strong> <code>Supplemenetary_data_files_automation/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+<strong>Knit directory:</strong> <code>Supplemenetary_data_files_automation_v2/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
@@ -389,16 +384,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomArmanattaranSupplemenetarydatafilesautomationtreee47e7fd7ef3488b00cc1ee9a144c05cb1757d2e4targetblanke47e7fda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/Armanattaran/Supplemenetary_data_files_automation/tree/e47e7fd7ef3488b00cc1ee9a144c05cb1757d2e4" target="_blank">e47e7fd</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomArmanAttaranSupplemenetarydatafilesautomationtree1771361fbcf5fb1d6624c1399e6fd39ee1348b79targetblank1771361a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/tree/1771361fbcf5fb1d6624c1399e6fd39ee1348b79" target="_blank">1771361</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomArmanattaranSupplemenetarydatafilesautomationtreee47e7fd7ef3488b00cc1ee9a144c05cb1757d2e4targetblanke47e7fda" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomArmanAttaranSupplemenetarydatafilesautomationtree1771361fbcf5fb1d6624c1399e6fd39ee1348b79targetblank1771361a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/Armanattaran/Supplemenetary_data_files_automation/tree/e47e7fd7ef3488b00cc1ee9a144c05cb1757d2e4" target="_blank">e47e7fd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/tree/1771361fbcf5fb1d6624c1399e6fd39ee1348b79" target="_blank">1771361</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -407,28 +402,16 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    figure/
-    Ignored:    output/NA
-    Ignored:    output/Table 18-10-0005-01 CPI by province product groups Sys.Date()
-    Ignored:    output/Table 18-10-0005-01 CPI by province product groups2
-    Ignored:    output/Table 18-10-0005-01 CPI by province product groups2020-11-24
-    Ignored:    output/Table 18-10-0005-01_CPI_by_province_product_groups_updated_at_2020-11-24
+    Ignored:    analysis/Cleaning_data/
+    Ignored:    analysis/data_views/
+    Ignored:    data/Inputs/Large_tables/
 
 Untracked files:
-    Untracked:  CPC for Manitoba.jpeg
-    Untracked:  Rplot.svg
-    Untracked:  Rplot01.svg
-    Untracked:  Rplot02.jpeg
-    Untracked:  output/.gitignore
-    Untracked:  output/RDSobjects/SEPH.rds
-    Untracked:  output/Table 18-10-0005-01 CPI by province product groups [Sys.Date()]
-    Untracked:  output/Table_18100005_CPI_by_province_product_groups_2010-2020
-    Untracked:  output/Table_18100005_CPI_by_province_product_groups_2015-2020
-    Untracked:  output/delete/
+    Untracked:  data/Inputs/Supplementary data files/~$Table 14-10-0201-01 SEPH for selected industries by province.xlsx
+    Untracked:  data/Inputs/Supplementary data files/~$Table 14-10-0203-01 SEPH average weekly earnings by all industry all prov and canada.xlsx
+    Untracked:  data/Inputs/Supplementary data files/~$Table 34-10-0175 Residential and Non residential invest by structure type.xlsx
 
 Unstaged changes:
-    Modified:   analysis/SUT_presentation_RY2018.Rmd
-    Modified:   analysis/_site.yml
     Modified:   code/Publishing_script.R
 
 </code></pre>
@@ -470,10 +453,27 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/3c07092a00f887472a63555b661aa233ec2768b6/docs/index.html" target="_blank">3c07092</a>
+</td>
+<td>
+ArmanAttaran
+</td>
+<td>
+2020-12-08
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/Armanattaran/Supplemenetary_data_files_automation/blob/25dbc78905fbc29be90aa02112402c3045980253/analysis/index.Rmd" target="_blank">25dbc78</a>
+<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/25dbc78905fbc29be90aa02112402c3045980253/analysis/index.Rmd" target="_blank">25dbc78</a>
 </td>
 <td>
 ArmanAttaran
@@ -490,7 +490,7 @@ some new resources and visual ideas
 Rmd
 </td>
 <td>
-<a href="https://github.com/Armanattaran/Supplemenetary_data_files_automation/blob/59aa4351b2c13a111a4491065f89bdf2666e8811/analysis/index.Rmd" target="_blank">59aa435</a>
+<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/59aa4351b2c13a111a4491065f89bdf2666e8811/analysis/index.Rmd" target="_blank">59aa435</a>
 </td>
 <td>
 ArmanAttaran
@@ -507,7 +507,7 @@ added some ideas for monthly provincial nowcast
 Rmd
 </td>
 <td>
-<a href="https://github.com/Armanattaran/Supplemenetary_data_files_automation/blob/82070870668164edde18a800cfcec50c9c7dd720/analysis/index.Rmd" target="_blank">8207087</a>
+<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/82070870668164edde18a800cfcec50c9c7dd720/analysis/index.Rmd" target="_blank">8207087</a>
 </td>
 <td>
 ArmanAttaran
@@ -524,7 +524,7 @@ updated the descreption
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/c81ce873906486f18fadc462721ddf399fcc82fc/docs/index.html" target="_blank">c81ce87</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/c81ce873906486f18fadc462721ddf399fcc82fc/docs/index.html" target="_blank">c81ce87</a>
 </td>
 <td>
 ArmanAttaran
@@ -541,7 +541,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/983acf38cbe16e516564a2853f060acbb58cc414/docs/index.html" target="_blank">983acf3</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/983acf38cbe16e516564a2853f060acbb58cc414/docs/index.html" target="_blank">983acf3</a>
 </td>
 <td>
 ArmanAttaran
@@ -558,7 +558,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/9760eb4fdbbca6fb06bff0f7fe7f2edc771aa677/docs/index.html" target="_blank">9760eb4</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/9760eb4fdbbca6fb06bff0f7fe7f2edc771aa677/docs/index.html" target="_blank">9760eb4</a>
 </td>
 <td>
 ArmanAttaran
@@ -575,7 +575,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/14991f0d0b5a04bca3cdb86c02af52a30f839d39/docs/index.html" target="_blank">14991f0</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/14991f0d0b5a04bca3cdb86c02af52a30f839d39/docs/index.html" target="_blank">14991f0</a>
 </td>
 <td>
 ArmanAttaran
@@ -592,7 +592,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/da479c2f28e00440d780b6e6fd4b201b2ff0228e/docs/index.html" target="_blank">da479c2</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/da479c2f28e00440d780b6e6fd4b201b2ff0228e/docs/index.html" target="_blank">da479c2</a>
 </td>
 <td>
 ArmanAttaran
@@ -609,7 +609,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/dbc184dcc3c5a2f64cdb0837fd8e85bd133f8234/docs/index.html" target="_blank">dbc184d</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/dbc184dcc3c5a2f64cdb0837fd8e85bd133f8234/docs/index.html" target="_blank">dbc184d</a>
 </td>
 <td>
 ArmanAttaran
@@ -626,7 +626,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/0330455ad790497b7c3a59e152d87ba8b2665450/docs/index.html" target="_blank">0330455</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/0330455ad790497b7c3a59e152d87ba8b2665450/docs/index.html" target="_blank">0330455</a>
 </td>
 <td>
 armanattaran
@@ -643,7 +643,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/cb14b5eadabf3d13aa00e9644efc648574f2aca8/docs/index.html" target="_blank">cb14b5e</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/cb14b5eadabf3d13aa00e9644efc648574f2aca8/docs/index.html" target="_blank">cb14b5e</a>
 </td>
 <td>
 ArmanAttaran
@@ -660,7 +660,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/a1e57108ed8cd2a3614827dbffcea26e7fc6dbb6/docs/index.html" target="_blank">a1e5710</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/a1e57108ed8cd2a3614827dbffcea26e7fc6dbb6/docs/index.html" target="_blank">a1e5710</a>
 </td>
 <td>
 ArmanAttaran
@@ -677,7 +677,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/f085ca615c8ac71f9c18c184e31c957219b09925/docs/index.html" target="_blank">f085ca6</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/f085ca615c8ac71f9c18c184e31c957219b09925/docs/index.html" target="_blank">f085ca6</a>
 </td>
 <td>
 ArmanAttaran
@@ -694,7 +694,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/Armanattaran/Supplemenetary_data_files_automation/a3412ef17b1204636e97811a516dbea4fc9f2731/docs/index.html" target="_blank">a3412ef</a>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/a3412ef17b1204636e97811a516dbea4fc9f2731/docs/index.html" target="_blank">a3412ef</a>
 </td>
 <td>
 ArmanAttaran
@@ -711,7 +711,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/Armanattaran/Supplemenetary_data_files_automation/blob/943fa4312952af5e9ccffcf83f3c5758ccce83e7/analysis/index.Rmd" target="_blank">943fa43</a>
+<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/943fa4312952af5e9ccffcf83f3c5758ccce83e7/analysis/index.Rmd" target="_blank">943fa43</a>
 </td>
 <td>
 ArmanAttaran
