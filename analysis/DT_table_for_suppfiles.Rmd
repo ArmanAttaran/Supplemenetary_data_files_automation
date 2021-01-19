@@ -46,7 +46,7 @@ DT::datatable(
   filter = "top"
 )
   }
-
+asd <- gapminder::gapminder
 interactive_table(gapminder::gapminder)
 ```
  
