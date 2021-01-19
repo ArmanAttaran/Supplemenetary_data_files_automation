@@ -1,0 +1,34 @@
+---
+title: "Provincial_view"
+author: "Arman Attaran"
+date: "2021-01-19"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+in this document I will create a view based on the following tables
+
+-   contribution to total economy
+
+-   population [17-10-0009-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000901 "Table 17-10-0009-01").
+
+-   immigration [17-10-0008-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000801 "Table 17-10-0008-01").
+
+-   labor force Statistics Canada, table [14-10-0327-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410032701 "Table 14-10-0327-01").
+
+-   Farms, by operation type [32-10-0403-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3210040301 "Table 32-10-0403-01").
+
+-   Aquaculture in Canada [32-10-0107-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3210010701 "Table 32-10-0107-01").
+
+-   Manufacturing industries [16-10-0117-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1610011701 "Table 16-10-0117-01").
+
+-   International merchandise trade by province, commodity, and Principal Trading Partners 12-10-0119-01
+
+-   Investment in Building Construction(monthly) [34-10-0175-01](https://www150.statcan.gc.ca/t1/tbl1/en/cv.action?pid=3410017501)
+
+```{r}
+
+```
