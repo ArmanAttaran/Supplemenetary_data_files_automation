@@ -139,6 +139,7 @@ pgdp %>%
 #maybe wait till the end to convert the tables to save some space
 
 interactive_table(clean_PGDP)
+asd
 #data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
 ```
 
