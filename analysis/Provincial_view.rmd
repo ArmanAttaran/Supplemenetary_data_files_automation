@@ -4,9 +4,9 @@ author: "Arman Attaran"
 date: "2021-01-19"
 output: workflowr::wflow_html
 editor_options:
-  chunk_output_type: inline
+  chunk_output_type: console
 params: 
- from_this_year: 2018
+ from_this_year: 2018-01-01
  to_this_year: 2020 
  Developer_mode: TRUE
  tests: TRUE
@@ -124,3 +124,26 @@ interactive_table(gapminder::gapminder)
 ## importing/cleaning the tables. 
 i will attempt to import and clean all the tables 
  
+```{r}
+pgdp <- cansim::get_cansim_ndm(pgdp_table_number)
+pgdp <- janitor::clean_names(pgdp)
+pgdp %>%
+  select(ref_date,geo,north_american_industry_classification_system_naics,value,hierarchy_for_north_american_industry_classification_system_naics,coordinate,classification_code_for_north_american_industry_classification_system_naics,value_2) %>%  
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  rename(CPC = value_2) %>%
+  filter(ref_date > params$from_this_year) %>%
+  filter(value == "Contributions to percent change") %>%
+  select(!value) %>%
+  filter(classification_code_for_north_american_industry_classification_system_naics %in% c(two_digit_naics_code) ) %>%
+  group_by(ref_date,north_american_industry_classification_system_naics,geo) -> clean_PGDP
+#maybe wait till the end to convert the tables to save some space
+
+interactive_table(clean_PGDP)
+#data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
+```
+
+mutate(geo = as_factor(geo),
+         ref_date = lubridate::make_date(ref_date),
+         north_american_industry_classification_system_naics = as_factor(north_american_industry_classification_system_naics),
+         ) %>%
+  
