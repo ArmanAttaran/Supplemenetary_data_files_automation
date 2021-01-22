@@ -6,12 +6,13 @@ output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
 params: 
- from_this_year: 2018-01-01
- to_this_year: 2020 
  Developer_mode: FALSE
  tests: TRUE
 
 ---
+```{r}
+from_this_year <- "2017-01-01"
+```
 
 ## Introduction
 
@@ -44,7 +45,7 @@ in this section I will set up the foundation for the program; it is broke up int
 in this section I will manage dependencies ( the packages used in this project; in R you need to state what you will use (kinda) and here we will simply state them) these will have to be installed for the program to run properly. if you run this in the cloud the commands below should be sufficient. if you uncomment the first 5 lines
 
 
-```{r Package set up , message=FALSE, warning=FALSE, include=params$Developer_mode}
+```{r Package set up, message=FALSE, warning=FALSE, include=params$Developer_mode}
 
 
 # install.packages("tidyverse")
@@ -86,7 +87,7 @@ if you have any tables to add please add it here; it will make it easier to main
 ```{r table numbers}
 pgdp_table_number <- "36-10-0402"
 lfs_table_number <- "14-10-0023-01"
-population_table_number <- "17-10-0009-01"
+population_table_number <- "17-10-0005-01"
 farms_table_number <- "32-10-0403-01"
 building_construction_table_number <- "34-10-0175-01"
 trade_table_number <- "12-10-0119-01"
@@ -124,25 +125,73 @@ interactive_table(gapminder::gapminder)
 
 ## importing/cleaning the tables. 
 i will attempt to import and clean all the tables 
- 
-```{r}
+### PGDP
+here I will be working with Provincial GDP 
+
+#### 2 digit naics 
+```{r PGDP}
 pgdp <- cansim::get_cansim_ndm(pgdp_table_number)
 pgdp <- janitor::clean_names(pgdp)
 pgdp %>%
   select(ref_date,geo,north_american_industry_classification_system_naics,value,hierarchy_for_north_american_industry_classification_system_naics,coordinate,classification_code_for_north_american_industry_classification_system_naics,value_2) %>%  
   mutate(ref_date = lubridate::make_date(ref_date)) %>%
   rename(CPC = value_2) %>%
-  filter(ref_date > params$from_this_year) %>%
+  filter(ref_date > from_this_year) %>%
   filter(value == "Contributions to percent change") %>%
   select(!value) %>%
   filter(classification_code_for_north_american_industry_classification_system_naics %in% c(two_digit_naics_code) ) %>%
   group_by(ref_date,north_american_industry_classification_system_naics,geo) -> clean_PGDP
 #maybe wait till the end to convert the tables to save some space
-
+  
 interactive_table(clean_PGDP)
 
 #data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
 ```
+
+
+
+#### provincial PGDP 
+```{r}
+pgdp %>%
+  select(ref_date,geo,north_american_industry_classification_system_naics,value,hierarchy_for_north_american_industry_classification_system_naics,coordinate,classification_code_for_north_american_industry_classification_system_naics,value_2) %>%  
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  rename(CPC = value_2) %>%
+  filter(ref_date > from_this_year) %>%
+  filter(value == "Contributions to percent change") %>%
+  select(!value)
+
+```
+
+### population 
+
+```{r population}
+library(summarytools)
+population <- cansim::get_cansim_ndm(population_table_number)
+population %>%
+  janitor::clean_names() %>%
+  select(1,2,4,5,12) %>%
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+   filter(ref_date > from_this_year) %>%
+   filter(age_group == "All ages") %>%
+  filter(sex == "Both sexes") %>%
+  rename(population = value) %>%
+  select(1,2,5)-> clean_population
+  #view(dfSummary(clean_population))
+clean_PGDP %>%
+  select(ref_date,geo,north_american_industry_classification_system_naics,CPC)%>%
+  left_join(clean_population) %>% interactive_table()
+#clean the table with removing the population table. also
+
+clean_PGDP %>% left_join(clean_population) %>% head
+
+```
+
+
+```{r}
+
+```
+
+
 
 mutate(geo = as_factor(geo),
          ref_date = lubridate::make_date(ref_date),
