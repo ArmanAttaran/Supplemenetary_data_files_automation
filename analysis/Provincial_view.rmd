@@ -11,7 +11,7 @@ params:
 
 ---
 ```{r}
-from_this_year <- "2017-01-01"
+from_this_year <- "2016-12-29"
 ```
 
 ## Introduction
@@ -182,11 +182,18 @@ population %>%
 trade <- cansim::get_cansim_ndm(trade_table_number)
 trade <- janitor::clean_names(trade)
 trade %>%
-  select(ref_date,2,4,5,6,13) %>%
-  mutate(ref_date = parse_date(ref_date,"%Y-%m")) -> clean_trade
-  #filter(ref_date > from_this_year) %>%
+  select(ref_date,geo,trade,north_american_product_classification_system_napcs,principal_trading_partners,value) %>% 
+  mutate(ref_date = parse_date(ref_date,"%Y-%m")) %>%
+  filter(ref_date > from_this_year) %>%
   pivot_wider(names_from = trade, values_from = value) %>% 
-  View()
+  arrange(north_american_product_classification_system_napcs,principal_trading_partners,geo,ref_date) %>%
+  group_by(north_american_product_classification_system_napcs,principal_trading_partners,geo) %>% 
+  mutate(pct_change_import = ((Import / lag(Import,n = 12,order_by = ref_date)) * 100) - 100) %>% View()
+  #group_by(3,4,2) %>% 
+  data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_full_table_from{from_this_year}")))
+
+mutate(pct_change_import = ((Import / lag(Import, order_by = ref_date)) * 100) - 100) %>% View()
+  mutate(first_dif = (value - lag(value, order_by = ref_date))) %>% View()
     #rename(trade = value) %>%
 clean_PGDP %>%
   select(ref_date,geo,north_american_industry_classification_system_naics,CPC) %>%
