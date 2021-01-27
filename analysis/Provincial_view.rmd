@@ -179,18 +179,6 @@ population %>%
   filter(sex == "Both sexes") %>%
   select(1,2,5) -> clean_population
   #view(dfSummary(clean_population))
-trade <- cansim::get_cansim_ndm(trade_table_number)
-trade <- janitor::clean_names(trade)
-trade %>%
-  select(ref_date,geo,trade,north_american_product_classification_system_napcs,principal_trading_partners,value) %>% 
-  mutate(ref_date = parse_date(ref_date,"%Y-%m")) %>%
-  filter(ref_date > from_this_year) %>%
-  pivot_wider(names_from = trade, values_from = value) %>% 
-  arrange(north_american_product_classification_system_napcs,principal_trading_partners,geo,ref_date) %>%
-  group_by(north_american_product_classification_system_napcs,principal_trading_partners,geo) %>% 
-  mutate(pct_change_import = ((Import / lag(Import,n = 12,order_by = ref_date)) * 100) - 100) %>% View()
-  #group_by(3,4,2) %>% 
-  data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_full_table_from{from_this_year}")))
 
 mutate(pct_change_import = ((Import / lag(Import, order_by = ref_date)) * 100) - 100) %>% View()
   mutate(first_dif = (value - lag(value, order_by = ref_date))) %>% View()
@@ -204,8 +192,27 @@ clean_PGDP %>%
 
 ```
 
+This is the YOY percentage change difference for the monthly trade by NAPC
+I will create the annual series tomorrow.
+simply sum it over the year. it seems to be what the chief economist did and also it makes sense since it is already seasonally adjusted
+```{r Trade}
+trade <- cansim::get_cansim_ndm(trade_table_number)
+trade <- janitor::clean_names(trade)
+trade %>%
+  select(ref_date,geo,trade,north_american_product_classification_system_napcs,principal_trading_partners,value) %>% 
+  mutate(ref_date = parse_date(ref_date,"%Y-%m")) %>%
+  filter(ref_date > from_this_year) %>%
+  pivot_wider(names_from = trade, values_from = value) %>% 
+  janitor::clean_names() %>%
+  arrange(north_american_product_classification_system_napcs,principal_trading_partners,geo,ref_date) %>%
+  group_by(north_american_product_classification_system_napcs,principal_trading_partners,geo) %>% 
+  mutate(yoy_pct_change_import = ((import / lag(import,n = 12,order_by = ref_date)) * 100) - 100) %>% 
+  mutate(yoy_first_dif_import = (import - lag(import,n = 12, order_by = ref_date))) %>%
+  mutate(yoy_pct_change_export = ((domestic_export / lag(domestic_export,n = 12,order_by = ref_date)) * 100) - 100) %>% 
+  mutate(yoy_first_dif_export = (domestic_export - lag(domestic_export,n = 12, order_by = ref_date))) %>%
+  #group_by(3,4,2) %>% 
+  data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_full_table_from{from_this_year}.csv")))
 
-```{r}
 
 ```
 
