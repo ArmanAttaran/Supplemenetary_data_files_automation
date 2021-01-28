@@ -192,10 +192,11 @@ clean_PGDP %>%
 
 ```
 
+### Trade monthly 
 This is the YOY percentage change difference for the monthly trade by NAPC
 I will create the annual series tomorrow.
 simply sum it over the year. it seems to be what the chief economist did and also it makes sense since it is already seasonally adjusted
-```{r Trade}
+```{r Trade Monthly}
 trade <- cansim::get_cansim_ndm(trade_table_number)
 trade <- janitor::clean_names(trade)
 trade %>%
@@ -215,8 +216,34 @@ trade %>%
 
 
 ```
+### Trade annual
+annualized  trade; run this in mid feb to make sure all the months are there for a reference year. doing so earlier will result in the most recent year being underepesented the best choice is to use moving average or an estimated value
 
-
+```{r}
+#make sure you run this after the december release; 8 weeks after reference period is the release 
+library(tidyverse)
+library(tsibble)
+library(lubridate)
+trade <- cansim::get_cansim_ndm(trade_table_number)
+trade <- janitor::clean_names(trade)
+trade %>%
+  select(ref_date,geo,trade,north_american_product_classification_system_napcs,principal_trading_partners,value) %>% 
+  mutate(ref_date = parse_date(ref_date,"%Y-%m")) %>%
+  filter(ref_date > from_this_year) %>%
+  pivot_wider(names_from = trade, values_from = value) %>% 
+  janitor::clean_names() -> clean_trade
+data_tsbl <- as_tsibble(clean_trade,key = c( north_american_product_classification_system_napcs,principal_trading_partners,geo))
+data_tsbl %>%
+  group_by_key() %>%
+  index_by(year_month = ~ year(.)) %>%
+  summarise(
+    import = sum(import,na.rm = TRUE),
+    export = sum(domestic_export, na.rm = TRUE)
+  ) -> annual_trade 
+# saving the CSV {} between these things the program will put in R code
+annual_trade %>%
+  data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_annual{from_this_year}.csv"))) 
+```
 
 mutate(geo = as_factor(geo),
          ref_date = lubridate::make_date(ref_date),
