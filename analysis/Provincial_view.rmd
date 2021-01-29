@@ -259,6 +259,8 @@ as_tibble(annual_trade) %>%
 left_join(clean_population,master_trade) %>% left_join(master_pgdp) -> master_provincial_table
 
 interactive_table(master_provincial_table)
+
+ 
 ```
 
 
