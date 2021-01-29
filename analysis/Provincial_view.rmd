@@ -153,13 +153,23 @@ interactive_table(clean_PGDP)
 
 #### provincial PGDP 
 ```{r}
+
+```
+
+#### provincial GDP for master table
+```{r Provincial GDP mastertable}
+pgdp
 pgdp %>%
-  select(ref_date,geo,north_american_industry_classification_system_naics,value,hierarchy_for_north_american_industry_classification_system_naics,coordinate,classification_code_for_north_american_industry_classification_system_naics,value_2) %>%  
+  select(ref_date,geo,north_american_industry_classification_system_naics,value,value_2) %>%  
   mutate(ref_date = lubridate::make_date(ref_date)) %>%
   rename(CPC = value_2) %>%
   filter(ref_date > from_this_year) %>%
   filter(value == "Contributions to percent change") %>%
-  select(!value)
+  select(!value) %>%
+  filter(north_american_industry_classification_system_naics == "All industries [T001]") %>%
+  pivot_wider(names_from = north_american_industry_classification_system_naics,values_from = CPC) %>%
+  janitor::clean_names() %>%
+  rename(CPC_All_industries = all_industries_t001) -> master_pgdp
 
 ```
 
@@ -180,14 +190,7 @@ population %>%
   select(1,2,5) -> clean_population
   #view(dfSummary(clean_population))
 
-mutate(pct_change_import = ((Import / lag(Import, order_by = ref_date)) * 100) - 100) %>% View()
-  mutate(first_dif = (value - lag(value, order_by = ref_date))) %>% View()
-    #rename(trade = value) %>%
-clean_PGDP %>%
-  select(ref_date,geo,north_american_industry_classification_system_naics,CPC) %>%
-  left_join(clean_population) %>% left_join(clean_population) %>% head
-  
-#clean the table with removing the population table. also
+
 
 
 ```
@@ -245,12 +248,18 @@ annual_trade %>%
   data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_annual{from_this_year}.csv"))) 
 ```
 
-mutate(geo = as_factor(geo),
-         ref_date = lubridate::make_date(ref_date),
-         north_american_industry_classification_system_naics = as_factor(north_american_industry_classification_system_naics),
-         ) %>%
-  
+### annual trade filtered and left joined into master table
+```{r joining trade to the master}
+as_tibble(annual_trade) %>% 
+  filter(principal_trading_partners == "All countries")  %>%
+  filter(north_american_product_classification_system_napcs == "Total of all merchandise") %>%
+  rename( ref_date = year_month) %>%
+  mutate(ref_date = lubridate::make_date(ref_date)) %>% 
+  select(geo,ref_date,import,export) -> master_trade
+left_join(clean_population,master_trade) %>% left_join(master_pgdp) -> master_provincial_table
 
+interactive_table(master_provincial_table)
+```
 
 
 
