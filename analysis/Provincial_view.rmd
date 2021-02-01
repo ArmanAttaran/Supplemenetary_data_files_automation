@@ -8,14 +8,13 @@ editor_options:
 params: 
  Developer_mode: FALSE
  tests: TRUE
-
 ---
+
 ```{r}
 from_this_year <- "2016-12-29"
 ```
 
 ## Introduction
-
 
 in this document I will create a view based on the following tables
 
@@ -42,8 +41,8 @@ in this document I will create a view based on the following tables
 in this section I will set up the foundation for the program; it is broke up into 3 parts; package dependency and path; functions,and finally code lists.
 
 ### Package dependency
-in this section I will manage dependencies ( the packages used in this project; in R you need to state what you will use (kinda) and here we will simply state them) these will have to be installed for the program to run properly. if you run this in the cloud the commands below should be sufficient. if you uncomment the first 5 lines
 
+in this section I will manage dependencies ( the packages used in this project; in R you need to state what you will use (kinda) and here we will simply state them) these will have to be installed for the program to run properly. if you run this in the cloud the commands below should be sufficient. if you uncomment the first 5 lines
 
 ```{r Package set up, message=FALSE, warning=FALSE, include=params$Developer_mode}
 
@@ -61,10 +60,9 @@ library(cansim) # for downloading NDM tables
 library(here) # for managing folder paths.
 ```
 
+### paths
 
-### paths 
-
-all the files in this program will now be created relative to where you run this script; it will create all the necessary subflorder and files from the  location below
+all the files in this program will now be created relative to where you run this script; it will create all the necessary subflorder and files from the location below
 
 ```{r paths}
 here()
@@ -84,6 +82,7 @@ two_digit_naics_code <- c("[11]", "[21]", "[22]", "[23]", "[31-33]", "[41]", "[4
 ### table numbers
 
 if you have any tables to add please add it here; it will make it easier to maintain this program
+
 ```{r table numbers}
 pgdp_table_number <- "36-10-0402"
 lfs_table_number <- "14-10-0023-01"
@@ -98,11 +97,13 @@ cpi_table_number <- "18100005"
 ```
 
 ### functions
+
 here I will describe the functions required in the project. the most important one is the one for creating interactive tables in the browser that allow you to change which columns to show and to search through tables.
 
-it is important for the search function and performance for the columns to be categories and/or numerics. 
+it is important for the search function and performance for the columns to be categories and/or numerics.
 
-TODO: find a way to handle sig dig 
+TODO: find a way to handle sig dig
+
 ```{r functions }
 interactive_table <- function(data) {
   DT::datatable(
@@ -123,12 +124,12 @@ interactive_table(gapminder::gapminder)
 # summarytools::view(dfSummary(LFS))  for exploring tables
 ```
 
-## importing/cleaning the tables. 
-i will attempt to import and clean all the tables 
-### PGDP
-here I will be working with Provincial GDP 
+## importing/cleaning the tables.
 
-#### 2 digit naics 
+i will attempt to import and clean all the tables \#\#\# PGDP here I will be working with Provincial GDP
+
+#### 2 digit naics
+
 ```{r PGDP}
 pgdp_table_number <- "36-10-0402"
 pgdp <- cansim::get_cansim_ndm(pgdp_table_number)
@@ -149,14 +150,14 @@ interactive_table(clean_PGDP)
 #data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
 ```
 
+#### provincial PGDP
 
-
-#### provincial PGDP 
 ```{r}
 
 ```
 
 #### provincial GDP for master table
+
 ```{r Provincial GDP mastertable}
 pgdp
 pgdp %>%
@@ -173,7 +174,7 @@ pgdp %>%
 
 ```
 
-### population 
+### population
 
 ```{r population}
 
@@ -195,10 +196,10 @@ population %>%
 
 ```
 
-### Trade monthly 
-This is the YOY percentage change difference for the monthly trade by NAPC
-I will create the annual series tomorrow.
-simply sum it over the year. it seems to be what the chief economist did and also it makes sense since it is already seasonally adjusted
+### Trade monthly
+
+This is the YOY percentage change difference for the monthly trade by NAPC I will create the annual series tomorrow. simply sum it over the year. it seems to be what the chief economist did and also it makes sense since it is already seasonally adjusted
+
 ```{r Trade Monthly}
 trade <- cansim::get_cansim_ndm(trade_table_number)
 trade <- janitor::clean_names(trade)
@@ -219,8 +220,10 @@ trade %>%
 
 
 ```
+
 ### Trade annual
-annualized  trade; run this in mid feb to make sure all the months are there for a reference year. doing so earlier will result in the most recent year being underepesented the best choice is to use moving average or an estimated value
+
+annualized trade; run this in mid feb to make sure all the months are there for a reference year. doing so earlier will result in the most recent year being underepesented the best choice is to use moving average or an estimated value
 
 ```{r}
 #make sure you run this after the december release; 8 weeks after reference period is the release 
@@ -249,6 +252,7 @@ annual_trade %>%
 ```
 
 ### annual trade filtered and left joined into master table
+
 ```{r joining trade to the master}
 as_tibble(annual_trade) %>% 
   filter(principal_trading_partners == "All countries")  %>%
@@ -263,16 +267,26 @@ interactive_table(master_provincial_table)
  
 ```
 
+## Immigration table
 
+```{r Immigration }
+Immigration  <- cansim::get_cansim_ndm(immigration_table_number)
+Immigration <- janitor::clean_names(Immigration)
+Immigration %>%
+  select(ref_date,geo,components_of_population_growth,value) %>% 
+  mutate(ref_date = parse_date(ref_date,"%Y /%Y")) %>%
+  filter(ref_date > from_this_year) %>% 
+  pivot_wider(names_from = components_of_population_growth, values_from = value) %>%
+  group_by(geo) %>%
+  clean_names() %>% 
+ -> clean_immigration
+master_provincial_table %>% 
+  left_join(clean_immigration) -> master_provincial_table
 
+```
 
+## tips
 
+maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\*\*
 
-
-
-
-
-## tips 
-
-maybe use * in regex to match wild cards with the coordinates; for example 
-1.1.***
+use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to automatically create a first difference of any table.
