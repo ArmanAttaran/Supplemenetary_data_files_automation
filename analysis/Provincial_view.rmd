@@ -285,6 +285,41 @@ master_provincial_table %>%
 
 ```
 
+## construction
+
+```{r construction}
+
+construction  <- cansim::get_cansim_ndm(building_construction_table_number)
+construction <- janitor::clean_names(construction)
+construction %>%
+  select(ref_date,geo,type_of_structure,type_of_work,investment_value,value) %>% 
+  mutate(ref_date = parse_date(ref_date,"%Y-%m")) %>%
+  filter(ref_date > from_this_year) %>% 
+  filter(type_of_work == "Types of work, total") %>%
+  select(!type_of_work) %>%
+  filter(investment_value %in% c("Unadjusted - constant", "Unadjusted - current"))  %>%
+  filter(type_of_structure %in% c("Total residential and non-residential", "Total residential","Total non-residential")) %>% 
+  pivot_wider(names_from = type_of_structure, values_from = value) %>%
+  pivot_wider(names_from = investment_value, values_from = value) %>%
+  head()
+```
+
+```{r}
+temp <- get_cansim_ndm("34-10-0163-01")
+temp %>% clean_names() -> temp
+view(dfSummary(temp))
+```
+
+```{r}
+temp <- get_cansim_ndm("36-10-0098")
+temp %>% clean_names() -> temp
+view(dfSummary(temp))
+```
+
+```{r}
+ 34-10-0126-01
+```
+
 ## tips
 
 maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\*\*
