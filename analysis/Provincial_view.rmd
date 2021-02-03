@@ -259,7 +259,7 @@ as_tibble(annual_trade) %>%
   select(geo, ref_date, import, export) -> master_trade
 left_join(clean_population, master_trade) %>% left_join(master_pgdp) -> master_provincial_table
 
-interactive_table(master_provincial_table)
+
 ```
 
 ## Immigration table
@@ -280,7 +280,7 @@ master_provincial_table %>%
 
 ## construction
 
-all construction numbers are for total type of work and are in unadjusted K dollar 
+all construction numbers are for total type of work and are in unadjusted K dollar  mabye I should just use 23A_K_ind 
 
 ```{r construction}
 
@@ -290,6 +290,7 @@ construction %>%
   select(ref_date, geo, type_of_structure, type_of_work, investment_value, value) %>%
   mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
   filter(ref_date > from_this_year) %>%
+  filter(geo %in% provinces) %>%
   filter(type_of_work == "Types of work, total") %>%
   select(!type_of_work) %>%
   filter(investment_value %in% c("Unadjusted - constant")) %>%
@@ -304,19 +305,23 @@ data_tsbl <- as_tsibble(clean_construction, key = c(geo))
 data_tsbl %>%
   group_by_key() %>%
   index_by(year_month = ~ year(.)) %>%
-  summarise(across(where(is.numeric), sum())) -> annual_construction
+  summarise(across(where(is.numeric),list( a = sum))) -> master_construction
+master_construction %>%
+  as_tibble() %>% rename(ref_date = year_month) %>%
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  select(everything()) -> master_construction
+
+master_provincial_table <- left_join(master_construction,master_provincial_table)
 # saving the CSV {} between the
-pivot_wider(names_from = investment_value, values_from = value) %>%
-  head()
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 temp <- get_cansim_ndm("34-10-0163-01")
 temp %>% clean_names() -> temp
 view(dfSummary(temp))
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 temp <- get_cansim_ndm("36-10-0098")
 temp %>% clean_names() -> temp
 view(dfSummary(temp))
@@ -325,6 +330,12 @@ view(dfSummary(temp))
 ```{r}
 34 - 10 - 0126 - 01
 ```
+
+## results
+```{r}
+interactive_table(master_provincial_table )
+```
+
 
 ## tips
 
