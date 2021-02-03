@@ -77,6 +77,10 @@ stating what the code lists are for the project to sort and query data from; if 
 provincial_two_digit_cord <- c("1.1.1", "1.1.2", "1.1.3", "1.1.4", "1.1.5", "1.1.6", "1.1.7", "1.1.8", "1.1.9", "1.1.10", "1.1.11", "1.1.12", "1.1.13", "1.1.14", "1.1.15", "1.1.16", "1.1.17", "1.1.18", "1.1.19", "1.1.20", "1.1.21", "2.1.1", "2.1.2", "2.1.3", "2.1.4", "2.1.5", "2.1.6", "2.1.7", "2.1.8", "2.1.9", "2.1.10", "2.1.11", "2.1.12", "2.1.13", "2.1.14", "2.1.15", "2.1.16", "2.1.17", "2.1.18", "2.1.19", "2.1.20", " 2.1.21", "3.1.1", "3.1.2", "3.1.3", "3.1.4", "3.1.5", "3.1.6", "3.1.7", "3.1.8", "3.1.9", "3.1.10", "3.1.11", "3.1.12", "3.1.13", "3.1.14", "3.1.15", "3.1.16", "3.1.17", "3.1.18", "3.1.19", "3.1.20", "3.1.21", "4.1.1", "4.1.2", "4.1.3", "4.1.4", "4.1.5", "4.1.6", "4.1.7", "4.1.8", "4.1.9", "4.1.10", "4.1.11", "4.1.12", "4.1.13", "4.1.14", "4.1.15", "4.1.16", "4.1.17", "4.1.18", "4.1.19", "4.1.20", "4.1.21", "5.1.1", "5.1.2", "5.1.3", "5.1.4", "5.1.5", "5.1.6", "5.1.7", "5.1.8", "5.1.9", "5.1.10", "5.1.11", "5.1.12", "5.1.13", "5.1.14", "5.1.15", "5.1.16", "5.1.17", "5.1.18", "5.1.19", "5.1.20", "5.1.21", "6.1.1", "6.1.2", "6.1.3", "6.1.4", "6.1.5", "6.1.6", "6.1.7", "6.1.8", "6.1.9", "6.1.10", "6.1.11", "6.1.12", "6.1.13", "6.1.14", "6.1.15", "6.1.16", "6.1.17", "6.1.18", "6.1.19", "6.1.20", "6.1.21", "7.1.1", "7.1.2", "7.1.3", "7.1.4", "7.1.5", "7.1.6", "7.1.7", "7.1.8", "7.1.9", "7.1.10", "7.1.11", "7.1.12", "7.1.13", "7.1.14", "7.1.15", "7.1.16", "7.1.17", "7.1.18", "7.1.19", "7.1.20", "7.1.21", "8.1.1", "8.1.2", "8.1.3", "8.1.4", "8.1.5", "8.1.6", "8.1.7", "8.1.8", "8.1.9", "8.1.10", "8.1.11", "8.1.12", "8.1.13", "8.1.14", "8.1.15", "8.1.16", "8.1.17", "8.1.18", "8.1.19", "8.1.20", "8.1.21", "9.1.1", "9.1.2", "9.1.3", "9.1.4", "9.1.5", "9.1.6", "9.1.7", "9.1.8", "9.1.9", "9.1.10", "9.1.11", "9.1.12", "9.1.13", "9.1.14", "9.1.15", "9.1.16", "9.1.17", "9.1.18", "9.1.19", "9.1.20", "9.1.21", "10.1.1", "10.1.2", "10.1.3", "10.1.4", "10.1.5", "10.1.6", "10.1.7", "10.1.8", "10.1.9", "10.1.10", "10.1.11", "10.1.12", "10.1.13", "10.1.14", "10.1.15", "10.1.16", "10.1.17", "10.1.18", "10.1.19", "10.1.20", "10.1.21", "11.1.1", "11.1.2", "11.1.3", "11.1.4", "11.1.5", "11.1.6", "11.1.7", "11.1.8", "11.1.9", "11.1.10", "11.1.11", "11.1.12", "11.1.13", "11.1.14", "11.1.15", "11.1.16", "11.1.17", "11.1.18", "11.1.19", "11.1.20", "11.1.21", "12.1.1", "12.1.2", "12.1.3", "12.1.4", "12.1.5", "12.1.6", "12.1.7", "12.1.8", "12.1.9", "12.1.10", "12.1.11", "12.1.12", "12.1.13", "12.1.14", "12.1.15", "12.1.16", "12.1.17", "12.1.18", "12.1.19", "12.1.20", "12.1.21", "13.1.1", "13.1.2", "13.1.3", "13.1.4", "13.1.5", "13.1.6", "13.1.7", "13.1.8", "13.1.9", "13.1.10", "13.1.11", "13.1.12", "13.1.13", "13.1.14", "13.1.15", "13.1.16", "13.1.17", "13.1.18", "13.1.19", "13.1.20", "13.1.21", "14.1.1", "14.1.2", "14.1.3", "14.1.4", "14.1.5", "14.1.6", "14.1.7", "14.1.8", "14.1.9", "14.1.10", "14.1.11", "14.1.12", "14.1.13", "14.1.14", "14.1.15", "14.1.16", "14.1.17", "14.1.18", "14.1.19", "14.1.20", "14.1.21")
 
 two_digit_naics_code <- c("[11]", "[21]", "[22]", "[23]", "[31-33]", "[41]", "[44-45]", "[48-49]", "[51]", "[52]", "[53]", "[54]", "[55]", "[56]", "[61]", "[62]", "[71]", "[72]", "[81]", "[91]")
+
+provinces <- c(
+  "Alberta", "British Columbia", "Canada", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Northwest Territories", "Nunavut", "Yukon", "Yellowknife, Northwest Territories", "Whitehorse, Yukon", "Iqaluit, Nunavut"
+)
 ```
 
 ### table numbers
@@ -90,7 +94,7 @@ population_table_number <- "17-10-0005-01"
 farms_table_number <- "32-10-0403-01"
 building_construction_table_number <- "34-10-0175-01"
 trade_table_number <- "12-10-0119-01"
-immigration_table_number <- "17-10-0008-01" 
+immigration_table_number <- "17-10-0008-01"
 aquaculture_table_number <- "32-10-0107-01"
 Manufacturing_indusries_table_number <- "16-10-0117-01"
 cpi_table_number <- "18100005"
@@ -135,19 +139,19 @@ pgdp_table_number <- "36-10-0402"
 pgdp <- cansim::get_cansim_ndm(pgdp_table_number)
 pgdp <- janitor::clean_names(pgdp)
 pgdp %>%
-  select(ref_date,geo,north_american_industry_classification_system_naics,value,hierarchy_for_north_american_industry_classification_system_naics,coordinate,classification_code_for_north_american_industry_classification_system_naics,value_2) %>%  
+  select(ref_date, geo, north_american_industry_classification_system_naics, value, hierarchy_for_north_american_industry_classification_system_naics, coordinate, classification_code_for_north_american_industry_classification_system_naics, value_2) %>%
   mutate(ref_date = lubridate::make_date(ref_date)) %>%
   rename(CPC = value_2) %>%
   filter(ref_date > from_this_year) %>%
   filter(value == "Contributions to percent change") %>%
   select(!value) %>%
-  filter(classification_code_for_north_american_industry_classification_system_naics %in% c(two_digit_naics_code) ) %>%
-  group_by(ref_date,north_american_industry_classification_system_naics,geo) -> clean_PGDP
-#maybe wait till the end to convert the tables to save some space
-  
+  filter(classification_code_for_north_american_industry_classification_system_naics %in% c(two_digit_naics_code)) %>%
+  group_by(ref_date, north_american_industry_classification_system_naics, geo) -> clean_PGDP
+# maybe wait till the end to convert the tables to save some space
+
 interactive_table(clean_PGDP)
 
-#data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
+# data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
 ```
 
 #### provincial PGDP
@@ -161,17 +165,16 @@ interactive_table(clean_PGDP)
 ```{r Provincial GDP mastertable}
 pgdp
 pgdp %>%
-  select(ref_date,geo,north_american_industry_classification_system_naics,value,value_2) %>%  
+  select(ref_date, geo, north_american_industry_classification_system_naics, value, value_2) %>%
   mutate(ref_date = lubridate::make_date(ref_date)) %>%
   rename(CPC = value_2) %>%
   filter(ref_date > from_this_year) %>%
   filter(value == "Contributions to percent change") %>%
   select(!value) %>%
   filter(north_american_industry_classification_system_naics == "All industries [T001]") %>%
-  pivot_wider(names_from = north_american_industry_classification_system_naics,values_from = CPC) %>%
+  pivot_wider(names_from = north_american_industry_classification_system_naics, values_from = CPC) %>%
   janitor::clean_names() %>%
   rename(CPC_All_industries = all_industries_t001) -> master_pgdp
-
 ```
 
 ### population
@@ -182,18 +185,14 @@ library(summarytools)
 population <- cansim::get_cansim_ndm(population_table_number)
 population %>%
   janitor::clean_names() %>%
-  select(1,2,4,5,12) %>%
+  select(1, 2, 4, 5, 12) %>%
   rename(population = value) %>%
   mutate(ref_date = lubridate::make_date(ref_date)) %>%
-   filter(ref_date > from_this_year) %>%
-   filter(age_group == "All ages") %>%
+  filter(ref_date > from_this_year) %>%
+  filter(age_group == "All ages") %>%
   filter(sex == "Both sexes") %>%
-  select(1,2,5) -> clean_population
-  #view(dfSummary(clean_population))
-
-
-
-
+  select(1, 2, 5) -> clean_population
+# view(dfSummary(clean_population))
 ```
 
 ### Trade monthly
@@ -204,21 +203,19 @@ This is the YOY percentage change difference for the monthly trade by NAPC I wil
 trade <- cansim::get_cansim_ndm(trade_table_number)
 trade <- janitor::clean_names(trade)
 trade %>%
-  select(ref_date,geo,trade,north_american_product_classification_system_napcs,principal_trading_partners,value) %>% 
-  mutate(ref_date = parse_date(ref_date,"%Y-%m")) %>%
+  select(ref_date, geo, trade, north_american_product_classification_system_napcs, principal_trading_partners, value) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
   filter(ref_date > from_this_year) %>%
-  pivot_wider(names_from = trade, values_from = value) %>% 
+  pivot_wider(names_from = trade, values_from = value) %>%
   janitor::clean_names() %>%
-  arrange(north_american_product_classification_system_napcs,principal_trading_partners,geo,ref_date) %>%
-  group_by(north_american_product_classification_system_napcs,principal_trading_partners,geo) %>% 
-  mutate(yoy_pct_change_import = ((import / lag(import,n = 12,order_by = ref_date)) * 100) - 100) %>% 
-  mutate(yoy_first_dif_import = (import - lag(import,n = 12, order_by = ref_date))) %>%
-  mutate(yoy_pct_change_export = ((domestic_export / lag(domestic_export,n = 12,order_by = ref_date)) * 100) - 100) %>% 
-  mutate(yoy_first_dif_export = (domestic_export - lag(domestic_export,n = 12, order_by = ref_date))) %>%
-  #group_by(3,4,2) %>% 
+  arrange(north_american_product_classification_system_napcs, principal_trading_partners, geo, ref_date) %>%
+  group_by(north_american_product_classification_system_napcs, principal_trading_partners, geo) %>%
+  mutate(yoy_pct_change_import = ((import / lag(import, n = 12, order_by = ref_date)) * 100) - 100) %>%
+  mutate(yoy_first_dif_import = (import - lag(import, n = 12, order_by = ref_date))) %>%
+  mutate(yoy_pct_change_export = ((domestic_export / lag(domestic_export, n = 12, order_by = ref_date)) * 100) - 100) %>%
+  mutate(yoy_first_dif_export = (domestic_export - lag(domestic_export, n = 12, order_by = ref_date))) %>%
+  # group_by(3,4,2) %>%
   data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_full_table_from{from_this_year}.csv")))
-
-
 ```
 
 ### Trade annual
@@ -226,81 +223,90 @@ trade %>%
 annualized trade; run this in mid feb to make sure all the months are there for a reference year. doing so earlier will result in the most recent year being underepesented the best choice is to use moving average or an estimated value
 
 ```{r}
-#make sure you run this after the december release; 8 weeks after reference period is the release 
+# make sure you run this after the december release; 8 weeks after reference period is the release
 library(tidyverse)
 library(tsibble)
 library(lubridate)
 trade <- cansim::get_cansim_ndm(trade_table_number)
 trade <- janitor::clean_names(trade)
 trade %>%
-  select(ref_date,geo,trade,north_american_product_classification_system_napcs,principal_trading_partners,value) %>% 
-  mutate(ref_date = parse_date(ref_date,"%Y-%m")) %>%
+  select(ref_date, geo, trade, north_american_product_classification_system_napcs, principal_trading_partners, value) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
   filter(ref_date > from_this_year) %>%
-  pivot_wider(names_from = trade, values_from = value) %>% 
+  pivot_wider(names_from = trade, values_from = value) %>%
   janitor::clean_names() -> clean_trade
-data_tsbl <- as_tsibble(clean_trade,key = c( north_american_product_classification_system_napcs,principal_trading_partners,geo))
+data_tsbl <- as_tsibble(clean_trade, key = c(north_american_product_classification_system_napcs, principal_trading_partners, geo))
 data_tsbl %>%
   group_by_key() %>%
   index_by(year_month = ~ year(.)) %>%
   summarise(
-    import = sum(import,na.rm = TRUE),
+    import = sum(import, na.rm = TRUE),
     export = sum(domestic_export, na.rm = TRUE)
-  ) -> annual_trade 
+  ) -> annual_trade
 # saving the CSV {} between these things the program will put in R code
 annual_trade %>%
-  data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_annual{from_this_year}.csv"))) 
+  data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_annual{from_this_year}.csv")))
 ```
 
 ### annual trade filtered and left joined into master table
 
 ```{r joining trade to the master}
-as_tibble(annual_trade) %>% 
-  filter(principal_trading_partners == "All countries")  %>%
+as_tibble(annual_trade) %>%
+  filter(principal_trading_partners == "All countries") %>%
   filter(north_american_product_classification_system_napcs == "Total of all merchandise") %>%
-  rename( ref_date = year_month) %>%
-  mutate(ref_date = lubridate::make_date(ref_date)) %>% 
-  select(geo,ref_date,import,export) -> master_trade
-left_join(clean_population,master_trade) %>% left_join(master_pgdp) -> master_provincial_table
+  rename(ref_date = year_month) %>%
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  select(geo, ref_date, import, export) -> master_trade
+left_join(clean_population, master_trade) %>% left_join(master_pgdp) -> master_provincial_table
 
 interactive_table(master_provincial_table)
-
- 
 ```
 
 ## Immigration table
 
 ```{r Immigration }
-Immigration  <- cansim::get_cansim_ndm(immigration_table_number)
+Immigration <- cansim::get_cansim_ndm(immigration_table_number)
 Immigration <- janitor::clean_names(Immigration)
 Immigration %>%
-  select(ref_date,geo,components_of_population_growth,value) %>% 
-  mutate(ref_date = parse_date(ref_date,"%Y /%Y")) %>%
-  filter(ref_date > from_this_year) %>% 
+  select(ref_date, geo, components_of_population_growth, value) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y /%Y")) %>%
+  filter(ref_date > from_this_year) %>%
   pivot_wider(names_from = components_of_population_growth, values_from = value) %>%
   group_by(geo) %>%
-  clean_names() %>% 
- -> clean_immigration
-master_provincial_table %>% 
+  clean_names() -> clean_immigration
+master_provincial_table %>%
   left_join(clean_immigration) -> master_provincial_table
-
 ```
 
 ## construction
 
+all construction numbers are for total type of work and are in unadjusted K dollar 
+
 ```{r construction}
 
-construction  <- cansim::get_cansim_ndm(building_construction_table_number)
+construction <- cansim::get_cansim_ndm(building_construction_table_number)
 construction <- janitor::clean_names(construction)
 construction %>%
-  select(ref_date,geo,type_of_structure,type_of_work,investment_value,value) %>% 
-  mutate(ref_date = parse_date(ref_date,"%Y-%m")) %>%
-  filter(ref_date > from_this_year) %>% 
+  select(ref_date, geo, type_of_structure, type_of_work, investment_value, value) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
+  filter(ref_date > from_this_year) %>%
   filter(type_of_work == "Types of work, total") %>%
   select(!type_of_work) %>%
-  filter(investment_value %in% c("Unadjusted - constant", "Unadjusted - current"))  %>%
-  filter(type_of_structure %in% c("Total residential and non-residential", "Total residential","Total non-residential")) %>% 
+  filter(investment_value %in% c("Unadjusted - constant")) %>%
+  select(!investment_value) %>%
+  filter(type_of_structure %in% c("Total residential and non-residential", "Total residential", "Total non-residential")) %>%
   pivot_wider(names_from = type_of_structure, values_from = value) %>%
-  pivot_wider(names_from = investment_value, values_from = value) %>%
+  clean_names() %>%
+  rename_if(is.numeric, funs(str_c(., "_investment_unadjusted_K$"))) -> clean_construction
+
+data_tsbl <- as_tsibble(clean_construction, key = c(geo))
+
+data_tsbl %>%
+  group_by_key() %>%
+  index_by(year_month = ~ year(.)) %>%
+  summarise(across(where(is.numeric), sum())) -> annual_construction
+# saving the CSV {} between the
+pivot_wider(names_from = investment_value, values_from = value) %>%
   head()
 ```
 
@@ -317,11 +323,11 @@ view(dfSummary(temp))
 ```
 
 ```{r}
- 34-10-0126-01
+34 - 10 - 0126 - 01
 ```
 
 ## tips
 
-maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\*\*
+maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\*\ *
 
 use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to automatically create a first difference of any table.
