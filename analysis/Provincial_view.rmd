@@ -335,8 +335,19 @@ view(dfSummary(temp))
 here in this section I will ad prices 
 
 #### CPI    
-```{r}
-
+```{r CPI}
+cpi <- cansim::get_cansim_ndm(cpi_table_number)
+cpi <- janitor::clean_names(cpi)
+cpi %>%
+    select(ref_date,geo,products_and_product_groups,uom,value) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y")) %>%
+  filter(ref_date > from_this_year) %>% 
+  filter(uom == "2002=100") %>%
+  filter(geo %in% provinces) %>%
+  filter(products_and_product_groups %in% c("All-items", "Goods","Services")) %>%
+  pivot_wider(names_from = products_and_product_groups, values_from = value) %>%
+  select(!uom) -> clean_cpi
+master_provincial_table <- left_join(master_provincial_table,clean_cpi) 
 ```
 
 ### PPD
