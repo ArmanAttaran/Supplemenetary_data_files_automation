@@ -92,6 +92,7 @@ pgdp_table_number <- "36-10-0402"
 lfs_table_number <- "14-10-0023-01"
 population_table_number <- "17-10-0005-01"
 farms_table_number <- "32-10-0403-01"
+grain_shipment_table_number <- "32-10-0351-01"
 building_construction_table_number <- "34-10-0175-01"
 trade_table_number <- "12-10-0119-01"
 immigration_table_number <- "17-10-0008-01"
@@ -262,7 +263,7 @@ left_join(clean_population, master_trade) %>% left_join(master_pgdp) -> master_p
 
 ```
 
-## Immigration table
+### Immigration table
 
 ```{r Immigration }
 Immigration <- cansim::get_cansim_ndm(immigration_table_number)
@@ -278,7 +279,7 @@ master_provincial_table %>%
   left_join(clean_immigration) -> master_provincial_table
 ```
 
-## construction
+### construction
 
 all construction numbers are for total type of work and are in unadjusted K dollar  mabye I should just use 23A_K_ind 
 
@@ -315,6 +316,8 @@ master_provincial_table <- left_join(master_construction,master_provincial_table
 # saving the CSV {} between the
 ```
 
+
+these other two tables that I am not sure if I will include 
 ```{r eval=FALSE, include=FALSE}
 temp <- get_cansim_ndm("34-10-0163-01")
 temp %>% clean_names() -> temp
@@ -327,9 +330,35 @@ temp %>% clean_names() -> temp
 view(dfSummary(temp))
 ```
 
+### Prices 
+
+here in this section I will ad prices 
+
+#### CPI    
+```{r}
+
+```
+
+### PPD
+producer prices 
+
+### Labour force 
+
+
+
 ```{r}
 34 - 10 - 0126 - 01
 ```
+
+
+### agriculture/aquaculture
+focusing on agric/aquaculture 
+
+
+```{r}
+
+```
+
 
 ## results
 ```{r}
