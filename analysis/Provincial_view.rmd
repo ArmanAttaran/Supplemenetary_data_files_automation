@@ -90,6 +90,7 @@ if you have any tables to add please add it here; it will make it easier to main
 ```{r table numbers}
 pgdp_table_number <- "36-10-0402"
 lfs_table_number <- "14-10-0023-01"
+employment_by_industury_table_number <- "14-10-0202-01"
 population_table_number <- "17-10-0005-01"
 farms_table_number <- "32-10-0403-01"
 grain_shipment_table_number <- "32-10-0351-01"
@@ -99,6 +100,7 @@ immigration_table_number <- "17-10-0008-01"
 aquaculture_table_number <- "32-10-0107-01"
 Manufacturing_indusries_table_number <- "16-10-0117-01"
 cpi_table_number <- "18100005"
+  
 ```
 
 ### functions
@@ -362,9 +364,26 @@ producer prices
 ### Labour force 
 
 
+#### employment by indusury 
 
-```{r}
-34 - 10 - 0126 - 01
+```{r employment by industry}
+employment_by_industury <- cansim::get_cansim_ndm(employment_by_industury_table_number)
+employment_by_industury <- janitor::clean_names(employment_by_industury_table_number)
+employment_by_industury %>%
+    select(everything()) %>% View()
+  mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
+  filter(ref_date > from_this_year) %>% 
+  pivot_wider(names_from = type_of_grain, values_from = value) %>% 
+  filter(geo %in% provinces) %>%
+  as_tsibble(key = c(geo)) %>%
+  group_by_key() %>%
+  index_by(year_month = ~ year(.)) %>%
+  summarise(across(where(is.numeric),list(sum))) %>%
+  as_tibble() %>% 
+  rename(ref_date = year_month) %>%
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  select(everything()) -> master_annual_grain_shipment
+
 ```
 
 
