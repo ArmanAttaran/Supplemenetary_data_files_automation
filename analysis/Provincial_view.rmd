@@ -221,9 +221,11 @@ trade %>%
 
 ### Trade annual
 
-annualized trade; run this in mid feb to make sure all the months are there for a reference year. doing so earlier will result in the most recent year being underepesented the best choice is to use moving average or an estimated value
 
-```{r}
+annualized trade; run this in mid feb to make sure all the months are there for a reference year. doing so earlier will result in the most recent year being underepesented the best choice is to use moving average or an estimated value
+below is the raw trade data from NDM; it comes monthly and with a lot of data  I filter out most of it for this provincial view 
+
+```{r Trade Raw}
 # make sure you run this after the december release; 8 weeks after reference period is the release
 library(tidyverse)
 library(tsibble)
@@ -353,6 +355,10 @@ master_provincial_table <- left_join(master_provincial_table,clean_cpi)
 ### PPD
 producer prices 
 
+```{r}
+
+```
+
 ### Labour force 
 
 
@@ -365,15 +371,33 @@ producer prices
 ### agriculture/aquaculture
 focusing on agric/aquaculture 
 
+#### grain shipmetns
+```{r grain shipments}
+grain_shipment <- cansim::get_cansim_ndm(grain_shipment_table_number)
+grain_shipment <- janitor::clean_names(grain_shipment)
+grain_shipment %>%
+    select(ref_date,geo,type_of_grain,value) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
+  filter(ref_date > from_this_year) %>% 
+  pivot_wider(names_from = type_of_grain, values_from = value) %>% 
+  filter(geo %in% provinces) %>%
+  as_tsibble(key = c(geo)) %>%
+  group_by_key() %>%
+  index_by(year_month = ~ year(.)) %>%
+  summarise(across(where(is.numeric),list(sum))) %>%
+  as_tibble() %>% 
+  rename(ref_date = year_month) %>%
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  select(everything()) -> master_annual_grain_shipment
+  
+master_provincial_table <- left_join(master_provincial_table,master_annual_grain_shipment)
 
-```{r}
-
-```
+ ```
 
 
 ## results
 ```{r}
-interactive_table(master_provincial_table )
+interactive_table(master_provincial_table)
 ```
 
 
