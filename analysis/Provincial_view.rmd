@@ -391,7 +391,7 @@ producer prices
 #### Labour force characteristics by industry,annual
 ```{r Labour force characteristics by industry, annual}
 
-LFS_annual <- cansim::get_cansim_ndm(lfs_table_number)
+LFS_annual <- cansim::get_cansim_ndm(annual_lfs_table_number)
 LFS_annual <- janitor::clean_names(LFS_annual)
 LFS_annual %>%
   select(everything()) %>%
@@ -400,9 +400,8 @@ LFS_annual %>%
   filter(age_group == "15 years and over") %>% 
   filter( sex == "Both sexes" ) %>%
   select(ref_date,geo,labour_force_characteristics,north_american_industry_classification_system_naics,value) %>% 
-  pivot_wider(names_from = labour_force_characteristics, values_from = value) %>% View()
-  group_by(geo) %>%
-  clean_names() -> clean_immigration
+  pivot_wider(names_from = labour_force_characteristics, values_from = value) %>% interactive_table()
+
 ```
  
 
