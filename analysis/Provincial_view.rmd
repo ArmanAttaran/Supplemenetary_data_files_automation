@@ -219,6 +219,7 @@ population %>%
   filter(sex == "Both sexes") %>%
   select(1, 2, 5) -> clean_population
 # view(dfSummary(clean_population))
+interactive_table(clean_population)
 ```
 
 ### Trade monthly
@@ -239,9 +240,12 @@ trade %>%
   mutate(yoy_pct_change_import = ((import / lag(import, n = 12, order_by = ref_date)) * 100) - 100) %>%
   mutate(yoy_first_dif_import = (import - lag(import, n = 12, order_by = ref_date))) %>%
   mutate(yoy_pct_change_export = ((domestic_export / lag(domestic_export, n = 12, order_by = ref_date)) * 100) - 100) %>%
-  mutate(yoy_first_dif_export = (domestic_export - lag(domestic_export, n = 12, order_by = ref_date))) %>%
+  mutate(yoy_first_dif_export = (domestic_export - lag(domestic_export, n = 12, order_by = ref_date))) %>% interactive_table()
+
+  
   # group_by(3,4,2) %>%
-  data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_full_table_from{from_this_year}.csv")))
+  
+#data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_full_table_from{from_this_year}.csv")))
 ```
 
 ### Trade annual
@@ -272,8 +276,9 @@ data_tsbl %>%
     export = sum(domestic_export, na.rm = TRUE)
   ) -> annual_trade
 # saving the CSV {} between these things the program will put in R code
-annual_trade %>%
-  data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_annual{from_this_year}.csv")))
+annual_trade %>% interactive_table()
+  
+#data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_annual{from_this_year}.csv")))
 ```
 
 ### annual trade filtered and left joined into master table
@@ -370,12 +375,14 @@ cpi %>%
   mutate(ref_date = parse_date(ref_date, "%Y")) %>%
   filter(ref_date > from_this_year) %>% 
   filter(uom == "2002=100") %>%
-  filter(geo %in% provinces) %>%
+  filter(geo %in% provinces) -> temp_CPI
+
+  interactive_table(temp_CPI)
+  temp_CPI %>%
   filter(products_and_product_groups %in% c("All-items", "Goods","Services")) %>%
   pivot_wider(names_from = products_and_product_groups, values_from = value) %>%
   select(!uom) -> clean_cpi
 
-head(clean_cpi)
 master_provincial_table <- left_join(master_provincial_table,clean_cpi) 
 ```
 
