@@ -10,9 +10,6 @@ params:
  tests: TRUE
 ---
 
-```{r}
-from_this_year <- "2016-12-29"
-```
 
 ## Introduction
 
@@ -35,6 +32,7 @@ in this document I will create a view based on the following tables
 -   International merchandise trade by province, commodity, and Principal Trading Partners 12-10-0119-01
 
 -   Investment in Building Construction(monthly) [34-10-0175-01](https://www150.statcan.gc.ca/t1/tbl1/en/cv.action?pid=3410017501)
+- Building permits, by type of structure and type of work 34-10-0066-01 
 
 ## set up
 
@@ -44,7 +42,7 @@ in this section I will set up the foundation for the program; it is broke up int
 
 in this section I will manage dependencies ( the packages used in this project; in R you need to state what you will use (kinda) and here we will simply state them) these will have to be installed for the program to run properly. if you run this in the cloud the commands below should be sufficient. if you uncomment the first 5 lines
 
-```{r Package set up, message=FALSE, warning=FALSE, include=params$Developer_mode}
+```{r setup, message=FALSE, warning=FALSE, include=params$Developer_mode}
 
 
 # install.packages("tidyverse")
@@ -58,13 +56,53 @@ library(DT) # for creating the interactive table
 library(janitor) # for cleaning table names
 library(cansim) # for downloading NDM tables
 library(here) # for managing folder paths.
+# paramters for the project 
+from_this_year <- "2016-12-29"
+
+## codelists 
+
+two_digit_naics_code <- c("[11]", "[21]", "[22]", "[23]", "[31-33]", "[41]", "[44-45]", "[48-49]", "[51]", "[52]", "[53]", "[54]", "[55]", "[56]", "[61]", "[62]", "[71]", "[72]", "[81]", "[91]")
+
+provinces <- c(
+  "Alberta", "British Columbia", "Canada", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Northwest Territories", "Nunavut", "Yukon", "Yellowknife, Northwest Territories", "Whitehorse, Yukon", "Iqaluit, Nunavut")
+#table numbers 
+pgdp_table_number <- "36-10-0402"
+annual_lfs_table_number <- "14-10-0023-01" 
+employment_by_industury_table_number_annual <- "14-10-0202-01"
+population_table_number <- "17-10-0005-01"
+farms_table_number <- "32-10-0403-01"
+grain_shipment_table_number <- "32-10-0351-01"
+building_construction_table_number <- "34-10-0175-01"
+building_permits_table_number <- "34-10-0066-01 "
+trade_table_number <- "12-10-0119-01"
+immigration_table_number <- "17-10-0008-01"
+aquaculture_table_number <- "32-10-0107-01"
+Manufacturing_indusries_table_number <- "16-10-0117-01"
+cpi_table_number <- "18100005"
+ 
+
+#function 
+interactive_table <- function(data) {
+  DT::datatable(
+    {{ data }},
+    extensions = c("ColReorder", "Buttons"), options = list(
+      colReorder = TRUE,
+      dom = "Bfrtip",
+      buttons = c("copy", "csv", I("colvis")),
+      searchHighlight = TRUE,
+      search = list(regex = TRUE)
+    ),
+    filter = "top"
+  )
+}
+
 ```
 
 ### paths
 
 all the files in this program will now be created relative to where you run this script; it will create all the necessary subflorder and files from the location below
 
-```{r paths}
+```{r}
 here()
 ```
 
@@ -72,15 +110,11 @@ here()
 
 stating what the code lists are for the project to sort and query data from; if you want to add some thing for the table to include you can simple add it here and it should work;. it is designed this way to make this program more extendable, and maintainable. the added complexity is worth it
 
-```{r code lists, include=params$Developer_mode, paged.print=FALSE}
+```{r, include=params$Developer_mode, paged.print=FALSE}
 
 provincial_two_digit_cord <- c("1.1.1", "1.1.2", "1.1.3", "1.1.4", "1.1.5", "1.1.6", "1.1.7", "1.1.8", "1.1.9", "1.1.10", "1.1.11", "1.1.12", "1.1.13", "1.1.14", "1.1.15", "1.1.16", "1.1.17", "1.1.18", "1.1.19", "1.1.20", "1.1.21", "2.1.1", "2.1.2", "2.1.3", "2.1.4", "2.1.5", "2.1.6", "2.1.7", "2.1.8", "2.1.9", "2.1.10", "2.1.11", "2.1.12", "2.1.13", "2.1.14", "2.1.15", "2.1.16", "2.1.17", "2.1.18", "2.1.19", "2.1.20", " 2.1.21", "3.1.1", "3.1.2", "3.1.3", "3.1.4", "3.1.5", "3.1.6", "3.1.7", "3.1.8", "3.1.9", "3.1.10", "3.1.11", "3.1.12", "3.1.13", "3.1.14", "3.1.15", "3.1.16", "3.1.17", "3.1.18", "3.1.19", "3.1.20", "3.1.21", "4.1.1", "4.1.2", "4.1.3", "4.1.4", "4.1.5", "4.1.6", "4.1.7", "4.1.8", "4.1.9", "4.1.10", "4.1.11", "4.1.12", "4.1.13", "4.1.14", "4.1.15", "4.1.16", "4.1.17", "4.1.18", "4.1.19", "4.1.20", "4.1.21", "5.1.1", "5.1.2", "5.1.3", "5.1.4", "5.1.5", "5.1.6", "5.1.7", "5.1.8", "5.1.9", "5.1.10", "5.1.11", "5.1.12", "5.1.13", "5.1.14", "5.1.15", "5.1.16", "5.1.17", "5.1.18", "5.1.19", "5.1.20", "5.1.21", "6.1.1", "6.1.2", "6.1.3", "6.1.4", "6.1.5", "6.1.6", "6.1.7", "6.1.8", "6.1.9", "6.1.10", "6.1.11", "6.1.12", "6.1.13", "6.1.14", "6.1.15", "6.1.16", "6.1.17", "6.1.18", "6.1.19", "6.1.20", "6.1.21", "7.1.1", "7.1.2", "7.1.3", "7.1.4", "7.1.5", "7.1.6", "7.1.7", "7.1.8", "7.1.9", "7.1.10", "7.1.11", "7.1.12", "7.1.13", "7.1.14", "7.1.15", "7.1.16", "7.1.17", "7.1.18", "7.1.19", "7.1.20", "7.1.21", "8.1.1", "8.1.2", "8.1.3", "8.1.4", "8.1.5", "8.1.6", "8.1.7", "8.1.8", "8.1.9", "8.1.10", "8.1.11", "8.1.12", "8.1.13", "8.1.14", "8.1.15", "8.1.16", "8.1.17", "8.1.18", "8.1.19", "8.1.20", "8.1.21", "9.1.1", "9.1.2", "9.1.3", "9.1.4", "9.1.5", "9.1.6", "9.1.7", "9.1.8", "9.1.9", "9.1.10", "9.1.11", "9.1.12", "9.1.13", "9.1.14", "9.1.15", "9.1.16", "9.1.17", "9.1.18", "9.1.19", "9.1.20", "9.1.21", "10.1.1", "10.1.2", "10.1.3", "10.1.4", "10.1.5", "10.1.6", "10.1.7", "10.1.8", "10.1.9", "10.1.10", "10.1.11", "10.1.12", "10.1.13", "10.1.14", "10.1.15", "10.1.16", "10.1.17", "10.1.18", "10.1.19", "10.1.20", "10.1.21", "11.1.1", "11.1.2", "11.1.3", "11.1.4", "11.1.5", "11.1.6", "11.1.7", "11.1.8", "11.1.9", "11.1.10", "11.1.11", "11.1.12", "11.1.13", "11.1.14", "11.1.15", "11.1.16", "11.1.17", "11.1.18", "11.1.19", "11.1.20", "11.1.21", "12.1.1", "12.1.2", "12.1.3", "12.1.4", "12.1.5", "12.1.6", "12.1.7", "12.1.8", "12.1.9", "12.1.10", "12.1.11", "12.1.12", "12.1.13", "12.1.14", "12.1.15", "12.1.16", "12.1.17", "12.1.18", "12.1.19", "12.1.20", "12.1.21", "13.1.1", "13.1.2", "13.1.3", "13.1.4", "13.1.5", "13.1.6", "13.1.7", "13.1.8", "13.1.9", "13.1.10", "13.1.11", "13.1.12", "13.1.13", "13.1.14", "13.1.15", "13.1.16", "13.1.17", "13.1.18", "13.1.19", "13.1.20", "13.1.21", "14.1.1", "14.1.2", "14.1.3", "14.1.4", "14.1.5", "14.1.6", "14.1.7", "14.1.8", "14.1.9", "14.1.10", "14.1.11", "14.1.12", "14.1.13", "14.1.14", "14.1.15", "14.1.16", "14.1.17", "14.1.18", "14.1.19", "14.1.20", "14.1.21")
 
-two_digit_naics_code <- c("[11]", "[21]", "[22]", "[23]", "[31-33]", "[41]", "[44-45]", "[48-49]", "[51]", "[52]", "[53]", "[54]", "[55]", "[56]", "[61]", "[62]", "[71]", "[72]", "[81]", "[91]")
 
-provinces <- c(
-  "Alberta", "British Columbia", "Canada", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Northwest Territories", "Nunavut", "Yukon", "Yellowknife, Northwest Territories", "Whitehorse, Yukon", "Iqaluit, Nunavut"
-)
 ```
 
 ### table numbers
@@ -88,18 +122,7 @@ provinces <- c(
 if you have any tables to add please add it here; it will make it easier to maintain this program
 
 ```{r table numbers}
-pgdp_table_number <- "36-10-0402"
-lfs_table_number <- "14-10-0023-01"
-employment_by_industury_table_number <- "14-10-0202-01"
-population_table_number <- "17-10-0005-01"
-farms_table_number <- "32-10-0403-01"
-grain_shipment_table_number <- "32-10-0351-01"
-building_construction_table_number <- "34-10-0175-01"
-trade_table_number <- "12-10-0119-01"
-immigration_table_number <- "17-10-0008-01"
-aquaculture_table_number <- "32-10-0107-01"
-Manufacturing_indusries_table_number <- "16-10-0117-01"
-cpi_table_number <- "18100005"
+
   
 ```
 
@@ -111,7 +134,7 @@ it is important for the search function and performance for the columns to be ca
 
 TODO: find a way to handle sig dig
 
-```{r functions }
+```{r setup functions , include=FALSE}
 interactive_table <- function(data) {
   DT::datatable(
     {{ data }},
@@ -351,6 +374,8 @@ cpi %>%
   filter(products_and_product_groups %in% c("All-items", "Goods","Services")) %>%
   pivot_wider(names_from = products_and_product_groups, values_from = value) %>%
   select(!uom) -> clean_cpi
+
+head(clean_cpi)
 master_provincial_table <- left_join(master_provincial_table,clean_cpi) 
 ```
 
@@ -363,16 +388,21 @@ producer prices
 
 ### Labour force 
 
+#### Labour force characteristics by industry,annual
+```{r Labour force characteristics by industry, annual}
 
-#### employment by indusury 
+```
+ 
 
-```{r employment by industry}
-employment_by_industury <- cansim::get_cansim_ndm(employment_by_industury_table_number)
-employment_by_industury <- janitor::clean_names(employment_by_industury_table_number)
+#### annual employment by indusury 
+
+```{r annual employment by industry, eval=FALSE, include=FALSE}
+employment_by_industury <- cansim::get_cansim_ndm(employment_by_industury_table_number_annual)
+employment_by_industury <- janitor::clean_names(employment_by_industury)
 employment_by_industury %>%
-    select(everything()) %>% View()
-  mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
-  filter(ref_date > from_this_year) %>% 
+    select(everything()) %>% 
+  mutate(ref_date = parse_date(ref_date, "%Y")) %>%
+  filter(ref_date > from_this_year) %>% View() 
   pivot_wider(names_from = type_of_grain, values_from = value) %>% 
   filter(geo %in% provinces) %>%
   as_tsibble(key = c(geo)) %>%
@@ -384,7 +414,7 @@ employment_by_industury %>%
   mutate(ref_date = lubridate::make_date(ref_date)) %>%
   select(everything()) -> master_annual_grain_shipment
 
-```
+```   
 
 
 ### agriculture/aquaculture
@@ -406,7 +436,7 @@ grain_shipment %>%
   summarise(across(where(is.numeric),list(sum))) %>%
   as_tibble() %>% 
   rename(ref_date = year_month) %>%
-  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  mutate(ref_date = lubridate::make_date(ref_date)) %>% 
   select(everything()) -> master_annual_grain_shipment
   
 master_provincial_table <- left_join(master_provincial_table,master_annual_grain_shipment)
@@ -425,3 +455,21 @@ interactive_table(master_provincial_table)
 maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\*\ *
 
 use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to automatically create a first difference of any table.
+
+rename_with(iris, ~ tolower(gsub(".", "_", .x, fixed = TRUE)))
+```{r eval=FALSE, include=FALSE}
+rename_with(iris, ~ tolower(gsub(".", "_", .x, fixed = TRUE)))
+
+
+maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\*\ *
+
+use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to automatically create a first difference of any table.
+
+```
+
+### things I should have done
+created a schema for naming things; I should have followed the statcan names instead of naming things for simplicity. 
+create code templates with text generations based on three scenarios 
+annual tables
+weekly tables
+monthly tables 
