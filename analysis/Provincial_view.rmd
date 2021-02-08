@@ -1,7 +1,7 @@
 ---
 title: "Provincial_view"
 author: "Arman Attaran"
-date: "2021-01-19"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
