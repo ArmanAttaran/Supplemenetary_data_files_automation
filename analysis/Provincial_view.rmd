@@ -484,7 +484,8 @@ master_provincial_table %>%  data.table::fwrite(here::here("output", str_glue("p
 master_provincial_table %>% 
   mutate(across(where(is.character), as.factor)) %>%
   mutate(ref_date = year(ref_date)) %>%   
-  mutate(ref_date = as.factor(ref_date)) %>%  
+  mutate(ref_date = as.factor(ref_date)) %>%
+   rename_with(~ tolower(gsub("_", " ", .x, fixed = TRUE))) %>%
   interactive_table() 
   
 ```
