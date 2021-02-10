@@ -10,7 +10,6 @@ params:
  tests: TRUE
 ---
 
-
 ## Introduction
 
 in this document I will create a view based on the following tables
@@ -32,7 +31,8 @@ in this document I will create a view based on the following tables
 -   International merchandise trade by province, commodity, and Principal Trading Partners 12-10-0119-01
 
 -   Investment in Building Construction(monthly) [34-10-0175-01](https://www150.statcan.gc.ca/t1/tbl1/en/cv.action?pid=3410017501)
-- Building permits, by type of structure and type of work 34-10-0066-01 
+
+-   Building permits, by type of structure and type of work 34-10-0066-01
 
 ## set up
 
@@ -154,11 +154,11 @@ interactive_table(gapminder::gapminder)
 # summarytools::view(dfSummary(LFS))  for exploring tables
 ```
 
-## importing/cleaning the tables.
+## Macro economic accounts
 
 i will attempt to import and clean all the tables \#\#\# PGDP here I will be working with Provincial GDP
 
-#### 2 digit naics
+### Provincial GDP CPC
 
 ```{r PGDP}
 pgdp_table_number <- "36-10-0402"
@@ -176,15 +176,24 @@ pgdp %>%
 # maybe wait till the end to convert the tables to save some space
 
 interactive_table(clean_PGDP)
-
 # data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
 ```
 
-#### provincial PGDP
-
+### Provincial GDP 
 ```{r}
+pgdp_table_number <- "36-10-0402"
+pgdp <- cansim::get_cansim_ndm(pgdp_table_number)
+pgdp <- janitor::clean_names(pgdp)
+pgdp %>%
+  select(ref_date, geo, north_american_industry_classification_system_naics, value, value_2) %>%
+  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  pivot_wider(names_from = value, values_from = value_2) %>%  filter(ref_date > from_this_year) -> clean_PGDP
+clean_PGDP %>% data.table::fwrite(here::here("output", str_glue("Provincial_GDP_36-10-0402.csv")))
+
+# maybe wait till the end to convert the tables to save some space
 
 ```
+
 
 #### provincial GDP for master table
 
@@ -220,6 +229,8 @@ population %>%
   select(1, 2, 5) -> clean_population
 # view(dfSummary(clean_population))
 interactive_table(clean_population)
+clean_population %>%
+data.table::fwrite(here::here("output", str_glue("Population_{population_table_number}.csv")))
 ```
 
 ### Trade monthly
@@ -240,7 +251,7 @@ trade %>%
   mutate(yoy_pct_change_import = ((import / lag(import, n = 12, order_by = ref_date)) * 100) - 100) %>%
   mutate(yoy_first_dif_import = (import - lag(import, n = 12, order_by = ref_date))) %>%
   mutate(yoy_pct_change_export = ((domestic_export / lag(domestic_export, n = 12, order_by = ref_date)) * 100) - 100) %>%
-  mutate(yoy_first_dif_export = (domestic_export - lag(domestic_export, n = 12, order_by = ref_date))) %>% interactive_table()
+  mutate(yoy_first_dif_export = (domestic_export - lag(domestic_export, n = 12, order_by = ref_date))) %>% data.table::fwrite(here::here("output", str_glue("Trade_Monthly{trade_table_number}.csv")))
 
   
   # group_by(3,4,2) %>%
@@ -250,9 +261,7 @@ trade %>%
 
 ### Trade annual
 
-
-annualized trade; run this in mid feb to make sure all the months are there for a reference year. doing so earlier will result in the most recent year being underepesented the best choice is to use moving average or an estimated value
-below is the raw trade data from NDM; it comes monthly and with a lot of data  I filter out most of it for this provincial view 
+annualized trade; run this in mid feb to make sure all the months are there for a reference year. doing so earlier will result in the most recent year being underepesented the best choice is to use moving average or an estimated value below is the raw trade data from NDM; it comes monthly and with a lot of data I filter out most of it for this provincial view
 
 ```{r Trade Raw}
 # make sure you run this after the december release; 8 weeks after reference period is the release
@@ -276,9 +285,7 @@ data_tsbl %>%
     export = sum(domestic_export, na.rm = TRUE)
   ) -> annual_trade
 # saving the CSV {} between these things the program will put in R code
-annual_trade %>% interactive_table()
-  
-#data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_annual{from_this_year}.csv")))
+annual_trade %>% data.table::fwrite(here::here("output", str_glue("annual_trade_table_{trade_table_number}.csv")))
 ```
 
 ### annual trade filtered and left joined into master table
@@ -313,7 +320,7 @@ master_provincial_table %>%
 
 ### construction
 
-all construction numbers are for total type of work and are in unadjusted K dollar  mabye I should just use 23A_K_ind 
+all construction numbers are for total type of work and are in unadjusted K dollar mabye I should just use 23A_K\_ind
 
 ```{r construction}
 
@@ -348,8 +355,8 @@ master_provincial_table <- left_join(master_construction,master_provincial_table
 # saving the CSV {} between the
 ```
 
+these other two tables that I am not sure if I will include
 
-these other two tables that I am not sure if I will include 
 ```{r eval=FALSE, include=FALSE}
 temp <- get_cansim_ndm("34-10-0163-01")
 temp %>% clean_names() -> temp
@@ -362,11 +369,12 @@ temp %>% clean_names() -> temp
 view(dfSummary(temp))
 ```
 
-### Prices 
+### Prices
 
-here in this section I will ad prices 
+here in this section I will ad prices
 
-#### CPI    
+#### CPI
+
 ```{r CPI}
 cpi <- cansim::get_cansim_ndm(cpi_table_number)
 cpi <- janitor::clean_names(cpi)
@@ -376,8 +384,10 @@ cpi %>%
   filter(ref_date > from_this_year) %>% 
   filter(uom == "2002=100") %>%
   filter(geo %in% provinces) -> temp_CPI
-
+temp_CPI %>%
+data.table::fwrite(here::here("output", str_glue("CPI_{cpi_table_number}.csv")))
   interactive_table(temp_CPI)
+  
   temp_CPI %>%
   filter(products_and_product_groups %in% c("All-items", "Goods","Services")) %>%
   pivot_wider(names_from = products_and_product_groups, values_from = value) %>%
@@ -387,15 +397,17 @@ master_provincial_table <- left_join(master_provincial_table,clean_cpi)
 ```
 
 ### PPD
-producer prices 
+
+producer prices
 
 ```{r}
 
 ```
 
-### Labour force 
+### Labour force
 
 #### Labour force characteristics by industry,annual
+
 ```{r Labour force characteristics by industry, annual}
 
 LFS_annual <- cansim::get_cansim_ndm(annual_lfs_table_number)
@@ -410,9 +422,10 @@ LFS_annual %>%
   pivot_wider(names_from = labour_force_characteristics, values_from = value) %>% interactive_table()
 
 ```
- 
 
-#### annual employment by indusury 
+#### annual employment by indusury
+
+this needs to be run by mid feb
 
 ```{r annual employment by industry, eval=FALSE, include=FALSE}
 employment_by_industury <- cansim::get_cansim_ndm(employment_by_industury_table_number_annual)
@@ -432,13 +445,16 @@ employment_by_industury %>%
   mutate(ref_date = lubridate::make_date(ref_date)) %>%
   select(everything()) -> master_annual_grain_shipment
 
-```   
+```
 
+#### Average hourly earnings for employees paid by the hour, by industry, annual
 
 ### agriculture/aquaculture
-focusing on agric/aquaculture 
+
+focusing on agric/aquaculture
 
 #### grain shipmetns
+
 ```{r grain shipments}
 grain_shipment <- cansim::get_cansim_ndm(grain_shipment_table_number)
 grain_shipment <- janitor::clean_names(grain_shipment)
@@ -456,25 +472,31 @@ grain_shipment %>%
   rename(ref_date = year_month) %>%
   mutate(ref_date = lubridate::make_date(ref_date)) %>% 
   select(everything()) -> master_annual_grain_shipment
+master_annual_grain_shipment %>% data.table::fwrite(here::here("output", str_glue("grain_production {grain_shipment_table_number}.csv")))
   
 master_provincial_table <- left_join(master_provincial_table,master_annual_grain_shipment)
-
- ```
-
-
-## results
-```{r}
-interactive_table(master_provincial_table)
+master_provincial_table %>%  data.table::fwrite(here::here("output", str_glue("provincial_view.csv")))
 ```
 
+## results
+
+```{r}
+master_provincial_table %>% 
+  mutate(across(where(is.character), as.factor)) %>%
+  mutate(ref_date = year(ref_date)) %>%   
+  mutate(ref_date = as.factor(ref_date)) %>%  
+  interactive_table() 
+  
+```
 
 ## tips
 
-maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\*\ *
+maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\* \*
 
 use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to automatically create a first difference of any table.
 
-rename_with(iris, ~ tolower(gsub(".", "_", .x, fixed = TRUE)))
+rename_with(iris, \~ tolower(gsub(".", "\_", .x, fixed = TRUE)))
+
 ```{r eval=FALSE, include=FALSE}
 rename_with(iris, ~ tolower(gsub(".", "_", .x, fixed = TRUE)))
 
@@ -482,12 +504,11 @@ rename_with(iris, ~ tolower(gsub(".", "_", .x, fixed = TRUE)))
 maybe use \* in regex to match wild cards with the coordinates; for example 1.1.\*\*\ *
 
 use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to automatically create a first difference of any table.
-
+  mutate(across(where(is.factor), as.character))
 ```
 
 ### things I should have done
-created a schema for naming things; I should have followed the statcan names instead of naming things for simplicity. 
-create code templates with text generations based on three scenarios 
-annual tables
-weekly tables
-monthly tables 
+
+created a schema for naming things; I should have followed the statcan names instead of naming things for simplicity. create code templates with text generations based on three scenarios annual tables weekly tables monthly tables
+
+have a to do list
