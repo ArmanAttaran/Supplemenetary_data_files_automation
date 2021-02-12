@@ -384,7 +384,7 @@ cpi %>%
   mutate(ref_date = parse_date(ref_date, "%Y")) %>%
   filter(ref_date > from_this_year) %>% 
   filter(uom == "2002=100") %>%
-  select(!uom) %>%
+  select(!uom) %>% 
   filter(geo %in% provinces) -> temp_CPI  
 temp_CPI %>%
 data.table::fwrite(here::here("output", str_glue("CPI_{cpi_table_number}.csv")))
@@ -392,8 +392,7 @@ data.table::fwrite(here::here("output", str_glue("CPI_{cpi_table_number}.csv")))
   
   temp_CPI %>%
   filter(products_and_product_groups %in% c("All-items", "Goods","Services")) %>%
-  pivot_wider(names_from = products_and_product_groups, values_from = value) %>%
-  select(!uom) -> clean_cpi
+  pivot_wider(names_from = products_and_product_groups, values_from = value)  -> clean_cpi
 
 master_provincial_table <- left_join(master_provincial_table,clean_cpi) 
 ```
@@ -482,7 +481,7 @@ master_provincial_table %>%  data.table::fwrite(here::here("output", str_glue("p
 
 ## results
 
-```{r}
+```{r all years master_table}
 master_provincial_table %>% 
   mutate(across(where(is.character), as.factor)) %>%
   mutate(ref_date = year(ref_date)) %>%   
@@ -491,6 +490,52 @@ master_provincial_table %>%
   filter(geo != "Canada") %>%
   interactive_table() %>% 
   formatCurrency(3:5, digits = 0)%>%
+  formatStyle(
+    6,
+    background = styleColorBar(master_provincial_table$population, 'teal'),
+    backgroundSize = '100% 90%',
+    backgroundRepeat = 'no-repeat',
+    backgroundPosition = 'center'
+  )  %>%
+formatStyle(
+    7,
+    background = styleColorBar(master_provincial_table$import, 'steelblue'),
+    backgroundSize = '100% 90%',
+    backgroundRepeat = 'no-repeat',
+    backgroundPosition = 'center'
+  )  %>%
+  formatStyle(
+    8,
+    background = styleColorBar(master_provincial_table$export, 'red'),
+    backgroundSize = '100% 90%',
+    backgroundRepeat = 'no-repeat',
+    backgroundPosition = 'center'
+  )  
+
+
+```
+
+\
+year 2020 only
+
+```{r}
+master_provincial_table %>% 
+  mutate(across(where(is.character), as.factor)) %>%
+  mutate(ref_date = year(ref_date)) %>%   
+  filter(ref_date == 2020) %>%
+  mutate(ref_date = as.factor(ref_date)) %>%
+  
+  rename_with(~ tolower(gsub("_", " ", .x, fixed = TRUE))) %>%
+  filter(geo != "Canada") %>%
+  interactive_table() %>% 
+  formatCurrency(3:5, digits = 0)%>%
+  formatStyle(
+    6,
+    background = styleColorBar(master_provincial_table$population, 'teal'),
+    backgroundSize = '100% 90%',
+    backgroundRepeat = 'no-repeat',
+    backgroundPosition = 'center'
+  )  %>%
 formatStyle(
     7,
     background = styleColorBar(master_provincial_table$import, 'steelblue'),
@@ -506,8 +551,6 @@ formatStyle(
     backgroundPosition = 'center'
   )  
 ```
-
-\
 
 ## tips
 
