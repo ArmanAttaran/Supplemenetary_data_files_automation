@@ -510,7 +510,8 @@ formatStyle(
     backgroundSize = '100% 90%',
     backgroundRepeat = 'no-repeat',
     backgroundPosition = 'center'
-  )  
+  )  %>%
+  htmlwidgets::saveWidget("test.html") 
 
 
 ```
