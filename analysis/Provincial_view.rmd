@@ -32,6 +32,8 @@ in this document I will create a view based on the following tables
 
 -   Investment in Building Construction(monthly) [34-10-0175-01](https://www150.statcan.gc.ca/t1/tbl1/en/cv.action?pid=3410017501)
 
+-   Industrial capacity utilization rates, by industry [16-10-0109-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1610010901)
+
 -   Building permits, by type of structure and type of work 34-10-0066-01
 
 ## set up
@@ -179,21 +181,20 @@ interactive_table(clean_PGDP)
 # data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
 ```
 
-### Provincial GDP 
+### Provincial GDP
+
 ```{r}
 pgdp_table_number <- "36-10-0402"
 pgdp <- cansim::get_cansim_ndm(pgdp_table_number)
 pgdp <- janitor::clean_names(pgdp)
 pgdp %>%
-  select(ref_date, geo, north_american_industry_classification_system_naics, value, value_2) %>%
-  mutate(ref_date = lubridate::make_date(ref_date)) %>%
+  select(ref_date, geo, north_american_industry_classification_system_naics, value, value_2) %>% 
+  mutate(ref_date = lubridate::make_date(ref_date)) %>% 
   pivot_wider(names_from = value, values_from = value_2) %>%  filter(ref_date > from_this_year) -> clean_PGDP
 clean_PGDP %>% data.table::fwrite(here::here("output", str_glue("Provincial_GDP_36-10-0402.csv")))
-
 # maybe wait till the end to convert the tables to save some space
 
 ```
-
 
 #### provincial GDP for master table
 
@@ -288,7 +289,7 @@ data_tsbl %>%
 annual_trade %>% data.table::fwrite(here::here("output", str_glue("annual_trade_table_{trade_table_number}.csv")))
 ```
 
-### annual trade filtered and left joined into master table
+#### annual trade filtered and left joined into master table
 
 ```{r joining trade to the master}
 as_tibble(annual_trade) %>%
@@ -331,7 +332,7 @@ construction %>%
   mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
   filter(ref_date > from_this_year) %>%
   filter(geo %in% provinces) %>%
-  filter(type_of_work == "Types of work, total") %>%
+  filter(type_of_work == "Types of work, total") %>% 
   select(!type_of_work) %>%
   filter(investment_value %in% c("Unadjusted - constant")) %>%
   select(!investment_value) %>%
@@ -383,7 +384,8 @@ cpi %>%
   mutate(ref_date = parse_date(ref_date, "%Y")) %>%
   filter(ref_date > from_this_year) %>% 
   filter(uom == "2002=100") %>%
-  filter(geo %in% provinces) -> temp_CPI
+  select(!uom) %>%
+  filter(geo %in% provinces) -> temp_CPI  
 temp_CPI %>%
 data.table::fwrite(here::here("output", str_glue("CPI_{cpi_table_number}.csv")))
   interactive_table(temp_CPI)
@@ -486,8 +488,16 @@ master_provincial_table %>%
   mutate(ref_date = year(ref_date)) %>%   
   mutate(ref_date = as.factor(ref_date)) %>%
    rename_with(~ tolower(gsub("_", " ", .x, fixed = TRUE))) %>%
-  interactive_table() 
-  
+  filter(geo == !"Canada") %>%
+  interactive_table() %>% 
+  formatCurrency(3:5, digits = 0)%>%
+formatStyle(
+    6,
+    background = styleColorBar(master_provincial_table$population, 'steelblue'),
+    backgroundSize = '100% 90%',
+    backgroundRepeat = 'no-repeat',
+    backgroundPosition = 'center'
+  )  
 ```
 
 ## tips
