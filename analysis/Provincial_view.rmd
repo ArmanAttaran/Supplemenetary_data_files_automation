@@ -487,18 +487,27 @@ master_provincial_table %>%
   mutate(across(where(is.character), as.factor)) %>%
   mutate(ref_date = year(ref_date)) %>%   
   mutate(ref_date = as.factor(ref_date)) %>%
-   rename_with(~ tolower(gsub("_", " ", .x, fixed = TRUE))) %>%
-  filter(geo == !"Canada") %>%
+  rename_with(~ tolower(gsub("_", " ", .x, fixed = TRUE))) %>%
+  filter(geo != "Canada") %>%
   interactive_table() %>% 
   formatCurrency(3:5, digits = 0)%>%
 formatStyle(
-    6,
-    background = styleColorBar(master_provincial_table$population, 'steelblue'),
+    7,
+    background = styleColorBar(master_provincial_table$import, 'steelblue'),
+    backgroundSize = '100% 90%',
+    backgroundRepeat = 'no-repeat',
+    backgroundPosition = 'center'
+  )  %>%
+  formatStyle(
+    8,
+    background = styleColorBar(master_provincial_table$export, 'red'),
     backgroundSize = '100% 90%',
     backgroundRepeat = 'no-repeat',
     backgroundPosition = 'center'
   )  
 ```
+
+\
 
 ## tips
 
