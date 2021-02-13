@@ -34,7 +34,7 @@ in this document I will create a view based on the following tables
 
 -   Industrial capacity utilization rates, by industry [16-10-0109-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1610010901)
 
--   Building permits, by type of structure and type of work 34-10-0066-01
+-   Building permits, by type of structure and type of work [34-10-0066-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3410006601&pickMembers%5B0%5D=1.7&pickMembers%5B1%5D=3.1&pickMembers%5B2%5D=4.1&pickMembers%5B3%5D=5.1&cubeTimeFrame.startMonth=01&cubeTimeFrame.startYear=2019&cubeTimeFrame.endMonth=12&cubeTimeFrame.endYear=2020&referencePeriods=20190101%2C20201201)
 
 ## set up
 
