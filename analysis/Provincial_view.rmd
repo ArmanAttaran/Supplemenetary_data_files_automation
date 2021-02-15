@@ -248,6 +248,12 @@ clean_population %>%
 data.table::fwrite(here::here("output", str_glue("Population_{population_table_number}.csv")))
 ```
 
+### **Capital and repair expenditures, non-residential tangible assets, by industry and geography** 
+
+34-10-0035-01
+
+im not sure where this fits in
+
 ### Trade monthly
 
 This is the YOY percentage change difference for the monthly trade by NAPC I will create the annual series tomorrow. simply sum it over the year. it seems to be what the chief economist did and also it makes sense since it is already seasonally adjusted
@@ -421,7 +427,9 @@ producer prices
 
 ### Labour force
 
-#### Labour force characteristics by industry,annual
+#### Labour force characteristics by industry,annual 
+
+**LFS survey**
 
 ```{r Labour force characteristics by industry, annual}
 
@@ -438,7 +446,9 @@ LFS_annual %>%
 
 ```
 
-#### annual employment by industry
+#### annual employment by industry SEPH
+
+survey for this is SEPH
 
 this needs to be run by mid feb
 
@@ -463,6 +473,16 @@ employment_by_industury %>%
 ```
 
 #### Average hourly earnings for employees paid by the hour, by industry, annual
+
+### [Employment Insurance Statistics ](http://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=2604 "Employment Insurance Statistics - Monthly")
+
+#### **Employment insurance beneficiaries (regular benefits) by province and territory, monthly, seasonally adjusted**
+
+[14-10-0011-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410001101&pickMembers%5B0%5D=2.2&pickMembers%5B1%5D=3.1&pickMembers%5B2%5D=4.1&cubeTimeFrame.startMonth=01&cubeTimeFrame.startYear=2018&cubeTimeFrame.endMonth=11&cubeTimeFrame.endYear=2020&referencePeriods=20180101%2C20201101)
+
+Job Vacancy and Wage Survey
+
+# **Employment insurance beneficiaries (regular benefits) by province and territory, monthly, seasonally adjusted**
 
 ### agriculture/aquaculture
 
