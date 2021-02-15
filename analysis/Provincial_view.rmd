@@ -219,7 +219,7 @@ pgdp %>%
   rename(CPC_All_industries = all_industries_t001) -> master_pgdp
 ```
 
-### MGDP real GDP by industry 
+### MGDP real GDP by industry
 
 add MGDP
 
@@ -438,7 +438,7 @@ LFS_annual %>%
 
 ```
 
-#### annual employment by indusury
+#### annual employment by industry
 
 this needs to be run by mid feb
 
@@ -446,10 +446,10 @@ this needs to be run by mid feb
 employment_by_industury <- cansim::get_cansim_ndm(employment_by_industury_table_number_annual)
 employment_by_industury <- janitor::clean_names(employment_by_industury)
 employment_by_industury %>%
-    select(everything()) %>% 
+    select(ref_date,geo,type_of_employee,north_american_industry_classification_system_naics,value,status) %>% 
   mutate(ref_date = parse_date(ref_date, "%Y")) %>%
-  filter(ref_date > from_this_year) %>% View() 
-  pivot_wider(names_from = type_of_grain, values_from = value) %>% 
+  filter(ref_date > from_this_year) %>% 
+  pivot_wider(names_from = type_of_employee, values_from = c(value,status)) %>% View()
   filter(geo %in% provinces) %>%
   as_tsibble(key = c(geo)) %>%
   group_by_key() %>%
@@ -468,7 +468,7 @@ employment_by_industury %>%
 
 focusing on agric/aquaculture
 
-#### grain shipmetns
+#### grain shipments 
 
 ```{r grain shipments}
 grain_shipment <- cansim::get_cansim_ndm(grain_shipment_table_number)
@@ -583,6 +583,12 @@ maybe use \* in regex to match wild cards with the coordinates; for example 1.1.
 
 use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to automatically create a first difference of any table.
   mutate(across(where(is.factor), as.character))
+  
+  # use this to extract all of the commits for the work you have done
+  
+  git log --since='last year' --date=short --pretty=format:'%h,%an,%ad,%s' > ~/log.csv
+
+
 ```
 
 ### things I should have done
