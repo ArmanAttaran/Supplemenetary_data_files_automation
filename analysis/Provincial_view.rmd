@@ -10,7 +10,7 @@ params:
  tests: TRUE
 ---
 
-## Introduction
+# Introduction
 
 in this document I will create a view based on the following tables
 
@@ -35,6 +35,8 @@ in this document I will create a view based on the following tables
 -   Industrial capacity utilization rates, by industry [16-10-0109-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1610010901)
 
 -   Building permits, by type of structure and type of work [34-10-0066-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3410006601&pickMembers%5B0%5D=1.7&pickMembers%5B1%5D=3.1&pickMembers%5B2%5D=4.1&pickMembers%5B3%5D=5.1&cubeTimeFrame.startMonth=01&cubeTimeFrame.startYear=2019&cubeTimeFrame.endMonth=12&cubeTimeFrame.endYear=2020&referencePeriods=20190101%2C20201201)
+
+-   Employment and average weekly earnings (including overtime) for all employees by province and territory, monthly, seasonally adjusted [14-10-0223-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410022301&pickMembers%5B0%5D=2.2&pickMembers%5B1%5D=3.2&cubeTimeFrame.startMonth=01&cubeTimeFrame.startYear=2019&cubeTimeFrame.endMonth=11&cubeTimeFrame.endYear=2020&referencePeriods=20190101%2C20201101)
 
 ## set up
 
@@ -156,9 +158,13 @@ interactive_table(gapminder::gapminder)
 # summarytools::view(dfSummary(LFS))  for exploring tables
 ```
 
-## Macro economic accounts
+# Macro economic accounts
 
 i will attempt to import and clean all the tables \#\#\# PGDP here I will be working with Provincial GDP
+
+## GDP measures IAD
+
+here I will include the tables by IAD
 
 ### Provincial GDP CPC
 
@@ -181,7 +187,7 @@ interactive_table(clean_PGDP)
 # data.table::fwrite(here("output", str_glue("Table_{tablenumber}_CPI_by_province_product_groups_{params$from_this_year}-{params$to_this_year}")))
 ```
 
-### Provincial GDP
+#### Provincial GDP
 
 ```{r}
 pgdp_table_number <- "36-10-0402"
@@ -211,6 +217,14 @@ pgdp %>%
   pivot_wider(names_from = north_american_industry_classification_system_naics, values_from = CPC) %>%
   janitor::clean_names() %>%
   rename(CPC_All_industries = all_industries_t001) -> master_pgdp
+```
+
+### MGDP real GDP by industry 
+
+add MGDP
+
+```{r}
+
 ```
 
 ### population
@@ -397,7 +411,7 @@ data.table::fwrite(here::here("output", str_glue("CPI_{cpi_table_number}.csv")))
 master_provincial_table <- left_join(master_provincial_table,clean_cpi) 
 ```
 
-### PPD
+#### PPD
 
 producer prices
 
