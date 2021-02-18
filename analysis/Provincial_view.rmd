@@ -448,15 +448,18 @@ LFS_annual %>%
 
 14-10-0037-01
 
+S
+
 ```{r Actual hours worked by industry}
 LFS_hoursworked <- cansim::get_cansim_ndm("14-10-0037-01")
 LFS_hoursworked <- janitor::clean_names(LFS_hoursworked)
 LFS_hoursworked %>%
-  select(everything()) %>%
-  mutate(ref_date = parse_date(ref_date, "%Y")) %>% View()
+  select(ref_date,geo,actual_hours_worked,class_of_worker,north_american_industry_classification_system_naics,sex,value) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y")) %>% 
   filter(ref_date > from_this_year) %>% 
-  filter(age_group == "15 years and over") %>% 
-  filter( sex == "Both sexes" ) %>%
+  filter(class_of_worker == "Total employed") %>% 
+  filter( sex == "Both sexes" ) %>% 
+  pivot_wider(names_from = actual_hours_worked , values_from = value) %>% interactive_table()
 
 ```
 
