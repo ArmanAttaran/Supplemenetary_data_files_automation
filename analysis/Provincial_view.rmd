@@ -425,11 +425,9 @@ producer prices
 
 ```
 
-### Labour force
+### Labour force stats; Results from SEPH,LFS and Employment insurance surveys
 
-#### Labour force characteristics by industry,annual 
-
-**LFS survey**
+#### **LFS survey,** Labour force characteristics by industry,annual 
 
 ```{r Labour force characteristics by industry, annual}
 
@@ -446,6 +444,22 @@ LFS_annual %>%
 
 ```
 
+#### [**Actual hours worked by industry, annual**](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410003701&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=2.1&pickMembers%5B2%5D=3.2&pickMembers%5B3%5D=5.1&cubeTimeFrame.startYear=2016&cubeTimeFrame.endYear=2020&referencePeriods=20160101%2C20200101)
+
+14-10-0037-01
+
+```{r Actual hours worked by industry}
+LFS_hoursworked <- cansim::get_cansim_ndm("14-10-0037-01")
+LFS_hoursworked <- janitor::clean_names(LFS_hoursworked)
+LFS_hoursworked %>%
+  select(everything()) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y")) %>% View()
+  filter(ref_date > from_this_year) %>% 
+  filter(age_group == "15 years and over") %>% 
+  filter( sex == "Both sexes" ) %>%
+
+```
+
 #### annual employment by industry SEPH
 
 survey for this is SEPH
@@ -459,7 +473,9 @@ employment_by_industury %>%
     select(ref_date,geo,type_of_employee,north_american_industry_classification_system_naics,value,status) %>% 
   mutate(ref_date = parse_date(ref_date, "%Y")) %>%
   filter(ref_date > from_this_year) %>% 
-  pivot_wider(names_from = type_of_employee, values_from = c(value,status)) %>% View()
+  pivot_wider(names_from = type_of_employee, values_from = c(value,status)) %>% 
+  mutate_at(vars(), list(\~ .x - lag(.x))) %>% View()
+interactive_table()
   filter(geo %in% provinces) %>%
   as_tsibble(key = c(geo)) %>%
   group_by_key() %>%
@@ -472,7 +488,9 @@ employment_by_industury %>%
 
 ```
 
-#### Average hourly earnings for employees paid by the hour, by industry, annual
+#### SEPH
+
+####  Average hourly earnings for employees paid by the hour, by industry, annual
 
 ### [Employment Insurance Statistics ](http://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=2604 "Employment Insurance Statistics - Monthly")
 
