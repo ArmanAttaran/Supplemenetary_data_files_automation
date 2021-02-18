@@ -2,8 +2,11 @@
 title: "Provincial_view"
 author: "Arman Attaran"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: workflowr::wflow_html
-editor_options:
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_depth: 3
+    toc_float: false
   chunk_output_type: console
 params: 
  Developer_mode: FALSE
@@ -444,11 +447,9 @@ LFS_annual %>%
 
 ```
 
-#### [**Actual hours worked by industry, annual**](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410003701&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=2.1&pickMembers%5B2%5D=3.2&pickMembers%5B3%5D=5.1&cubeTimeFrame.startYear=2016&cubeTimeFrame.endYear=2020&referencePeriods=20160101%2C20200101)
+#### [**Actual hours worked by industry, annual**](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410003701&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=2.1&pickMembers%5B2%5D=3.2&pickMembers%5B3%5D=5.1&cubeTimeFrame.startYear=2016&cubeTimeFrame.endYear=2020&referencePeriods=20160101%2C20200101) **LFS survey**
 
 14-10-0037-01
-
-S
 
 ```{r Actual hours worked by industry}
 LFS_hoursworked <- cansim::get_cansim_ndm("14-10-0037-01")
@@ -459,7 +460,11 @@ LFS_hoursworked %>%
   filter(ref_date > from_this_year) %>% 
   filter(class_of_worker == "Total employed") %>% 
   filter( sex == "Both sexes" ) %>% 
-  pivot_wider(names_from = actual_hours_worked , values_from = value) %>% interactive_table()
+  pivot_wider(names_from = actual_hours_worked , values_from = value) %>%
+  select(!class_of_worker) %>% 
+  select(!sex) %>%
+  mutate(across(where(is.character), as.factor)) %>%
+interactive_table()
 
 ```
 
@@ -501,9 +506,7 @@ interactive_table()
 
 [14-10-0011-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410001101&pickMembers%5B0%5D=2.2&pickMembers%5B1%5D=3.1&pickMembers%5B2%5D=4.1&cubeTimeFrame.startMonth=01&cubeTimeFrame.startYear=2018&cubeTimeFrame.endMonth=11&cubeTimeFrame.endYear=2020&referencePeriods=20180101%2C20201101)
 
-Job Vacancy and Wage Survey
-
-# **Employment insurance beneficiaries (regular benefits) by province and territory, monthly, seasonally adjusted**
+Job Vacancy and W
 
 ### agriculture/aquaculture
 
