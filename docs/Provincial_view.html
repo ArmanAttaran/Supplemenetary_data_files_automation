@@ -544,16 +544,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomArmanAttaranSupplemenetarydatafilesautomationtree3923202d7bd18a39772bb46de00fc5d41813798atargetblank3923202a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/tree/3923202d7bd18a39772bb46de00fc5d41813798a" target="_blank">3923202</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomArmanAttaranSupplemenetarydatafilesautomationtree78d8bfec0d8452dc68e7c13348e69c22fcaa89dftargetblank78d8bfea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/tree/78d8bfec0d8452dc68e7c13348e69c22fcaa89df" target="_blank">78d8bfe</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomArmanAttaranSupplemenetarydatafilesautomationtree3923202d7bd18a39772bb46de00fc5d41813798atargetblank3923202a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomArmanAttaranSupplemenetarydatafilesautomationtree78d8bfec0d8452dc68e7c13348e69c22fcaa89dftargetblank78d8bfea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/tree/3923202d7bd18a39772bb46de00fc5d41813798a" target="_blank">3923202</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/tree/78d8bfec0d8452dc68e7c13348e69c22fcaa89df" target="_blank">78d8bfe</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -622,6 +622,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/78d8bfec0d8452dc68e7c13348e69c22fcaa89df/analysis/Provincial_view.rmd" target="_blank">78d8bfe</a>
+</td>
+<td>
+arman
+</td>
+<td>
+2021-02-19
+</td>
+<td>
+wflow_publish(c(“analysis/Provincial_view.rmd”, “analysis/index.Rmd”))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/f3e9100bac80bd45401145e1ef05f71bbafcec2f/docs/Provincial_view.html" target="_blank">f3e9100</a>
+</td>
+<td>
+arman
+</td>
+<td>
+2021-02-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2083,6 +2117,38 @@ LFS_annual %&gt;%
 <h4>annual employment by industry SEPH</h4>
 <p>survey for this is SEPH</p>
 <p>this needs to be run by mid feb</p>
+<pre class="r"><code>employment_by_industury &lt;- cansim::get_cansim_ndm(employment_by_industury_table_number_annual)</code></pre>
+<pre><code>Accessing CANSIM NDM product 14-10-0202 from Statistics Canada</code></pre>
+<pre><code>Parsing data</code></pre>
+<pre><code>Folding in metadata</code></pre>
+<pre class="r"><code>employment_by_industury &lt;- janitor::clean_names(employment_by_industury)
+employment_by_industury %&gt;%
+    select(ref_date,geo,type_of_employee,north_american_industry_classification_system_naics,value,status) %&gt;% 
+  mutate(ref_date = parse_date(ref_date, &quot;%Y&quot;)) %&gt;%
+  filter(ref_date &gt; from_this_year) %&gt;% 
+  pivot_wider(names_from = type_of_employee, values_from = c(value,status)) %&gt;%
+    mutate(across(where(is.character), as.factor)) %&gt;%
+  arrange(north_american_industry_classification_system_naics, geo, ref_date) %&gt;%
+  group_by(north_american_industry_classification_system_naics, geo) %&gt;%
+  mutate(across(where(is.numeric), fd_pc, .names = &quot;{.fn}.{.col}&quot;)) %&gt;%
+   mutate(across(where(is.numeric), round, 3)) %&gt;% head()</code></pre>
+<pre><code># A tibble: 6 x 15
+# Groups:   north_american_industry_classification_system_naics, geo [2]
+  ref_date   geo   north_american_~ `value_All empl~ `value_Salaried~
+  &lt;date&gt;     &lt;fct&gt; &lt;fct&gt;                       &lt;dbl&gt;            &lt;dbl&gt;
+1 2017-01-01 Albe~ Aboriginal publ~             6574               NA
+2 2018-01-01 Albe~ Aboriginal publ~             6555               NA
+3 2019-01-01 Albe~ Aboriginal publ~             6941               NA
+4 2017-01-01 Brit~ Aboriginal publ~            10466               NA
+5 2018-01-01 Brit~ Aboriginal publ~            10725               NA
+6 2019-01-01 Brit~ Aboriginal publ~            11265               NA
+# ... with 10 more variables: `value_Employees paid by the hour` &lt;dbl&gt;,
+#   `status_All employees` &lt;fct&gt;, `status_Salaried employees paid a fixed
+#   salary` &lt;fct&gt;, `status_Employees paid by the hour` &lt;fct&gt;, `fd.value_All
+#   employees` &lt;dbl&gt;, `pc.value_All employees` &lt;dbl&gt;, `fd.value_Salaried
+#   employees paid a fixed salary` &lt;dbl&gt;, `pc.value_Salaried employees paid a
+#   fixed salary` &lt;dbl&gt;, `fd.value_Employees paid by the hour` &lt;dbl&gt;,
+#   `pc.value_Employees paid by the hour` &lt;dbl&gt;</code></pre>
 </div>
 <div id="seph" class="section level4">
 <h4>SEPH</h4>
@@ -2238,22 +2304,22 @@ other attached packages:
 [13] tibble_3.0.4      ggplot2_3.3.2     tidyverse_1.3.0   workflowr_1.6.2  
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5        ps_1.5.0          assertthat_0.2.1  rprojroot_2.0.2  
- [5] digest_0.6.27     gapminder_0.3.0   R6_2.5.0          cellranger_1.1.0 
- [9] backports_1.2.1   reprex_0.3.0      evaluate_0.14     httr_1.4.2       
-[13] pillar_1.4.7      rlang_0.4.9       curl_4.3          readxl_1.3.1     
-[17] data.table_1.13.4 rstudioapi_0.13   whisker_0.4       rmarkdown_2.6    
-[21] htmlwidgets_1.5.3 munsell_0.5.0     anytime_0.3.9     broom_0.7.3      
-[25] compiler_4.0.3    httpuv_1.5.4      modelr_0.1.8      xfun_0.19        
-[29] pkgconfig_2.0.3   htmltools_0.5.0   tidyselect_1.1.0  fansi_0.4.1      
-[33] crayon_1.3.4      dbplyr_2.0.0      withr_2.3.0       later_1.1.0.1    
-[37] grid_4.0.3        jsonlite_1.7.2    gtable_0.3.0      lifecycle_0.2.0  
-[41] DBI_1.1.0         git2r_0.27.1      magrittr_2.0.1    scales_1.1.1     
-[45] cli_2.2.0         stringi_1.5.3     fs_1.5.0          promises_1.1.1   
-[49] snakecase_0.11.0  xml2_1.3.2        ellipsis_0.3.1    generics_0.1.0   
-[53] vctrs_0.3.6       tools_4.0.3       glue_1.4.2        crosstalk_1.1.0.1
-[57] hms_0.5.3         yaml_2.2.1        colorspace_2.0-0  rvest_0.3.6      
-[61] knitr_1.30        haven_2.3.1      </code></pre>
+ [1] Rcpp_1.0.5        ps_1.5.0          utf8_1.1.4        assertthat_0.2.1 
+ [5] rprojroot_2.0.2   digest_0.6.27     gapminder_0.3.0   R6_2.5.0         
+ [9] cellranger_1.1.0  backports_1.2.1   reprex_0.3.0      evaluate_0.14    
+[13] httr_1.4.2        pillar_1.4.7      rlang_0.4.9       curl_4.3         
+[17] readxl_1.3.1      data.table_1.13.4 rstudioapi_0.13   whisker_0.4      
+[21] rmarkdown_2.6     htmlwidgets_1.5.3 munsell_0.5.0     anytime_0.3.9    
+[25] broom_0.7.3       compiler_4.0.3    httpuv_1.5.4      modelr_0.1.8     
+[29] xfun_0.19         pkgconfig_2.0.3   htmltools_0.5.0   tidyselect_1.1.0 
+[33] fansi_0.4.1       crayon_1.3.4      dbplyr_2.0.0      withr_2.3.0      
+[37] later_1.1.0.1     grid_4.0.3        jsonlite_1.7.2    gtable_0.3.0     
+[41] lifecycle_0.2.0   DBI_1.1.0         git2r_0.27.1      magrittr_2.0.1   
+[45] scales_1.1.1      cli_2.2.0         stringi_1.5.3     fs_1.5.0         
+[49] promises_1.1.1    snakecase_0.11.0  xml2_1.3.2        ellipsis_0.3.1   
+[53] generics_0.1.0    vctrs_0.3.6       tools_4.0.3       glue_1.4.2       
+[57] crosstalk_1.1.0.1 hms_0.5.3         yaml_2.2.1        colorspace_2.0-0 
+[61] rvest_0.3.6       knitr_1.30        haven_2.3.1      </code></pre>
 </div>
 </div>
 </div>
