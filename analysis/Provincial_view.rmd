@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   workflowr::wflow_html:
     toc: true
-    toc_depth: 3
+    toc_depth: 6
     toc_float: false
     code_folding: hide
   chunk_output_type: console
@@ -90,6 +90,10 @@ cpi_table_number <- "18100005"
  
 
 #function 
+fd_pc <- list(
+            fd = ~(.x - lag(.x)),
+            pc = ~((.x / lag(.x)- 1) * 100))
+          
 interactive_table <- function(data) {
   DT::datatable(
     {{ data }},
@@ -162,7 +166,7 @@ interactive_table(gapminder::gapminder)
 # summarytools::view(dfSummary(LFS))  for exploring tables
 ```
 
-# Macro economic accounts
+# Economic stats
 
 i will attempt to import and clean all the tables \#\#\# PGDP here I will be working with Provincial GDP
 
@@ -209,7 +213,6 @@ clean_PGDP %>% data.table::fwrite(here::here("output", str_glue("Provincial_GDP_
 #### provincial GDP for master table
 
 ```{r Provincial GDP mastertable}
-pgdp
 pgdp %>%
   select(ref_date, geo, north_american_industry_classification_system_naics, value, value_2) %>%
   mutate(ref_date = lubridate::make_date(ref_date)) %>%
@@ -235,7 +238,6 @@ add MGDP
 
 ```{r population}
 
-library(summarytools)
 population <- cansim::get_cansim_ndm(population_table_number)
 population %>%
   janitor::clean_names() %>%
@@ -455,18 +457,22 @@ LFS_annual %>%
 ```{r Actual hours worked by industry}
 LFS_hoursworked <- cansim::get_cansim_ndm("14-10-0037-01")
 LFS_hoursworked <- janitor::clean_names(LFS_hoursworked)
-LFS_hoursworked %>%
-  select(ref_date,geo,actual_hours_worked,class_of_worker,north_american_industry_classification_system_naics,sex,value) %>%
-  mutate(ref_date = parse_date(ref_date, "%Y")) %>% 
-  filter(ref_date > from_this_year) %>% 
-  filter(class_of_worker == "Total employed") %>% 
-  filter( sex == "Both sexes" ) %>% 
-  pivot_wider(names_from = actual_hours_worked , values_from = value) %>%
-  select(!class_of_worker) %>% 
+         LFS_hoursworked %>%
+  select(ref_date, geo, actual_hours_worked, class_of_worker, north_american_industry_classification_system_naics, sex, value) %>%
+  mutate(ref_date = parse_date(ref_date, "%Y")) %>%
+  filter(ref_date > from_this_year) %>%
+  filter(class_of_worker == "Total employed") %>%
+  filter(sex == "Both sexes") %>%
+  pivot_wider(names_from = actual_hours_worked, values_from = value) %>%
+  select(!class_of_worker) %>%
   select(!sex) %>%
   mutate(across(where(is.character), as.factor)) %>%
-interactive_table()
-
+  arrange(north_american_industry_classification_system_naics, geo, ref_date) %>%
+  group_by(north_american_industry_classification_system_naics, geo) %>%
+  mutate(across(where(is.numeric), fd_pc, .names = "{.fn}.{.col}")) %>%
+   mutate(across(where(is.numeric), round, 3)) %>%
+  select(everything()) %>%
+  interactive_table()
 ```
 
 #### annual employment by industry SEPH
@@ -629,6 +635,9 @@ maybe use \* in regex to match wild cards with the coordinates; for example 1.1.
 use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to automatically create a first difference of any table.
   mutate(across(where(is.factor), as.character))
   
+mutate(acros)
+  
+  
   # use this to extract all of the commits for the work you have done
   
   git log --since='last year' --date=short --pretty=format:'%h,%an,%ad,%s' > ~/log.csv
@@ -641,4 +650,3 @@ use this mutate_at(vars(births:residual_deviation), list(\~ .x - lag(.x))) to au
 created a schema for naming things; I should have followed the statcan names instead of naming things for simplicity. create code templates with text generations based on three scenarios annual tables weekly tables monthly tables
 
 have a to do list
-
