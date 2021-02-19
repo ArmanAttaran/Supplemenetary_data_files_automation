@@ -247,14 +247,19 @@ population %>%
   filter(ref_date > from_this_year) %>%
   filter(age_group == "All ages") %>%
   filter(sex == "Both sexes") %>%
-  select(1, 2, 5) -> clean_population
+  select(1, 2, 5) %>%
+  mutate(across(where(is.character), as.factor)) %>%
+  arrange(geo, ref_date) %>%
+  group_by(geo) %>%
+  mutate(across(where(is.numeric), fd_pc, .names = "{.fn}.{.col}")) %>%
+   mutate(across(where(is.numeric), round, 3)) -> clean_population
 # view(dfSummary(clean_population))
 interactive_table(clean_population)
 clean_population %>%
 data.table::fwrite(here::here("output", str_glue("Population_{population_table_number}.csv")))
 ```
 
-### **Capital and repair expenditures, non-residential tangible assets, by industry and geography** 
+### **Capital and repair expenditures, non-residential tangible assets, by industry and geography**
 
 34-10-0035-01
 
@@ -433,7 +438,7 @@ producer prices
 
 ### Labour force stats; Results from SEPH,LFS and Employment insurance surveys
 
-#### **LFS survey,** Labour force characteristics by industry,annual 
+#### **LFS survey,** Labour force characteristics by industry,annual
 
 ```{r Labour force characteristics by industry, annual}
 
@@ -505,9 +510,9 @@ interactive_table()
 
 #### SEPH
 
-####  Average hourly earnings for employees paid by the hour, by industry, annual
+#### Average hourly earnings for employees paid by the hour, by industry, annual
 
-### [Employment Insurance Statistics ](http://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=2604 "Employment Insurance Statistics - Monthly")
+### [Employment Insurance Statistics](http://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=2604 "Employment Insurance Statistics - Monthly")
 
 #### **Employment insurance beneficiaries (regular benefits) by province and territory, monthly, seasonally adjusted**
 
@@ -519,7 +524,7 @@ Job Vacancy and W
 
 focusing on agric/aquaculture
 
-#### grain shipments 
+#### grain shipments
 
 ```{r grain shipments}
 grain_shipment <- cansim::get_cansim_ndm(grain_shipment_table_number)
