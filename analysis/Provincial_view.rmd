@@ -498,9 +498,7 @@ employment_by_industury %>%
   arrange(north_american_industry_classification_system_naics, geo, ref_date) %>%
   group_by(north_american_industry_classification_system_naics, geo) %>%
   mutate(across(where(is.numeric), fd_pc, .names = "{.fn}.{.col}")) %>%
-   mutate(across(where(is.numeric), round, 3)) %>%
-interactive_table()
- 
+   mutate(across(where(is.numeric), round, 3)) %>% head()
 ```
 
 #### SEPH
