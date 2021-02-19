@@ -486,7 +486,7 @@ survey for this is SEPH
 
 this needs to be run by mid feb
 
-```{r annual employment by industry, eval=FALSE, include=FALSE}
+```{r annual employment by industry}
 employment_by_industury <- cansim::get_cansim_ndm(employment_by_industury_table_number_annual)
 employment_by_industury <- janitor::clean_names(employment_by_industury)
 employment_by_industury %>%
