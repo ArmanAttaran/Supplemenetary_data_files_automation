@@ -252,7 +252,7 @@ population %>%
   arrange(geo, ref_date) %>%
   group_by(geo) %>%
   mutate(across(where(is.numeric), fd_pc, .names = "{.fn}.{.col}")) %>%
-   mutate(across(where(is.numeric), round, 3)) -> clean_population
+   mutate(across(where(is.numeric), round, 2)) -> clean_population
 # view(dfSummary(clean_population))
 interactive_table(clean_population)
 clean_population %>%
@@ -493,19 +493,14 @@ employment_by_industury %>%
     select(ref_date,geo,type_of_employee,north_american_industry_classification_system_naics,value,status) %>% 
   mutate(ref_date = parse_date(ref_date, "%Y")) %>%
   filter(ref_date > from_this_year) %>% 
-  pivot_wider(names_from = type_of_employee, values_from = c(value,status)) %>% 
-  mutate_at(vars(), list(\~ .x - lag(.x))) %>% View()
+  pivot_wider(names_from = type_of_employee, values_from = c(value,status)) %>%
+    mutate(across(where(is.character), as.factor)) %>%
+  arrange(north_american_industry_classification_system_naics, geo, ref_date) %>%
+  group_by(north_american_industry_classification_system_naics, geo) %>%
+  mutate(across(where(is.numeric), fd_pc, .names = "{.fn}.{.col}")) %>%
+   mutate(across(where(is.numeric), round, 3)) %>%
 interactive_table()
-  filter(geo %in% provinces) %>%
-  as_tsibble(key = c(geo)) %>%
-  group_by_key() %>%
-  index_by(year_month = ~ year(.)) %>%
-  summarise(across(where(is.numeric),list(sum))) %>%
-  as_tibble() %>% 
-  rename(ref_date = year_month) %>%
-  mutate(ref_date = lubridate::make_date(ref_date)) %>%
-  select(everything()) -> master_annual_grain_shipment
-
+ 
 ```
 
 #### SEPH
