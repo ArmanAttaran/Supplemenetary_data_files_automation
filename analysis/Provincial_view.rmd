@@ -277,7 +277,8 @@ trade %>%
   mutate(ref_date = parse_date(ref_date, "%Y-%m")) %>%
   filter(ref_date > from_this_year) %>%
   pivot_wider(names_from = trade, values_from = value) %>%
-  janitor::clean_names() %>%
+  janitor::clean_names() -> clean_trade
+clean_trade %>%
   arrange(north_american_product_classification_system_napcs, principal_trading_partners, geo, ref_date) %>%
   group_by(north_american_product_classification_system_napcs, principal_trading_partners, geo) %>%
   mutate(yoy_pct_change_import = ((import / lag(import, n = 12, order_by = ref_date)) * 100) - 100) %>%
@@ -289,6 +290,42 @@ trade %>%
   # group_by(3,4,2) %>%
   
 #data.table::fwrite(here::here("delete", str_glue("Table_{trade_table_number}_Trade_full_table_from{from_this_year}.csv")))
+```
+
+below is a sample graph
+
+```{r Graph, layout="l-screen-inset"}
+clean_trade %>%
+ filter(geo %in% c("Quebec", "Ontario", "Manitoba", "Alberta", "British Columbia"
+)) %>%
+ filter(principal_trading_partners %in% c("All countries", "United States", 
+"China")) %>%
+filter(north_american_product_classification_system_napcs != "Total of all merchandise") %>%
+ ggplot() +
+ aes(x = ref_date, y = domestic_export, colour = north_american_product_classification_system_napcs) +
+ geom_line(size = 0.7) +
+ scale_color_hue() +
+ theme_minimal() +
+ facet_grid(vars(geo), vars(principal_trading_partners)) -> P
+plotly::ggplotly(P,dynamicTicks =  TRUE)
+```
+
+imports
+
+```{r fig.height=3, fig.fullwidth = TRUE}
+clean_trade %>%
+ filter(geo %in% c("Quebec", "Ontario", "Manitoba", "Alberta", "British Columbia"
+)) %>%
+ filter(principal_trading_partners %in% c("All countries", "United States", 
+"China")) %>%
+filter(north_american_product_classification_system_napcs != "Total of all merchandise") %>%
+ ggplot() +
+ aes(x = ref_date, y = import, colour = north_american_product_classification_system_napcs) +
+ geom_line(size = 0.7) +
+ scale_color_hue() +
+ theme_minimal() +
+ facet_grid(vars(geo), vars(principal_trading_partners)) -> P
+plotly::ggplotly(P,dynamicTicks =  TRUE)
 ```
 
 ### Trade annual
@@ -453,6 +490,8 @@ LFS_annual %>%
   select(ref_date,geo,labour_force_characteristics,north_american_industry_classification_system_naics,value) %>% 
   pivot_wider(names_from = labour_force_characteristics, values_from = value) %>% interactive_table()
 
+clean_trade$ref_date[1]
+
 ```
 
 #### [**Actual hours worked by industry, annual**](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410003701&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=2.1&pickMembers%5B2%5D=3.2&pickMembers%5B3%5D=5.1&cubeTimeFrame.startYear=2016&cubeTimeFrame.endYear=2020&referencePeriods=20160101%2C20200101) **LFS survey**
@@ -573,9 +612,7 @@ formatStyle(
     backgroundSize = '100% 90%',
     backgroundRepeat = 'no-repeat',
     backgroundPosition = 'center'
-  )  %>%
-  htmlwidgets::saveWidget("test.html") 
-
+  ) 
 
 ```
 
