@@ -294,7 +294,7 @@ clean_trade %>%
 
 below is a sample graph
 
-```{r Graph, layout="l-screen-inset"}
+```{r Graph, eval=FALSE, fig.height=6, fig.width=9, include=FALSE, layout="l-screen-inset"}
 clean_trade %>%
  filter(geo %in% c("Quebec", "Ontario", "Manitoba", "Alberta", "British Columbia"
 )) %>%
@@ -490,8 +490,6 @@ LFS_annual %>%
   select(ref_date,geo,labour_force_characteristics,north_american_industry_classification_system_naics,value) %>% 
   pivot_wider(names_from = labour_force_characteristics, values_from = value) %>% interactive_table()
 
-clean_trade$ref_date[1]
-
 ```
 
 #### [**Actual hours worked by industry, annual**](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410003701&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=2.1&pickMembers%5B2%5D=3.2&pickMembers%5B3%5D=5.1&cubeTimeFrame.startYear=2016&cubeTimeFrame.endYear=2020&referencePeriods=20160101%2C20200101) **LFS survey**
@@ -583,7 +581,7 @@ master_provincial_table %>%  data.table::fwrite(here::here("output", str_glue("p
 
 ## results
 
-```{r all years master_table}
+```{r all years master_table, eval=FALSE, include=FALSE}
 master_provincial_table %>% 
   mutate(across(where(is.character), as.factor)) %>%
   mutate(ref_date = year(ref_date)) %>%   
@@ -612,7 +610,7 @@ formatStyle(
     backgroundSize = '100% 90%',
     backgroundRepeat = 'no-repeat',
     backgroundPosition = 'center'
-  ) 
+  ) %>% interactive_table()
 
 ```
 
@@ -623,7 +621,6 @@ year 2020 only
 master_provincial_table %>% 
   mutate(across(where(is.character), as.factor)) %>%
   mutate(ref_date = year(ref_date)) %>%   
-  filter(ref_date == 2020) %>%
   mutate(ref_date = as.factor(ref_date)) %>%
   
   rename_with(~ tolower(gsub("_", " ", .x, fixed = TRUE))) %>%
