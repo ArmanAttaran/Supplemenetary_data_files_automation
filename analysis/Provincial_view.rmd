@@ -390,7 +390,7 @@ master_provincial_table %>%
 ### construction
 
 all construction numbers are for total type of work and are in unadjusted K dollar mabye I should just use 23A_K\_ind
-
+#### CAPEX
 ```{r construction}
 
 construction <- cansim::get_cansim_ndm(building_construction_table_number)
@@ -425,6 +425,19 @@ master_provincial_table <- left_join(master_construction,master_provincial_table
 ```
 
 these other two tables that I am not sure if I will include
+
+
+#### Building permits 
+
+```{r building permit, eval=FALSE, include=FALSE}
+construction_permits <- cansim::get_cansim_ndm("34-10-0066-01")
+construction_permits <- janitor::clean_names(construction_permits)
+construction_permits 
+
+view(dfSummary(construction_permits))
+
+
+```
 
 ```{r eval=FALSE, include=FALSE}
 temp <- get_cansim_ndm("34-10-0163-01")
