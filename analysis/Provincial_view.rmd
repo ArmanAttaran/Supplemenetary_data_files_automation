@@ -312,7 +312,7 @@ plotly::ggplotly(P,dynamicTicks =  TRUE)
 
 imports
 
-```{r fig.height=3, fig.fullwidth = TRUE}
+```{r eval=FALSE,fig.height=3, include=FALSE}
 clean_trade %>%
  filter(geo %in% c("Quebec", "Ontario", "Manitoba", "Alberta", "British Columbia"
 )) %>%
