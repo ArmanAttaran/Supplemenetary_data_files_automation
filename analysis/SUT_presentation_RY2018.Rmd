@@ -31,16 +31,13 @@ the other graph is by province.
 
 -   Employment, by industry [14-10-0023-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410002301 "Table 14-10-0023-01").
 
--trade data by napc Source:** Statistics Canada, table [12-10-0121-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1210012101 "Table 12-10-0121-01").
-    
-    
-    
+-trade data by napc Source:\*\* Statistics Canada, table [12-10-0121-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1210012101 "Table 12-10-0121-01").
+
 # Setup
 
 ## Code lists
-here I will outline the code lists used to download the tables.
-it is better to use coordinates and code lists since they can be left joined based on these coordinates 
 
+here I will outline the code lists used to download the tables. it is better to use coordinates and code lists since they can be left joined based on these coordinates
 
 ```{r Defining coords/ codelists, message=FALSE, warning=FALSE, include=FALSE}
 
@@ -49,7 +46,6 @@ twodigitcoords <- c("1.1.1", "1.1.2", "1.1.3", "1.1.4", "1.1.5", "1.1.6", "1.1.7
 two_digit_naics_code <- c("[11]", "[21]", "[22]", "[23]", "[31-33]", "[41]", "[44-45]", "[48-49]", "[51]", "[52]", "[53]", "[54]", "[55]", "[56]", "[61]", "[62]", "[71]", "[72]", "[81]", "[91]")
 
 ```
-
 
 ## functions
 
@@ -70,8 +66,6 @@ DT::datatable(
   }
 #summarytools::view(dfSummary(LFS))  for exploring tables 
 ```
-
-
 
 ```{r}
 library(tidyverse)
@@ -108,7 +102,7 @@ here I will aggregate data at provincial level possible idea:
 
 -   Manufacturing industries [16-10-0117-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1610011701 "Table 16-10-0117-01").
 
--    International merchandise trade by province, commodity, and Principal Trading Partners 12-10-0119-01
+-   International merchandise trade by province, commodity, and Principal Trading Partners 12-10-0119-01
 
 -   
 

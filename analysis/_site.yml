@@ -13,6 +13,8 @@ navbar:
     href: supp_files.html
   - text: prov_analysis
   - href: prov_analysis.html
+  - text: google_mobility_data
+  - href: google_mobility_data.html
   right:
   - icon: fa-github
     text: Source code
