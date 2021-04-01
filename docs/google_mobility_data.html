@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Arman" />
 
+<meta name="date" content="2021-03-31" />
 
-<title>Home</title>
+<title>google_mobility_data</title>
 
 <script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -20,6 +22,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -271,6 +276,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -278,6 +346,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -328,7 +406,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">google_mobility_data</h1>
+<h4 class="author">Arman</h4>
+<h4 class="date">2021-03-31</h4>
 
 </div>
 
@@ -356,7 +436,7 @@ $(document).ready(function () {
 <strong>Last updated:</strong> 2021-03-31
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>Supplemenetary_data_files_automation_v2/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -378,6 +458,66 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20201119code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20201119)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20201119code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20201119)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -441,7 +581,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/google_mobility_data.Rmd</code>) and HTML (<code>docs/google_mobility_data.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -467,682 +607,19 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/cfba66c9c9e32d838f1c575b6a2a574ffd61f6d4/docs/index.html" target="_blank">cfba66c</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-03-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/1e6a893af8bfed2ccbb6c0fcf1a7285eb06fb0a9/docs/index.html" target="_blank">1e6a893</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-03-01
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/438d9505d29fdf929a41c49c04d5d77d0f40386c/docs/index.html" target="_blank">438d950</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-25
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/929ea0362f031e9163d5e8044e5eb1ea75fcc4d5/docs/index.html" target="_blank">929ea03</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-24
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/c19cc63e890692a261c5a082b8dfeb27e442094d/docs/index.html" target="_blank">c19cc63</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/f3e9100bac80bd45401145e1ef05f71bbafcec2f/docs/index.html" target="_blank">f3e9100</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/a942ba27d0fecbf510ea115c6e25ad75c116f368/docs/index.html" target="_blank">a942ba2</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/fdfae2d8d7ad234de239cf157c745e727d5c33c2/docs/index.html" target="_blank">fdfae2d</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/280e9303dfd333bbca3db839d9aa323ba9105135/docs/index.html" target="_blank">280e930</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/3a37dabae3518ee0ea9b915949173af11416bb0a/docs/index.html" target="_blank">3a37dab</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/c760d5f394466bfec281c414526dd9822e8a9bc6/docs/index.html" target="_blank">c760d5f</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-12
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/9bec129012264a56524448b4dc3cc829cb835fc2/docs/index.html" target="_blank">9bec129</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/836b3f7b3ce495c7567489aaae683932e0ecff06/docs/index.html" target="_blank">836b3f7</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/d20cf2d3f8ff53b060a5317d4d77c626852992e4/docs/index.html" target="_blank">d20cf2d</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/acae2dec6b8c54020c856f1ddf36153d3b79af86/docs/index.html" target="_blank">acae2de</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/c978ec7ab4dd892a2451fa8835b9b89b45cf59cd/docs/index.html" target="_blank">c978ec7</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/210b49ed0b3c4d44dcc39897d849785fb0560c95/docs/index.html" target="_blank">210b49e</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/3077a6a3a9f1ab4278e9882ef2fe6ec20eb2de5b/docs/index.html" target="_blank">3077a6a</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/027690646c7f323e145552c97d6f863c3ee84cd9/docs/index.html" target="_blank">0276906</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-04
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/f449255563a99062f1b6dd2a906493acd98651e4/docs/index.html" target="_blank">f449255</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-02-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/6a066ffbfda39c03ee486afac3f964291cbb2e9c/docs/index.html" target="_blank">6a066ff</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-01-29
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/ad426b32a8668d0c345b188ae25a0ee5dea09f9e/docs/index.html" target="_blank">ad426b3</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-01-29
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/ffc28e9a32f93ccdaaf724627c6821919449c348/docs/index.html" target="_blank">ffc28e9</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-01-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/ac1cbff36b14983a91364e70d941438bec2a9dab/docs/index.html" target="_blank">ac1cbff</a>
-</td>
-<td>
-arman
-</td>
-<td>
-2021-01-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/3c07092a00f887472a63555b661aa233ec2768b6/docs/index.html" target="_blank">3c07092</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-12-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/25dbc78905fbc29be90aa02112402c3045980253/analysis/index.Rmd" target="_blank">25dbc78</a>
+<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/999281f9d2691a0a9f9b95f0fed37c28cdc65f3a/analysis/google_mobility_data.Rmd" target="_blank">999281f</a>
 </td>
 <td>
-ArmanAttaran
+arman
 </td>
 <td>
-2020-11-30
+2021-03-31
 </td>
 <td>
-some new resources and visual ideas
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/59aa4351b2c13a111a4491065f89bdf2666e8811/analysis/index.Rmd" target="_blank">59aa435</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-26
-</td>
-<td>
-added some ideas for monthly provincial nowcast
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/82070870668164edde18a800cfcec50c9c7dd720/analysis/index.Rmd" target="_blank">8207087</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-24
-</td>
-<td>
-updated the descreption
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/c81ce873906486f18fadc462721ddf399fcc82fc/docs/index.html" target="_blank">c81ce87</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/983acf38cbe16e516564a2853f060acbb58cc414/docs/index.html" target="_blank">983acf3</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/9760eb4fdbbca6fb06bff0f7fe7f2edc771aa677/docs/index.html" target="_blank">9760eb4</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/14991f0d0b5a04bca3cdb86c02af52a30f839d39/docs/index.html" target="_blank">14991f0</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/da479c2f28e00440d780b6e6fd4b201b2ff0228e/docs/index.html" target="_blank">da479c2</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/dbc184dcc3c5a2f64cdb0837fd8e85bd133f8234/docs/index.html" target="_blank">dbc184d</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/0330455ad790497b7c3a59e152d87ba8b2665450/docs/index.html" target="_blank">0330455</a>
-</td>
-<td>
-armanattaran
-</td>
-<td>
-2020-11-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/cb14b5eadabf3d13aa00e9644efc648574f2aca8/docs/index.html" target="_blank">cb14b5e</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/a1e57108ed8cd2a3614827dbffcea26e7fc6dbb6/docs/index.html" target="_blank">a1e5710</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/f085ca615c8ac71f9c18c184e31c957219b09925/docs/index.html" target="_blank">f085ca6</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ArmanAttaran/Supplemenetary_data_files_automation/a3412ef17b1204636e97811a516dbea4fc9f2731/docs/index.html" target="_blank">a3412ef</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ArmanAttaran/Supplemenetary_data_files_automation/blob/943fa4312952af5e9ccffcf83f3c5758ccce83e7/analysis/index.Rmd" target="_blank">943fa43</a>
-</td>
-<td>
-ArmanAttaran
-</td>
-<td>
-2020-11-19
-</td>
-<td>
-Start workflowr project.
+wflow_publish(c(“analysis/index.Rmd”, “analysis/google_mobility_data.Rmd”))
 </td>
 </tr>
 </tbody>
@@ -1152,7 +629,42 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Welcome to supplementary data website, in this repository there are lots of rmarkdown files each showcasing some of the work I do</p>
+<p>rwarinf ## Introduction</p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.3 (2020-10-10)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_Canada.1252  LC_CTYPE=English_Canada.1252   
+[3] LC_MONETARY=English_Canada.1252 LC_NUMERIC=C                   
+[5] LC_TIME=English_Canada.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.5      rstudioapi_0.13 whisker_0.4     knitr_1.30     
+ [5] magrittr_2.0.1  R6_2.5.0        rlang_0.4.9     stringr_1.4.0  
+ [9] tools_4.0.3     xfun_0.19       git2r_0.27.1    htmltools_0.5.0
+[13] ellipsis_0.3.1  rprojroot_2.0.2 yaml_2.2.1      digest_0.6.27  
+[17] tibble_3.0.4    lifecycle_0.2.0 crayon_1.3.4    later_1.1.0.1  
+[21] vctrs_0.3.6     promises_1.1.1  fs_1.5.0        glue_1.4.2     
+[25] evaluate_0.14   rmarkdown_2.6   stringi_1.5.3   compiler_4.0.3 
+[29] pillar_1.4.7    httpuv_1.5.4    pkgconfig_2.0.3</code></pre>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -1170,6 +682,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -1202,6 +716,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
