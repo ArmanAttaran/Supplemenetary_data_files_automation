@@ -510,7 +510,9 @@ LFS_annual %>%
   rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE))) %>%
   select(order(colnames(.))) %>%
   relocate(where(is.numeric), .after = where((is.factor))) %>%
-  relocate(ref_date) %>%
+    rename_with(~ tolower(gsub("_", " ", .x, fixed = TRUE))) %>%
+
+  relocate(`ref date`) %>%
             
 interactive_table()
 
