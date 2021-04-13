@@ -500,8 +500,19 @@ LFS_annual %>%
   filter(ref_date > from_this_year) %>% 
   filter(age_group == "15 years and over") %>% 
   filter( sex == "Both sexes" ) %>%
-  select(ref_date,geo,labour_force_characteristics,north_american_industry_classification_system_naics,value) %>% 
-  pivot_wider(names_from = labour_force_characteristics, values_from = value) %>% interactive_table()
+   select(ref_date,geo,labour_force_characteristics,north_american_industry_classification_system_naics,value) %>% 
+  pivot_wider(names_from = labour_force_characteristics, values_from = value) %>% 
+  mutate(across(where(is.character), as.factor)) %>%
+  arrange(north_american_industry_classification_system_naics, geo, ref_date) %>%
+  group_by(north_american_industry_classification_system_naics, geo) %>%
+  mutate(across(where(is.numeric), fd_pc, .names = "{.col}_{.fn}")) %>%
+   mutate(across(where(is.numeric), round, 3)) %>%
+  rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE))) %>%
+  select(order(colnames(.))) %>%
+  relocate(where(is.numeric), .after = where((is.factor))) %>%
+  relocate(ref_date) %>%
+            
+interactive_table()
 
 ```
 
