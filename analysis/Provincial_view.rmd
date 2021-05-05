@@ -605,6 +605,34 @@ master_provincial_table <- left_join(master_provincial_table,master_annual_grain
 master_provincial_table %>%  data.table::fwrite(here::here("output", str_glue("provincial_view.csv")))
 ```
 
+# COVID_SPECIAL_DATA
+
+### BOC STRINGENCY INDEX
+
+```{r BOC_STRINGENCY}
+df <- read_csv("https://www.bankofcanada.ca/valet/observations/group/SAN_LYOJ20210218/csv?end_date=2021-02-17",
+                                   skip = 21)
+df %>%
+  rename(OxCGRT = SAN_LYOJ20210218_C1_S1 ) %>%
+  rename(BOC_stringency_index = SAN_LYOJ20210218_C1_S2) %>%
+  rename(Canada = SAN_LYOJ20210218_C2_S1 ) %>%
+  rename(Atlantic = SAN_LYOJ20210218_C2_S2) %>%
+  rename(Quebec = SAN_LYOJ20210218_C2_S3) %>%
+  rename(Ontario = SAN_LYOJ20210218_C2_S4) %>%
+  rename(Prairies = SAN_LYOJ20210218_C2_S5) %>%
+  rename(Biritish_Columbia = SAN_LYOJ20210218_C2_S6 ) -> df
+
+
+df %>%
+  pivot_longer(
+    cols = 2:9,
+    names_to = "geo",
+    values_to = "index",
+    values_drop_na = TRUE
+  ) -> df
+```
+
+
 ## results
 
 ```{r all years master_table, eval=FALSE, include=FALSE}
