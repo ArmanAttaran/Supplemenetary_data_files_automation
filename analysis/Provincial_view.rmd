@@ -610,7 +610,15 @@ master_provincial_table %>%  data.table::fwrite(here::here("output", str_glue("p
 ### BOC STRINGENCY INDEX
 
 ```{r BOC_STRINGENCY}
-df <- read_csv("https://www.bankofcanada.ca/valet/observations/group/SAN_LYOJ20210218/csv?end_date=2021-02-17",
+
+boc_link <- str_glue(
+  "https://www.bankofcanada.ca/valet/observations/group/SAN_LYOJ20210218/csv?end_date=",
+  "{date}",
+   date = lubridate::today()
+)
+
+boc_api <- 
+df <- read_csv(boc_link,
                                    skip = 21)
 df %>%
   rename(OxCGRT = SAN_LYOJ20210218_C1_S1 ) %>%
@@ -630,6 +638,8 @@ df %>%
     values_to = "index",
     values_drop_na = TRUE
   ) -> df
+
+interactive_table(df)
 ```
 
 
